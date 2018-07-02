@@ -1,0 +1,31 @@
+##请求推荐歌单
+
+``https://u.y.qq.com/cgi-bin/musicu.fcg?callback=recom1639464332002405&g_tk=5381&jsonpCallback=recom1639464332002405&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22recomPlaylist%22%3A%7B%22method%22%3A%22get_hot_recommend%22%2C%22param%22%3A%7B%22async%22%3A1%2C%22cmd%22%3A2%7D%2C%22module%22%3A%22playlist.HotRecommendServer%22%7D%7D
+
+###返回数据中的重要信息
+  ``歌单id: recomPlaylist.data.v_hot[n].content_id
+
+##通过歌单id请求歌单中的歌曲信息
+###重要信息
+  disstid
+
+``https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid=4183597652&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
+
+
+https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid=4183597652&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
+
+referer:https://y.qq.com/n/yqq/playlist/4183597652.html
+###返回数据中的重要信息
+  ``歌曲id：
+
+
+重要信息 
+albummid
+###歌曲id请求歌曲详情
+  https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg?albummid=002TnOP83luvgA&g_tk=5381&jsonpCallback=albuminfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0
+
+###歌曲id请求歌曲文件src
+https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg?g_tk=5381&jsonpCallback=MusicJsonCallback6225397979760554&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&cid=205361747&callback=MusicJsonCallback6225397979760554&uin=0&songmid=003QRDDt0OUGaN&filename=C400003QRDDt0OUGaN.m4a&guid=675807192
+
+###歌词
+https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?callback=MusicJsonCallback_lrc&pcachetime=1530260221659&songmid=003QRDDt0OUGaN&g_tk=5381&jsonpCallback=MusicJsonCallback_lrc&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0

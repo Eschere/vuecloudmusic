@@ -4,11 +4,11 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    playlist: []
   },
   mutations: {
-    increment (state) {
-      state.count++
+    playlistPush (state, p) {
+      state.playlist.push(p)
     }
   }
 })

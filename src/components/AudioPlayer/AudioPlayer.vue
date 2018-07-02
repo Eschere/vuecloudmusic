@@ -1,3 +1,3 @@
 <template>
-  <audio src=""></audio>
+  <audio src="" style="display:none"></audio>
 </template>
