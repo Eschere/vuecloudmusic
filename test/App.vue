@@ -106,6 +106,10 @@ export default {
           }).join(''))
         }
 
+        function decodeBase64_2 (str) {
+          return decodeURIComponent(escape(atob(str)))
+        }
+
         this.lyric = decodeBase64(data.lyric)
         if (data.trans) {
           this.trans = decodeBase64(data.trans)

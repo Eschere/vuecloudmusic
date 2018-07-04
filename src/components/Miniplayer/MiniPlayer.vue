@@ -1,17 +1,26 @@
 <template>
-  <div class="mini-player-box" v-if="playlist.length">
-    miniplayer
+  <div class="mini-player-box">
+    
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+// import {mapState} from 'vuex'
 
 export default {
   name: 'MiniPlayer',
   computed: {
-    ...mapState([
-      'playlist'
-    ])
+    
   }
 }
 </script>
+<style scoped>
+.mini-player-box {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #ccc;
+}
+</style>
+
