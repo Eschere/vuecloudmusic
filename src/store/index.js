@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     config
   },
   state: {
+    asideOn: false,
     songSheet: null
   },
   getters: {
@@ -25,6 +26,9 @@ const store = new Vuex.Store({
   mutations: {
     [Type.GET_SONG_SHEETS] (state, data) {
       state.songSheet = data
+    },
+    [Type.TOGGLE_ASIDE] (state, status) {
+      state.asideOn = status
     }
   },
   actions: {

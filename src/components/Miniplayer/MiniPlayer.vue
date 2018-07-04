@@ -1,15 +1,12 @@
 <template>
   <div class="mini-player-box">
-    
   </div>
 </template>
 <script>
 // import {mapState} from 'vuex'
-
 export default {
   name: 'MiniPlayer',
   computed: {
-    
   }
 }
 </script>
@@ -23,4 +20,3 @@ export default {
   background: #ccc;
 }
 </style>
-

@@ -11,14 +11,21 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/discover'
+    },
+    {
+      path: '/',
       components: {
         default: Main,
         'mini-player': MiniPlayer
       },
       children: [
         {
-          path: '',
+          path: '/discover',
           name: 'Home',
+          props: {
+            default: true
+          },
           components: {
             default: MainHeader,
             content: Home
