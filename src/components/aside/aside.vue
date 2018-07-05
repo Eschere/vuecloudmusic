@@ -1,34 +1,50 @@
 <template>
-  <div
-    class="aside-page"
-    @click="toggleAside(false)"
+  <Shade
+    :shade="asideOn"
+    @close="toggleAside(false)"
   >
-    <div class="aside-content">
-      内容
-    </div>
-  </div>
+    <v-touch class="aside-content">
+      <div>
+        内容以<br><br>
+      </div>
+      <div>
+        <v-touch @tap="toggleAside(false)">10</v-touch>
+      </div>
+    </v-touch>
+  </Shade>
 </template>
 <script>
-import {mapMutations} from 'vuex'
+import Shade from '#/Shade/Shade'
+import {mapState, mapMutations} from 'vuex'
+
 export default {
+  components: {
+    Shade
+  },
+  computed: {
+    ...mapState(['asideOn'])
+  },
   methods: {
     ...mapMutations(['toggleAside'])
   }
 }
 </script>
+
 <style lang="scss" scoped>
-  .aside-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(black, 0.6);
-    z-index: 1000;
-    .aside-content {
-      width: 80vw;
-      height: 100vh;
-      background: white;
-    }
-  }
+
+.aside-content {
+  width: 80vw;
+  height: 100vh;
+  background: white;
+  overflow: auto;
+}
+
+.shade-enter .aside-content,
+.shade-leave-to .aside-content{
+  transform: translate3d(-100%,0,0);
+}
+.shade-enter-active .aside-content,
+.shade-leave-active .aside-content {
+  transition: all 0.4s;
+}
 </style>

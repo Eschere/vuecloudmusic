@@ -1,24 +1,38 @@
 <template>
   <div class="main-header">
-    <div
+    <v-touch
       class="config-btn"
-      @click="toggleAside(true)"
+      @tap="toggleAside(true)"
     >
-
-    </div>
+    </v-touch>
     <div class="main-toggle">
-      <span class="icon-music"></span>
-      <span class="icon-discover"></span>
-      <span class="icon-video"></span>
-    </div>
-    <div class="search-btn">
+      <router-link
+        class="icon-music"
+        to="/music"
+      ></router-link>
 
+      <router-link
+          class="icon-discover"
+          to="/discover"
+        ></router-link>
+
+      <router-link
+          class="icon-video"
+          to="/video"
+        ></router-link>
     </div>
+    <router-link
+      class="search-btn"
+      to="/search"
+    ></router-link>
   </div>
 </template>
 <script>
 import {mapMutations} from 'vuex'
 export default {
+  props: {
+    path: String
+  },
   methods: {
     ...mapMutations(['toggleAside'])
   }
@@ -62,7 +76,7 @@ export default {
       background-image: url('./img/music_normal.png');
       background-size: 150%;
     }
-    .icon-music.selected {
+    .icon-music.router-link-active {
       background-image: url('./img/music_selected.png');
     }
 
@@ -71,7 +85,7 @@ export default {
       background-image: url('./img/discover_normal.png');
       background-size: 150%;
     }
-    .icon-discover.selected {
+    .icon-discover.router-link-active {
       background-image: url('./img/discover_selected.png');
     }
 
@@ -80,7 +94,7 @@ export default {
       background-image: url('./img/video_normal.png');
       background-size: 150%;
     }
-    .icon-video.selected {
+    .icon-video.router-link-active {
       background-image: url('./img/video_selected.png');
     }
   }

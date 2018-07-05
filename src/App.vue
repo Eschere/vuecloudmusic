@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    style="{paddingBottom: myPlaylist.length ? '50px' : 0}"
+    :style="{paddingBottom: myPlaylist.length ? '50px' : 0}"
   >
     <AudioPlayer></AudioPlayer>
     <router-view></router-view>
@@ -9,14 +9,14 @@
       name="mini-player"
       v-if="myPlaylist.length"
     ></router-view>
-    <Maside v-if="asideOn"></Maside>
+    <Maside></Maside>
   </div>
 </template>
 
 <script>
 import AudioPlayer from '#/AudioPlayer/AudioPlayer'
 import Maside from '#/aside/aside'
-import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 // import axios from 'axios'
 
 export default {
@@ -26,7 +26,7 @@ export default {
     Maside
   },
   computed: {
-    ...mapState(['asideOn']),
+    // ...mapState(['asideOn']),
     ...mapGetters(['recomPlaylist', 'myPlaylist'])
   },
   created () {
@@ -59,4 +59,5 @@ a {
   display: flex;
   flex-direction: column;
 }
+
 </style>
