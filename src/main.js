@@ -11,6 +11,18 @@ Vue.use(VueTouch, {name: 'v-touch'})
 
 Vue.config.productionTip = false
 
+// 自适应
+let html = document.documentElement || document.querySelector('html')
+let width = document.documentElement.clientWidth || window.innerWidth
+html.style.fontSize = width / 3.75 + 'px'
+
+// ui库
+// vue-ydui样式表
+import 'vue-ydui/dist/ydui.base.css'
+// better-scroll
+// import VueScroll from 'vue-scroller'
+// Vue.use(VueScroll)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

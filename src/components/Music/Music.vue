@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="music-page">
     music
   </div>
 </template>

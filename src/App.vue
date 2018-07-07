@@ -41,13 +41,21 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~@/style/scss.config.scss';
+::-webkit-scrollbar {
+  display: none;
+}
 * {
   margin: 0;
   padding: 0;
 }
-body, html {
+html {
   width: 100vw;
   height: 100vh;
+}
+body{
+  @extend html;
+  font-size: 16px;
 }
 a {
   text-decoration: none;
@@ -59,5 +67,6 @@ a {
   display: flex;
   flex-direction: column;
 }
+@include build-transition('slide')
 
 </style>
