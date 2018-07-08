@@ -46,7 +46,7 @@ export default {
   left: 0;
   top:0;
   height: 50px;
-  width: 100%;
+  width: 100vw;
   padding:0 10px;
   background: #e20000;
   display: flex;

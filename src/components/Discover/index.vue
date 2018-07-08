@@ -1,5 +1,5 @@
 <template>
-<div id="home-page">
+<div class="home-page">
   <headLevel2
     :pages="pages"
     :activePageIndex="activePageIndex"
@@ -9,7 +9,6 @@
       <router-view></router-view>
     </keep-alive>
   </transition>
-  <input type="text">
 </div>
 </template>
 
@@ -55,6 +54,12 @@ export default {
       }
     }
   },
+  beforeRouteEnter (to, from, next) {
+    let saveIndex = save.saveIndex
+    next(vm => {
+      vm.$router.replace(vm.pages[saveIndex].link)
+    })
+  },
   beforeRouteUpdate (to, from, next) {
     let toIndex = this.pages.findIndex(item => {
       return new RegExp('^' + item.link).test(to.path)
@@ -72,5 +77,7 @@ export default {
 <style scoped>
 .home-page {
   flex: 1;
+  overflow: hidden;
+  width: 100vw;
 }
 </style>

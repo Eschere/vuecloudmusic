@@ -1,5 +1,5 @@
 <template>
-<div id="home-page">
+<div class="home-page">
   <headLevel2
     :pages="pages"
     :activePageIndex="activePageIndex"
@@ -93,5 +93,7 @@ export default {
 <style scoped>
 .home-page {
   flex: 1;
+  overflow: hidden;
+  width: 100vw;
 }
 </style>

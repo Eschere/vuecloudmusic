@@ -30,7 +30,6 @@ export default {
     ...mapGetters(['recomPlaylist', 'myPlaylist'])
   },
   created () {
-    this.setServer()
     this.getSongSheets('recom8942979767128301')
   },
   methods: {
@@ -45,6 +44,9 @@ export default {
 ::-webkit-scrollbar {
   display: none;
 }
+::-webkit-scrollbar-button {
+  display: none;
+}
 * {
   margin: 0;
   padding: 0;
@@ -52,6 +54,7 @@ export default {
 html {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 body{
   @extend html;
@@ -61,7 +64,6 @@ a {
   text-decoration: none;
 }
 #app {
-  padding-top: 50px;
   box-sizing: border-box;
   height: 100vh;
   display: flex;

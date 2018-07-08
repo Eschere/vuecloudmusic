@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     config
   },
   state: {
-    asideOn: false,
+    asideOn: false, // 边栏菜单状态
     songSheet: null
   },
   getters: {
@@ -21,12 +21,17 @@ const store = new Vuex.Store({
     },
     myPlaylist (state, getters) {
       return getters.recomPlaylist
+    },
+    focus (state) {
+      return state.songSheet ? state.songSheet.focus.data.content : []
     }
   },
   mutations: {
+    // 保存歌曲总数据
     [Type.GET_SONG_SHEETS] (state, data) {
       state.songSheet = data
     },
+    // 边栏菜单 显示/隐藏
     [Type.TOGGLE_ASIDE] (state, status) {
       state.asideOn = status
     }

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <button @click="songSheet">songSheet</button>
+    <button @click="album">album</button>
     <button @click="playlist">playlist</button>
     <button @click="songinfo">songinfo</button>
 
@@ -36,7 +37,8 @@ export default {
       guid: '',
       src: '',
       lyric: '',
-      trans: ''
+      trans: '',
+      focus: ''
     }
   },
   created () {
@@ -60,6 +62,16 @@ export default {
 
         // 歌单列表
         this.songSheet = data.recomPlaylist.data.v_hot
+        this.focus = data.focus.data.content
+      })
+    },
+    album () {
+      jsonp(url('/album?albummid=' + this.focus[0].jump_info.url), {
+        name: 'albuminfoCallback'
+      }, (err, data) => {
+        if (err) console.log(err)
+        else console.log(data)
+        this.songlist = data.data.list
       })
     },
     playlist () {

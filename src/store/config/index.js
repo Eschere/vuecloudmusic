@@ -4,7 +4,7 @@ const server = 'http://192.168.1.6:8080'
 export default {
   namespaced: true,
   state: {
-    server: ''
+    server
   },
   mutations: {
     setServer (state, url) {

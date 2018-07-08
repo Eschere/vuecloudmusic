@@ -134,7 +134,7 @@ $base:100;
     position: relative;
     a {
       color:rgb(240, 240, 240);
-      min-width: 1.4/5*100vw;
+      min-width: 1.12/5*100vw;
       text-align: center;
       font-size: 15 / $base + rem;
     }
