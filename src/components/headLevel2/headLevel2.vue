@@ -2,12 +2,14 @@
   <!-- 二级导航头部 -->
   <div
     class="head-l2"
+    ref="head"
   >
     <div
       class="nav-box"
       ref="navBox"
     >
       <router-link
+        :style="{width: pages.length < 4 ? '33.3333vw' : ''}"
         v-for="(page,index) in pages"
         :key="page.link"
         :to="page.link"
@@ -49,18 +51,19 @@ export default {
     this.cursorLocation = {
       transform: 'translateX(' + (offset + width / 2) + 'px) translateX(-50%)'
     }
-  },
-  beforeDestroy () {
-    clearInterval(this.timer)
-    this.timer = null
-  },
-  deactivated () {
-    clearInterval(this.timer)
-    this.timer = null
+
+    // 使用第三方库管理滚动条
+    if (this.pages.length > 4) {
+      this.scroll = new window.IScroll(this.$refs.head, {
+        scrollX: true,
+        scrollY: false,
+        preventDefault: false
+      })
+    }
   },
   watch: {
     activePageIndex (val, oldVal) {
-      // 开启动画效果
+      // 开启游标动画效果
       this.animate = true
 
       // 设置变化参数
@@ -72,46 +75,17 @@ export default {
         this.cursorLocation = {
           transform: 'translateX(' + (offset + width / 2) + 'px) translateX(-50%)'
         }
-        let headW = this.$refs.navBox.clientWidth
 
-        if (this.timer) {
-          clearInterval(this.timer)
-          this.timer = null
+        // 没有滚动条不做处理
+        if (this.pages.length < 4) return
+
+        let distance = (offset + width / 2) - (this.$refs.head.clientWidth / 2)
+        if (distance <= 0) {
+          distance = 0
+        } else if (distance > this.$refs.navBox.clientWidth - this.$refs.head.clientWidth) {
+          distance = this.$refs.navBox.clientWidth - this.$refs.head.clientWidth
         }
-
-        // 设置滚动过渡
-        let distance = Math.abs((offset + width / 2) - (headW / 2) - this.$refs.navBox.scrollLeft)
-        // 间隔时间
-        let interval = 400 / (distance / 2)
-
-        // 计算可滚动总长度
-        let lastItem = this.$refs.last[0] ? this.$refs.last[0].$el : this.$refs.navItem[0].$el
-        let totalWidth = lastItem.clientWidth + lastItem.offsetLeft
-
-        if (val > oldVal) {
-          if ((offset + width / 2) > (headW / 2) && (offset + width / 2) - (headW / 2) > this.$refs.navBox.scrollLeft) {
-            this.timer = setInterval(() => {
-              this.$refs.navBox.scrollLeft += 2
-
-              if (this.$refs.navBox.scrollLeft >= totalWidth - headW ||
-                this.$refs.navBox.scrollLeft >= (offset + width / 2) - (headW / 2) ||
-                this.$refs.navBox.scrollLeft === 0) {
-                clearInterval(this.timer)
-                this.timer = null
-              }
-            }, interval)
-          }
-        } else {
-          if ((offset + width / 2) - (headW / 2) < this.$refs.navBox.scrollLeft) {
-            this.timer = setInterval(() => {
-              this.$refs.navBox.scrollLeft -= 2
-              if (this.$refs.navBox.scrollLeft <= 0 || this.$refs.navBox.scrollLeft <= (offset + width / 2) - (headW / 2)) {
-                clearInterval(this.timer)
-                this.timer = null
-              }
-            }, interval)
-          }
-        }
+        this.scroll.scrollTo(-distance, 0, 300, window.IScroll.utils.ease.quadratic)
       })
     }
   }
@@ -125,14 +99,13 @@ $base:100;
   width: 100%;
   overflow: hidden;
   background: #e20000;
+  position: relative;
+  line-height: 40px;
   .nav-box {
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    overflow: auto;
-    align-items: center;
-    position: relative;
+    white-space: nowrap;
+    display: inline-block;
     a {
+      display: inline-block;
       color:rgb(240, 240, 240);
       min-width: 1.12/5*100vw;
       text-align: center;
@@ -149,6 +122,7 @@ $base:100;
       border-radius: 2px;
       position: absolute;
       bottom: 5px;
+      left: 0;
     }
     .active-cursor.animating {
       animation: cursor 0.4s;

@@ -9,6 +9,7 @@ import store from './store'
 import VueTouch from 'vue-touch'
 Vue.use(VueTouch, {name: 'v-touch'})
 
+import '@/assets/iscroll-lite.js'
 Vue.config.productionTip = false
 
 // 自适应
