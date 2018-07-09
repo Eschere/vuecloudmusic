@@ -19,6 +19,33 @@ const store = new Vuex.Store({
     recomPlaylist (state) {
       return state.songSheet ? state.songSheet.recomPlaylist.data.v_hot : []
     },
+    newAlbum (state) {
+      let array = []
+      if (state.songSheet) {
+        for (let {
+          album_name: title,
+          album_id: id,
+          album_mid: mid,
+          singers: [
+            {
+              singerMid,
+              singer_name: singer
+            }
+          ]
+        } of state.songSheet.new_album.data.list.values()) {
+          array.push({
+            singerMid,
+            singer,
+            title,
+            subhead: singer,
+            id,
+            link: '/album/' + mid,
+            img: `http://y.gtimg.cn/music/photo_new/T002R300x300M000${mid}.jpg`
+          })
+        }
+      }
+      return array
+    },
     myPlaylist (state, getters) {
       return getters.recomPlaylist
     },

@@ -76,8 +76,11 @@ export default {
 
 <style scoped>
 .home-page {
-  flex: 1;
+  position: relative;
   overflow: hidden;
   width: 100vw;
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 40px;
 }
 </style>

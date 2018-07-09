@@ -9,7 +9,9 @@ import store from './store'
 import VueTouch from 'vue-touch'
 Vue.use(VueTouch, {name: 'v-touch'})
 
+// 优化滚动条效果
 import '@/assets/iscroll-lite.js'
+
 Vue.config.productionTip = false
 
 // 自适应

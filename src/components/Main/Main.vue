@@ -1,5 +1,6 @@
 <template>
-<div class="main">
+<div class="main"
+  :style="{paddingBottom: myPlaylist.length ? '50px' : ''}">
   <router-view></router-view>
   <transition name="slide-left">
   <keep-alive>
@@ -8,6 +9,14 @@
   </transition>
 </div>
 </template>
+<script>
+import {mapGetters} from 'vuex'
+export default {
+  computed: {
+    ...mapGetters(['myPlaylist'])
+  }
+}
+</script>
 
 <style scoped>
 .main {
@@ -15,5 +24,7 @@
   position: relative;
   padding-top: 50px;
   width: 100vw;
+  height: 100%;
+  box-sizing: border-box;
 }
 </style>

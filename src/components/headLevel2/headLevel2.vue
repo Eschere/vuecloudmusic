@@ -99,7 +99,8 @@ $base:100;
   width: 100%;
   overflow: hidden;
   background: #e20000;
-  position: relative;
+  position: absolute;
+  top: 0;
   line-height: 40px;
   .nav-box {
     white-space: nowrap;

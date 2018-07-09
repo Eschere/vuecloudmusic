@@ -1,7 +1,6 @@
 <template>
   <div
     id="app"
-    :style="{paddingBottom: myPlaylist.length ? '50px' : 0}"
   >
     <AudioPlayer></AudioPlayer>
     <router-view></router-view>
@@ -59,6 +58,7 @@ html {
 body{
   @extend html;
   font-size: 16px;
+  background: white;
 }
 a {
   text-decoration: none;

@@ -18,19 +18,87 @@
     </yd-slider>
     <div class="slider-placeholder" v-else></div>
   </div>
+  <!-- 推荐球 -->
+  <dragonBalls
+    :balls="balls"
+  />
+  <!-- 分类卡片：推荐歌单 -->
+  <categoryCard
+    link="/songSheet"
+    title="推荐歌单"
+    :items="recommends"
+  />
+
+  <categoryCard
+    link="/album"
+    title="最新音乐"
+    :items="newAlbum.slice(0, 9)"
+  />
 </div>
 </template>
 
 <script>
+import dragonBalls from '#/common/dragonballs'
+import categoryCard from '#/common/categoryCard'
+
 import {Slider, SliderItem} from 'vue-ydui/dist/lib.rem/slider'
 import {mapGetters} from 'vuex'
 export default {
   components: {
     'yd-slider': Slider,
-    'yd-slider-item': SliderItem
+    'yd-slider-item': SliderItem,
+    dragonBalls,
+    categoryCard
+  },
+  data () {
+    return {
+      balls: [
+        {
+          title: '私人FM',
+          link: '/player/fm',
+          img: require('#/common/img/t_dragonball_icn_fm.png')
+        },
+        {
+          title: '每日推荐',
+          link: '/daily',
+          img: require('#/common/img/t_dragonball_icn_daily.png'),
+          innerText: new Date().getDate()
+        },
+        {
+          title: '歌单',
+          link: '/songSheet',
+          img: require('#/common/img/t_dragonball_icn_playlist.png')
+        },
+        {
+          title: '排行榜',
+          link: '/rank',
+          img: require('#/common/img/t_dragonball_icn_rank.png')
+        }
+      ]
+    }
   },
   computed: {
-    ...mapGetters(['focus', 'recomPlaylist'])
+    ...mapGetters(['focus', 'recomPlaylist', 'newAlbum']),
+    recommends () {
+      let items = []
+      if (this.recomPlaylist.length) {
+        for (let [index, {
+          title,
+          content_id: id,
+          cover: img
+        }] of this.recomPlaylist.entries()) {
+          items.push({
+            title,
+            id,
+            link: '/songSheet/' + id,
+            img
+          })
+          if (index === 5) break
+          console.log(index)
+        }
+      }
+      return items
+    }
   }
 }
 </script>
@@ -39,7 +107,8 @@ export default {
 @import '@/style/scss.config.scss';
 .recommend-content {
   width: 100vw;
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
   .focus {
     padding: 10px;
     background-image:linear-gradient($theme-color 70%, white 70%);
