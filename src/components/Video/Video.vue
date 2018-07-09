@@ -4,21 +4,26 @@
     :pages="pages"
     :activePageIndex="activePageIndex"
   />
-  <transition :name="toggleType">
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
-  </transition>
-  <input type="text">
+  <div class="page-main">
+    <transition :name="toggleType">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </transition>
+  </div>
 </div>
 </template>
 
 <script>
 import headLevel2 from '#/headLevel2/headLevel2'
+import {mapMutations} from 'vuex'
 const save = {
   saveIndex: 0 // 保证activePageIndex不为-1，避免bug
 }
 export default {
+  components: {
+    headLevel2
+  },
   data () {
     return {
       pages: [
@@ -54,8 +59,8 @@ export default {
       toggleType: 'slide-left'
     }
   },
-  components: {
-    headLevel2
+  methods: {
+    ...mapMutations('router', ['saveVideo'])
   },
   computed: {
     activePageIndex () {
@@ -70,12 +75,12 @@ export default {
       }
     }
   },
-  beforeRouteEnter (to, from, next) {
-    let saveIndex = save.saveIndex
-    next(vm => {
-      vm.$router.replace(vm.pages[saveIndex].link)
-    })
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   let saveIndex = save.saveIndex
+  //   next(vm => {
+  //     vm.$router.replace(vm.pages[saveIndex].link)
+  //   })
+  // },
   beforeRouteUpdate (to, from, next) {
     let toIndex = this.pages.findIndex(item => {
       return new RegExp('^' + item.link).test(to.path)
@@ -86,15 +91,22 @@ export default {
       this.toggleType = 'slide-right'
     }
     next()
+    this.saveVideo(to.path)
   }
 }
 </script>
 
 <style scoped>
 .home-page {
-  position: relative;
   overflow: hidden;
   width: 100vw;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.home-page > .page-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }
 </style>

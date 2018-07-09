@@ -15,6 +15,6 @@ $theme-color:#e20000;
   .#{$name}-right-leave-active,
   .#{$name}-left-leave-active, {
     transition: transform 0.3s linear;
-    position: absolute;
+    position: absolute!important;
   }
 }

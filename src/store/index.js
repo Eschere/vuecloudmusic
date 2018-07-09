@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as Type from './mutations-methods'
 import config from './config'
+import router from './router'
+
 import jsonp from 'jsonp'
 
 Vue.use(Vuex)
@@ -9,7 +11,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
-    config
+    config,
+    router
   },
   state: {
     asideOn: false, // 边栏菜单状态

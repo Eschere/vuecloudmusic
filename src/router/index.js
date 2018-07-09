@@ -89,7 +89,14 @@ export default new Router({
             {
               path: '*',
               component: {
-                render: h => h('div', '暂时未开放')
+                render: h => h('div', {
+                  attrs: {
+                    style: `
+                      width: 100vw;
+                      height: 100%;
+                      overflow: auto`
+                  }
+                }, '暂时未开放')
               }
             }
           ]

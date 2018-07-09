@@ -8,17 +8,17 @@
     <div class="main-toggle">
       <router-link
         class="icon-music"
-        to="/music"
+        :to="music.path"
       ></router-link>
 
       <router-link
           class="icon-discover"
-          to="/discover"
+          :to="discover.path"
         ></router-link>
 
       <router-link
           class="icon-video"
-          to="/video"
+          :to="video.path"
         ></router-link>
     </div>
     <router-link
@@ -28,10 +28,13 @@
   </div>
 </template>
 <script>
-import {mapMutations} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 export default {
   props: {
     path: String
+  },
+  computed: {
+    ...mapState('router', ['discover', 'video', 'music'])
   },
   methods: {
     ...mapMutations(['toggleAside'])
