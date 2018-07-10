@@ -16,7 +16,6 @@
 import AudioPlayer from '#/AudioPlayer/AudioPlayer'
 import Maside from '#/aside/aside'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
-// import axios from 'axios'
 
 export default {
   name: 'App',
@@ -29,11 +28,11 @@ export default {
     ...mapGetters(['recomPlaylist', 'myPlaylist'])
   },
   created () {
-    this.getSongSheets('recom8942979767128301')
+    this.getHomeData('recom8942979767128301')
   },
   methods: {
     ...mapMutations('config/', ['setServer']),
-    ...mapActions(['getSongSheets'])
+    ...mapActions(['getHomeData'])
   }
 }
 </script>
@@ -62,6 +61,10 @@ body{
 }
 a {
   text-decoration: none;
+  color: black;
+}
+ul {
+  list-style: none;
 }
 #app {
   box-sizing: border-box;

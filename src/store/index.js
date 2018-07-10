@@ -16,15 +16,15 @@ const store = new Vuex.Store({
   },
   state: {
     asideOn: false, // 边栏菜单状态
-    songSheet: null
+    homeData: null
   },
   getters: {
     recomPlaylist (state) {
-      return state.songSheet ? state.songSheet.recomPlaylist.data.v_hot : []
+      return state.homeData ? state.homeData.recomPlaylist.data.v_hot : []
     },
     newAlbum (state) {
       let array = []
-      if (state.songSheet) {
+      if (state.homeData) {
         for (let {
           album_name: title,
           album_id: id,
@@ -35,7 +35,7 @@ const store = new Vuex.Store({
               singer_name: singer
             }
           ]
-        } of state.songSheet.new_album.data.list.values()) {
+        } of state.homeData.new_album.data.list.values()) {
           array.push({
             singerMid,
             singer,
@@ -50,16 +50,16 @@ const store = new Vuex.Store({
       return array
     },
     myPlaylist (state, getters) {
-      return getters.recomPlaylist
+      return [] // getters.recomPlaylist
     },
     focus (state) {
-      return state.songSheet ? state.songSheet.focus.data.content : []
+      return state.homeData ? state.homeData.focus.data.content : []
     }
   },
   mutations: {
     // 保存歌曲总数据
     [Type.GET_SONG_SHEETS] (state, data) {
-      state.songSheet = data
+      state.homeData = data
     },
     // 边栏菜单 显示/隐藏
     [Type.TOGGLE_ASIDE] (state, status) {
@@ -67,11 +67,11 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getSongSheets ({commit, state}, name) {
-      jsonp(state.config.server + '/songSheet', {
+    getHomeData ({commit, state}, name) {
+      jsonp(state.config.server + '/homeData', {
         name
       }, (err, data) => {
-        if (err) console.log('get songSheets failed')
+        if (err) console.log('get homeData failed')
         else commit(Type.GET_SONG_SHEETS, data)
       })
     }

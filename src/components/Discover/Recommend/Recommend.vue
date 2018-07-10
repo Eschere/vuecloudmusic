@@ -11,7 +11,7 @@
         >
           <img
             class="album-cover"
-            :src="item.pic_info.url"
+            v-src:before-load="item.pic_info.url"
           >
         </router-link>
       </yd-slider-item>
@@ -23,17 +23,17 @@
     :balls="balls"
   />
   <!-- 分类卡片：推荐歌单 -->
-  <categoryCard
+  <category-card
     link="/songSheet"
     title="推荐歌单"
     :items="recommends"
-  />
+  ></category-card>
 
-  <categoryCard
+  <category-card
     link="/album"
     title="最新音乐"
     :items="newAlbum.slice(0, 9)"
-  />
+  ></category-card>
 </div>
 </template>
 
@@ -94,7 +94,6 @@ export default {
             img
           })
           if (index === 5) break
-          console.log(index)
         }
       }
       return items
@@ -115,6 +114,11 @@ export default {
     .album-cover {
       border-radius: 5px;
       background-color: #ccc;
+    }
+    .before-load {
+      width: 355 / $base + rem;
+      height: 142 / $base + rem;
+      background:#ccc url('~@/components/common/img/loading.png') no-repeat center / auto 50%;
     }
     .slider-placeholder {
       background: #ccc;

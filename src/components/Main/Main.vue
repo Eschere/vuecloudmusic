@@ -42,5 +42,6 @@ export default {
   width: 100vw;
   height: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 </style>

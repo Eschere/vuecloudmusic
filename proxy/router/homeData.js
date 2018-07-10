@@ -2,9 +2,9 @@ const Router = require('koa-router')
 const url = require('url')
 const {requestData} = require('../utils')
 
-const songSheet = new Router()
+const homeData = new Router()
 
-songSheet.get('/songSheet', async (ctx) => {
+homeData.get('/homeData', async (ctx) => {
   // callback来自客户端
   const callback = url.parse(ctx.url, true).query.callback
 
@@ -21,4 +21,4 @@ songSheet.get('/songSheet', async (ctx) => {
   ctx.body = await requestData(recommendOptions)
 })
 
-module.exports = songSheet
+module.exports = homeData

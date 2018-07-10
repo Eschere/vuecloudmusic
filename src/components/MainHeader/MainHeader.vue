@@ -59,6 +59,7 @@ export default {
   @mixin icon-base{
     width: 40px;
     height: 40px;
+    margin: 0 5px;
     background: {
       repeat: no-repeat;
       position: center;
@@ -72,7 +73,6 @@ export default {
   .main-toggle {
     height: 40px;
     display: flex;
-    flex-grow: 0.3;
     justify-content: space-around;
     .icon-music {
       @include icon-base();

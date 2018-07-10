@@ -4,6 +4,10 @@ const router = require('./router')
 
 const app = new Koa()
 
+app.use(async (ctx, next) => {
+  await next()
+  console.log('request enter' + new Date())
+})
 // 启用gzip压缩
 app.use(compress())
 

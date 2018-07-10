@@ -1,4 +1,5 @@
 // 远程服务器地址
+// const server = 'http://172.86.64.157:8080'
 const server = 'http://192.168.1.6:8080'
 
 export default {
