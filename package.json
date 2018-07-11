@@ -14,10 +14,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "axios-jsonp-pro": "^1.1.4",
+    "babel-plugin-component": "^1.1.1",
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.12.4",
     "element-ui": "^2.4.3",
     "jsonp": "^0.2.1",
+    "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-scroller": "^2.2.4",

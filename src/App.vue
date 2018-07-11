@@ -28,7 +28,7 @@ export default {
     ...mapGetters(['recomPlaylist', 'myPlaylist'])
   },
   created () {
-    this.getHomeData('recom8942979767128301')
+    this.getHomeData('recom011050278372287448')
   },
   methods: {
     ...mapMutations('config/', ['setServer']),

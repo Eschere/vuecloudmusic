@@ -19,6 +19,28 @@ myDirective.install = function (Vue, options) {
         el.classList.remove(beforeLoadClass)
         el.src = binding.value
       }
+    },
+    inserted (el, binding) {
+      let beforeLoadClass = binding.arg
+      el.classList.add(beforeLoadClass)
+
+      let img = new Image()
+      img.src = binding.value
+      img.onload = () => {
+        el.classList.remove(beforeLoadClass)
+        el.src = binding.value
+      }
+    },
+    componentUpdated (el, binding) {
+      let beforeLoadClass = binding.arg
+      el.classList.add(beforeLoadClass)
+
+      let img = new Image()
+      img.src = binding.value
+      img.onload = () => {
+        el.classList.remove(beforeLoadClass)
+        el.src = binding.value
+      }
     }
   })
 }

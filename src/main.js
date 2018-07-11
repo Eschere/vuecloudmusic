@@ -26,10 +26,15 @@ html.style.fontSize = width / 3.75 + 'px'
 
 // ui库
 // vue-ydui样式表
-import 'vue-ydui/dist/ydui.base.css'
+// import 'vue-ydui/dist/ydui.base.css'
 // better-scroll
 // import VueScroll from 'vue-scroller'
 // Vue.use(VueScroll)
+
+// mint-ui
+// 懒加载
+// import {Lazyload} from 'mint-ui'
+// Vue.use(Lazyload)
 
 /* eslint-disable no-new */
 new Vue({

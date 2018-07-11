@@ -1,21 +1,18 @@
 <template>
 <div class="recommend-content">
   <div class="focus">
-    <yd-slider autoplay="5000" v-if="focus.length">
-      <yd-slider-item
+    <slider class="slide-box" :auto="5000" v-if="focus.length">
+      <slider-item
         v-for="item in focus"
         :key="item.id"
       >
         <router-link
           :to="'/album?albummid='+item.jump_info.url"
         >
-          <img
-            class="album-cover"
-            v-src:before-load="item.pic_info.url"
-          >
+          <img class="album-cover" v-src:before-load="item.pic_info.url">
         </router-link>
-      </yd-slider-item>
-    </yd-slider>
+      </slider-item>
+    </slider>
     <div class="slider-placeholder" v-else></div>
   </div>
   <!-- 推荐球 -->
@@ -40,15 +37,18 @@
 <script>
 import dragonBalls from '#/common/dragonballs'
 import categoryCard from '#/common/categoryCard'
+import lazyload from '#/common/lazyload'
 
-import {Slider, SliderItem} from 'vue-ydui/dist/lib.rem/slider'
+import {Swipe, SwipeItem} from 'mint-ui'
+
 import {mapGetters} from 'vuex'
 export default {
   components: {
-    'yd-slider': Slider,
-    'yd-slider-item': SliderItem,
+    'slider': Swipe,
+    'slider-item': SwipeItem,
     dragonBalls,
-    categoryCard
+    categoryCard,
+    lazyload
   },
   data () {
     return {
@@ -85,11 +85,13 @@ export default {
         for (let [index, {
           title,
           content_id: id,
-          cover: img
+          cover: img,
+          listen_num: listenNum
         }] of this.recomPlaylist.entries()) {
           items.push({
             title,
             id,
+            listenNum,
             link: '/songSheet/' + id,
             img
           })
@@ -104,6 +106,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/scss.config.scss';
+img[lazy=loading] {
+  width: 355 / $base + rem;
+  height: 142 / $base + rem;
+}
 .recommend-content {
   width: 100vw;
   height: 100%;
@@ -111,20 +117,32 @@ export default {
   .focus {
     padding: 10px;
     background-image:linear-gradient($theme-color 70%, white 70%);
-    .album-cover {
-      border-radius: 5px;
-      background-color: #ccc;
+    .slide-box {
+      width: 355 / $base + rem;
+      height: 142 / $base + rem;
     }
     .before-load {
       width: 355 / $base + rem;
       height: 142 / $base + rem;
-      background:#ccc url('~@/components/common/img/loading.png') no-repeat center / auto 50%;
+      background: #ccc url('~@/components/common/img/loading.png') no-repeat center / auto 50%;
+    }
+    .album-cover {
+      width: 100%;
+      border-radius: 5px;
+      background-color: #ccc;
     }
     .slider-placeholder {
       background: #ccc;
       border-radius: 5px;
       width: 355 / $base + rem;
       height: 142 / $base + rem;
+    }
+  }
+  & /deep/ .mint-swipe-indicator {
+    opacity: 0.8;
+    background-color: #999;
+    &.is-active {
+      background-color: $theme-color!important;
     }
   }
 }
