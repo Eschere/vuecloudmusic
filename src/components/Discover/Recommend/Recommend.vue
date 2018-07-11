@@ -86,12 +86,15 @@ export default {
           title,
           content_id: id,
           cover: img,
-          listen_num: listenNum
+          listen_num: badgeNum
         }] of this.recomPlaylist.entries()) {
+          if (badgeNum >= 100000) {
+            badgeNum = Math.floor(badgeNum / 10000) + '万'
+          }
           items.push({
             title,
             id,
-            listenNum,
+            badgeNum,
             link: '/songSheet/' + id,
             img
           })

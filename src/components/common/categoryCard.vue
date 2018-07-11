@@ -9,9 +9,9 @@
   <div class="card-list" v-if="props.items.length">
     <div class="card-item" v-for="item in props.items" :key="item.id">
       <router-link class="item-link" :to="item.link">
-        <span class="badge" v-if="item.badgeNum">{{item.badgeNum}}</span>
+        <span class="badgeNum" v-if="item.badgeNum">{{item.badgeNum}}</span>
         <img class="item-cover" v-src:before-load="item.img">
-        <p class="title">{{item.title}}</p>
+        <p :class="{title: true, nowrap: item.subhead}">{{item.title}}</p>
         <span class="subhead" v-if="item.subhead">{{item.subhead}}</span>
       </router-link>
     </div>
@@ -65,7 +65,8 @@
 }
 
 .item-link {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   font-size: 12px;
   width: 100%;
@@ -77,12 +78,17 @@
     top: 5px;
     right: 5px;
     z-index: 1;
+    text-indent: 20px;
+    color: white;
   }
   .title {
     margin-top: 5px;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    height: 100%;
     overflow: hidden;
+  }
+  .title.no-wrap {
+    white-space: nowrap;
   }
   .subhead {
     color: #999

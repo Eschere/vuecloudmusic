@@ -10,6 +10,9 @@ import Music from '#/Music/Music'
 
 import Video from '#/Video/Video'
 
+// 详情类
+const songSheet = () => import('#/songSheet/songSheet')
+
 Vue.use(Router)
 
 export default new Router({
@@ -102,6 +105,14 @@ export default new Router({
           ]
         }
       ]
+    },
+    {
+      path: '/songSheet',
+      name: 'songSheet',
+      components: {
+        default: songSheet,
+        'mini-player': MiniPlayer
+      }
     },
     {
       path: '*',
