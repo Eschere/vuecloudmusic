@@ -109,14 +109,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/style/scss.config.scss';
-img[lazy=loading] {
-  width: 355 / $base + rem;
-  height: 142 / $base + rem;
-}
+// img[lazy=loading] {
+//   width: 355 / $base + rem;
+//   height: 142 / $base + rem;
+// }
 .recommend-content {
   width: 100vw;
-  height: 100%;
-  overflow: auto;
+  // height: 100%;
+  // overflow: auto;
   .focus {
     padding: 10px;
     background-image:linear-gradient($theme-color 70%, white 70%);
@@ -127,7 +127,7 @@ img[lazy=loading] {
     .before-load {
       width: 355 / $base + rem;
       height: 142 / $base + rem;
-      background: #ccc url('~@/components/common/img/loading.png') no-repeat center / auto 50%;
+      background: #cccccc;
     }
     .album-cover {
       width: 100%;

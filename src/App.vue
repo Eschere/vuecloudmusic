@@ -1,4 +1,9 @@
 <template>
+<transition
+  appear
+  appear-class="app-appear"
+  appear-active-class="app-active"
+>
   <div
     id="app"
   >
@@ -10,6 +15,7 @@
     ></router-view>
     <Maside></Maside>
   </div>
+</transition>
 </template>
 
 <script>
@@ -72,6 +78,47 @@ ul {
   display: flex;
   flex-direction: column;
 }
-@include build-transition('slide')
+@include build-transition('slide');
 
+.app-appear {
+  transform: scale(1.5);
+  opacity: 0.5;
+}
+.app-active {
+  transition: all 0.3s;
+}
+
+.fade-back-leave-to {
+  opacity: 0;
+  transform: translate3d(0 , 15%, 0);
+}
+
+.fade-back-enter-active {
+  z-index: 150;
+  position: absolute;
+  transition: all 0.25s;
+}
+.fade-back-leave-active {
+  z-index: 200;
+  position: absolute;
+  transition: all .25s;
+}
+
+.fade-deep-enter {
+  opacity: 0;
+  transform: translate3d(0 , 15%, 0);
+}
+.fade-deep-leave-to {
+  opacity: 1;
+}
+.fade-deep-leave-active {
+  z-index: 150;
+  position: absolute;
+  transition: all .25s;
+}
+.fade-deep-enter-active {
+  z-index: 200;
+  position: absolute;
+  transition: all 0.25s
+}
 </style>

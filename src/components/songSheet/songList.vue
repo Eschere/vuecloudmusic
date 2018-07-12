@@ -1,0 +1,10 @@
+<template>
+  <div>
+    songlist
+    <router-link
+      to="/test"
+    >
+    test
+    </router-link>
+  </div>
+</template>

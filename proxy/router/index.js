@@ -6,9 +6,10 @@ const songfile = require('./songfile')
 const songlyric = require('./songlyric')
 const album = require('./album')
 const router = new Router()
-
+const songSheet = require('./songSheet')
 router
   .use(playlist.routes(), playlist.allowedMethods())
+  .use(songSheet.routes(), songSheet.allowedMethods())
   .use(homeData.routes(), homeData.allowedMethods())
   .use(songinfo.routes(), songinfo.allowedMethods())
   .use(songfile.routes(), songfile.allowedMethods())

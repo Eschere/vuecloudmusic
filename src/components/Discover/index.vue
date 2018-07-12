@@ -87,6 +87,6 @@ export default {
 .home-page > .page-main {
   flex: 1;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 </style>

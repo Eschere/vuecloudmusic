@@ -30,12 +30,6 @@
   line-height: 50px;
 }
 
-.card-link {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-}
-
 .right-icon {
   margin-left: 10px;
   vertical-align: middle;
@@ -61,7 +55,7 @@
 .before-load {
   width: 30vw;
   height: 30vw;
-  background: #ccc url('~@/components/common/img/loading.png') no-repeat center / auto 50%;
+  background: #ccc url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;
 }
 
 .item-link {
@@ -74,18 +68,20 @@
   .badgeNum {
     background: url("~@/components/common/img/badge-headset.png") no-repeat left / auto 100%;
     font-size: 12px;
+    line-height: 12px;
     position: absolute;
     top: 5px;
     right: 5px;
     z-index: 1;
-    text-indent: 20px;
+    text-indent: 15px;
     color: white;
   }
   .title {
     margin-top: 5px;
     text-overflow: ellipsis;
-    height: 100%;
+    // height: 100%;
     overflow: hidden;
+    flex: 1
   }
   .title.no-wrap {
     white-space: nowrap;

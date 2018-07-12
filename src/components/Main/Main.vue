@@ -1,13 +1,15 @@
 <template>
-<div class="main"
-  :style="{paddingBottom: myPlaylist.length ? '50px' : ''}">
-  <router-view></router-view>
-  <transition :name="toggleType">
-  <keep-alive>
-    <router-view name="content"></router-view>
-  </keep-alive>
-  </transition>
-</div>
+<transition name="main">
+  <div class="main"
+    :style="{paddingBottom: myPlaylist.length ? '50px' : ''}">
+    <router-view></router-view>
+    <transition :name="toggleType">
+    <keep-alive>
+      <router-view name="content"></router-view>
+    </keep-alive>
+    </transition>
+  </div>
+</transition>
 </template>
 <script>
 import {mapGetters} from 'vuex'
@@ -33,6 +35,13 @@ export default {
   }
 }
 </script>
+<style>
+.main-enter-active,
+.main-leave-active {
+  z-index: 100;
+  transition: all 0.2s;
+}
+</style>
 
 <style scoped>
 .main {

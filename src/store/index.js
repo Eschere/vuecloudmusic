@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import * as Type from './mutations-methods'
 import config from './config'
 import router from './router'
-
+import songSheet from './songSheet'
 import jsonp from 'jsonp'
 
 Vue.use(Vuex)
@@ -12,7 +12,8 @@ const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
     config,
-    router
+    router,
+    songSheet
   },
   state: {
     asideOn: false, // 边栏菜单状态
@@ -35,7 +36,7 @@ const store = new Vuex.Store({
               singer_name: singer
             }
           ]
-        } of state.homeData.new_album.data.list.values()) {
+        } of state.homeData.new_album.data.list) {
           array.push({
             singerMid,
             singer,

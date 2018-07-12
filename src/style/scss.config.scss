@@ -18,3 +18,19 @@ $theme-color:#e20000;
     position: absolute!important;
   }
 }
+
+// @mixin fullpage-transition($name , $type) {
+//   @if $type == 
+//   #{$name}-enter,
+//   #{$name}-leave-to {
+//     opacity: 0;
+//     transform: translate3d(0, 20% ,0);
+//   }
+
+//   #{$name}-enter-active,
+//   #{$name}-leave-active {
+//     transition: all 0.3s;
+//     position: absolute;
+//   }
+
+// }
