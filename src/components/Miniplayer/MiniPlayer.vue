@@ -18,5 +18,6 @@ export default {
   left: 0;
   bottom: 0;
   background: #ccc;
+  z-index: 300;
 }
 </style>

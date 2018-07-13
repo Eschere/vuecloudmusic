@@ -44,6 +44,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   padding-top: 50px;
+  background: white;
   .detail-head {
     position: fixed;
     top: 0;

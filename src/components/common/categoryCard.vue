@@ -1,11 +1,11 @@
 <template functional>
 <div class="card-box">
-  <h3 class="card-title">
+  <h4 class="card-title">
     <router-link :to="props.link" class="card-link">
       <span>{{props.title}}</span>
-      <img class="right-icon" src="~#/common/img/agy.png">
+      <img class="right-icon" src="~#/common/img/aaw.png">
     </router-link>
-  </h3>
+  </h4>
   <div class="card-list" v-if="props.items.length">
     <div class="card-item" v-for="item in props.items" :key="item.id">
       <router-link class="item-link" :to="item.link">
@@ -28,6 +28,10 @@
 .card-title {
   height: 50px;
   line-height: 50px;
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 .right-icon {
@@ -44,7 +48,7 @@
 
 .card-item {
   width: 30vw;
-  height: 40vw;
+  height: 43vw;
   margin-bottom: 10px;
 }
 
@@ -79,14 +83,14 @@
   .title {
     margin-top: 5px;
     text-overflow: ellipsis;
-    // height: 100%;
     overflow: hidden;
     flex: 1
   }
-  .title.no-wrap {
+  .title.nowrap {
     white-space: nowrap;
   }
   .subhead {
+    flex: 1;
     color: #999
   }
 }

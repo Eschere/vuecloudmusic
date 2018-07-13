@@ -64,6 +64,7 @@ body{
   @extend html;
   font-size: 16px;
   background: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 a {
   text-decoration: none;
@@ -96,7 +97,7 @@ ul {
 .fade-back-enter-active {
   z-index: 150;
   position: absolute;
-  transition: all 0.25s;
+  transition: all 0s;
 }
 .fade-back-leave-active {
   z-index: 200;
@@ -114,7 +115,7 @@ ul {
 .fade-deep-leave-active {
   z-index: 150;
   position: absolute;
-  transition: all .25s;
+  transition: all 0.2s;
 }
 .fade-deep-enter-active {
   z-index: 200;

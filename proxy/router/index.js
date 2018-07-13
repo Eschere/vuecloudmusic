@@ -7,6 +7,9 @@ const songlyric = require('./songlyric')
 const album = require('./album')
 const router = new Router()
 const songSheet = require('./songSheet')
+
+const transmit = require('./transmit')
+
 router
   .use(playlist.routes(), playlist.allowedMethods())
   .use(songSheet.routes(), songSheet.allowedMethods())
@@ -15,4 +18,5 @@ router
   .use(songfile.routes(), songfile.allowedMethods())
   .use(songlyric.routes(), songlyric.allowedMethods())
   .use(album.routes(), album.allowedMethods())
+  .use(transmit.routes(), transmit.allowedMethods())
 module.exports = router

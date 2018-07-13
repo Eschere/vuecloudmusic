@@ -8,13 +8,13 @@
         class="category-selected"
         to="/songSheet/category"
       >
-      {{category}}
-      <span class="right-icon"></span>
+        <span v-html="category.categoryName"></span>
+        <span class="right-icon"></span>
       </router-link>
-      <div class="category-hot">
+      <div class="category-hot" v-if="randCategory.length">
         <span
           class="hot-item"
-          v-for="(item,index) in categoryHot"
+          v-for="(item,index) in randCategory"
           :key="'ctgyh' + index"
           :style="{borderLeft: index !== 0 ? '0.5px solid #ddd' : ''}"
         >
@@ -45,23 +45,26 @@
 </template>
 <script>
 import detailPage from '#/common/detailFramework'
-import {mapState} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import jsonp from 'jsonp'
 
 export default {
+  components: {
+    detailPage
+  },
   data () {
     return {
-      category: '全部歌单',
-      categoryHot: ['华语', '轻音乐', '摇滚'],
+      // categoryHot: ['华语', '轻音乐', '摇滚'],
       list: null
     }
   },
   computed: {
     ...mapState('config', ['server']),
-    ...mapState('songSheet', ['tags'])
+    ...mapState('songSheet', ['category']),
+    ...mapGetters('songSheet', ['randCategory'])
   },
   created () {
-    jsonp(this.server + '/songSheet', {
+    jsonp(this.server + '/songSheet?categoryId=' + this.category.categoryId, {
       name: 'getPlaylist'
     }, (err, data) => {
       if (err) console.log('Get SongSheet Failed')
@@ -69,9 +72,6 @@ export default {
         this.list = data.data.list
       }
     })
-  },
-  components: {
-    detailPage
   }
 }
 </script>
@@ -82,25 +82,25 @@ export default {
   .category-tab {
     display: flex;
     align-items: center;
-    margin: 10px 5px;
+    margin: 15px 10px;
     display: flex;
     justify-content: space-between;
     .category-selected {
       box-sizing: border-box;
-      padding: 0 10px;
+      padding: 0 13px;
       font-size: 13px;
-      height: 30px;
-      border: 1px solid #eee;
-      border-radius: 30px;
+      height: 28px;
+      border: 1px solid #ddd;
+      border-radius: 28px;
       display: flex;
       align-items: center;
       color: #333;
       .right-icon {
-        margin-left: 10px;
+        margin-left: 12px;
         display: inline-block;
-        width: (9 * 12 / 15) + px;
-        height: (15 * 12 / 15) + px;
-        background: url('~@/components/common/img/agy.png') no-repeat;
+        width: (12 * 14 / 21) + px;
+        height: (21 * 14 / 21) + px;
+        background: url('~@/components/common/img/aaw.png') no-repeat;
         background-size: 100%;
       }
     }
@@ -135,14 +135,14 @@ export default {
         color: white;
       }
       .badgeCreator {
-        background: url("~@/components/common/img/badge-user.png") no-repeat left / auto 100%;
+        background: url("~@/components/common/img/badge-user.png") no-repeat left / auto 150%;
         font-size: 12px;
         line-height: 12px;
         position: absolute;
         bottom: 10px;
         left: 5px;
         z-index: 1;
-        text-indent: 15px;
+        text-indent: 20px;
         color: white;
       }
       .item-img {

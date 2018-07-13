@@ -1,4 +1,4 @@
-/* 歌单内歌曲列表 */
+/* 歌单 */
 const Router = require('koa-router')
 const url = require('url')
 const {requestData} = require('../utils')
