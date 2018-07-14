@@ -35,6 +35,9 @@ html.style.fontSize = width / 3.75 + 'px'
 // 懒加载
 // import {Lazyload} from 'mint-ui'
 // Vue.use(Lazyload)
+// 无限滚动
+import {InfiniteScroll} from 'mint-ui'
+Vue.use(InfiniteScroll)
 
 /* eslint-disable no-new */
 new Vue({

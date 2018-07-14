@@ -31,10 +31,12 @@ songSheet.get('/songSheet', async (ctx) => {
   const query = url.parse(ctx.url, true).query
   const callback = query.callback
   const categoryId = query.categoryId
+  const sin = query.sin
+  const ein = query.ein
   // 设置请求真实服务器的参数
   const options = {
     hostname: 'c.y.qq.com',
-    path: `/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.27424406149185265&g_tk=5381&jsonpCallback=${callback}&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=${categoryId}&sortId=5&sin=0&ein=29`,
+    path: `/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.27424406149185265&g_tk=5381&jsonpCallback=${callback}&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=${categoryId}&sortId=5&sin=${sin}&ein=${ein}`,
     headers: {
       'referer': `https://y.qq.com/portal/playlist.html`,
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'

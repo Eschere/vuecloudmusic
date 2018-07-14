@@ -27,9 +27,9 @@ export default {
   created () {
     this.getSongSheetTags()
   },
-  beforeRouteEnter (to, from, next) {
-    next()
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   next()
+  // },
   beforeRouteUpdate (to, from, next) {
     if (to.path.length > from.path.length) {
       this.fadeType = 'fade-deep'
@@ -39,7 +39,6 @@ export default {
     next()
   },
   beforeRouteLeave (to, from, next) {
-    console.log('leave')
     this.fadeType = 'fade-back'
     this.$nextTick(() => {
       next()

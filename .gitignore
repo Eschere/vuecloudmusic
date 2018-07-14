@@ -6,7 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # unuse static
-/static
+/static/
+
+# proxy server
+/proxy/
 
 # Editor directories and files
 .idea

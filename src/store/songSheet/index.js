@@ -10,9 +10,9 @@ export default {
     }
   },
   getters: {
-    randCategory (state) {
+    categoryHot (state) {
       return state.tags.length
-        ? [state.tags[1].items[0].categoryName, state.tags[2].items[0].categoryName, state.tags[3].items[0].categoryName]
+        ? [state.tags[1].items[0], state.tags[2].items[0], state.tags[3].items[0]]
         : []
     }
   },

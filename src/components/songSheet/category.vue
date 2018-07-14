@@ -2,7 +2,7 @@
 <detail-page
   title="选择分类"
 >
-  <div class="category-table">
+  <div class="category-table" v-if="tags.length">
     <div class="category-all-box">
       <v-touch
         :class="{selected: category.categoryId === tags[0].items[0].categoryId}"
@@ -35,6 +35,10 @@
       >
       </v-touch>
     </div>
+  </div>
+  <div class="loading-placeholder" v-else>
+    <br>
+    <span class="icon"></span>
   </div>
 </detail-page>
 </template>

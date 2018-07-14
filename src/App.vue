@@ -91,7 +91,7 @@ ul {
 
 .fade-back-leave-to {
   opacity: 0;
-  transform: translate3d(0 , 15%, 0);
+  transform: translate3d(0 , 10%, 0);
 }
 
 .fade-back-enter-active {
@@ -107,7 +107,7 @@ ul {
 
 .fade-deep-enter {
   opacity: 0;
-  transform: translate3d(0 , 15%, 0);
+  transform: translate3d(0 , 10%, 0);
 }
 .fade-deep-leave-to {
   opacity: 1;
@@ -121,5 +121,27 @@ ul {
   z-index: 200;
   position: absolute;
   transition: all 0.25s
+}
+
+/* loading样式 */
+.loading-placeholder {
+  width: 100vw;
+  height: 10vw;
+  text-align: center;
+  .icon {
+    display: inline-block;
+    width: 10vw;
+    height: 10vw;
+    background: url('~@/components/common/img/loading.png') no-repeat center / auto 100%;
+    animation: loading 1s infinite linear;
+  }
+}
+@keyframes loading {
+  from {
+    transform: rotate(0)
+  }
+  to {
+    transform: rotate(360deg)
+  }
 }
 </style>

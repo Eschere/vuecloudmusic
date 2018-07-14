@@ -22,7 +22,7 @@
 
 <style lang="scss" scoped>
 .card-box {
-  padding: 10px;
+  padding: 2vw;
 }
 
 .card-title {
@@ -47,8 +47,8 @@
 }
 
 .card-item {
-  width: 30vw;
-  height: 43vw;
+  width: 31vw;
+  height: 44vw;
   margin-bottom: 10px;
 }
 
@@ -57,8 +57,8 @@
   width: 100%;
 }
 .before-load {
-  width: 30vw;
-  height: 30vw;
+  width: 31vw;
+  height: 31vw;
   background: #ccc url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;
 }
 
