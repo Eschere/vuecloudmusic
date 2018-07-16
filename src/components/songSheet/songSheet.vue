@@ -1,8 +1,8 @@
 <template>
 <transition :name="fadeType">
-  <keep-alive>
+  <!-- <keep-alive> -->
     <router-view class="song-sheet"></router-view>
-  </keep-alive>
+  <!-- </keep-alive> -->
 </transition>
 </template>
 <script>

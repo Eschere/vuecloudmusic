@@ -83,11 +83,6 @@ export default {
       this.$router.go(-1)
     }
   }
-  // watch: {
-  //   category () {
-  //     this.$router.go(-1)
-  //   }
-  // }
 }
 </script>
 

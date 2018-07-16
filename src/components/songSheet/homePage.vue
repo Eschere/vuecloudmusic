@@ -34,10 +34,10 @@
       <div
         class="songsheet-item"
         v-for="item in list"
-        :key="'ss'+item.dissid"
+        :key="'ssdissid'+item.dissid"
       >
-        <router-link
-          :to="'/songSheet/'+item.dissid"
+        <v-touch
+          @tap.prevent="showSongList(item)"
         >
           <div class="item-cover">
             <span class="badgeNum">{{item.listennum >= 100000?Math.floor(item.listennum/10000)+'万':item.listennum}}</span>
@@ -45,7 +45,7 @@
             <img class="item-img" v-src:before-load="item.imgurl">
           </div>
           <p class="title">{{item.dissname}}</p>
-        </router-link>
+        </v-touch>
       </div>
       <div class="loading-placeholder" v-if="loading">
         <span class="icon"></span>
@@ -68,7 +68,6 @@ export default {
   },
   data () {
     return {
-      // categoryHot: ['华语', '轻音乐', '摇滚'],
       list: [],
       sin: 0,
       ein: 29,
@@ -77,11 +76,11 @@ export default {
   },
   computed: {
     ...mapState('config', ['server']),
-    ...mapState('songSheet', ['category']),
+    ...mapState('songSheet', ['category', 'currentList']),
     ...mapGetters('songSheet', ['categoryHot'])
   },
   methods: {
-    ...mapMutations('songSheet', ['changeCategory']),
+    ...mapMutations('songSheet', ['changeCategory', 'saveCurrentList']),
     requestSongSheet (cb) {
       this.loading = true
       jsonp(`${this.server}/songSheet?categoryId=${this.category.categoryId}&sin=${this.sin}&ein=${this.ein}`, {
@@ -100,10 +99,15 @@ export default {
         this.sin += 30
         this.ein += 30
       })
+    },
+    showSongList (item) {
+      this.saveCurrentList(item)
+      this.$nextTick(() => {
+        this.$router.push('/songSheet/' + item.dissid)
+      })
     }
   },
   created () {
-    console.log('create')
     this.requestSongSheet((data) => {
       this.list = data.data.list
       this.sin += 30

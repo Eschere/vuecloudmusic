@@ -101,8 +101,8 @@ ul {
 }
 .fade-back-leave-active {
   z-index: 200;
-  position: absolute;
-  transition: all .25s;
+  position: absolute!important;
+  transition: all 0.25s;
 }
 
 .fade-deep-enter {

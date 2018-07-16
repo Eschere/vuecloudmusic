@@ -13,7 +13,7 @@ import Video from '#/Video/Video'
 // 详情类
 const songSheet = () => import('#/songSheet/songSheet')
 const songSheetHomePage = () => import('#/songSheet/homePage')
-const songList = () => import('#/songSheet/songList')
+const songSheetSongList = () => import('#/songSheet/songList')
 const songSheetCategory = () => import('#/songSheet/category')
 
 Vue.use(Router)
@@ -128,7 +128,7 @@ export default new Router({
         },
         {
           path: ':id',
-          component: songList
+          component: songSheetSongList
         }
       ]
     },

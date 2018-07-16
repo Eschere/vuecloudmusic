@@ -4,6 +4,7 @@ import * as Type from './mutations-methods'
 import config from './config'
 import router from './router'
 import songSheet from './songSheet'
+import player from './player'
 import jsonp from 'jsonp'
 
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
   modules: {
     config,
     router,
-    songSheet
+    songSheet,
+    player
   },
   state: {
     asideOn: false, // 边栏菜单状态

@@ -3,35 +3,147 @@
   class="detail-page"
   :style="{paddingBottom: myPlaylist.length ? '50px' : ''}"
 >
-  <head class="detail-head">
-    <v-touch
-      tag="span"
-      class="back"
-      @tap="back"
-    >
-    </v-touch>
-    <span class="title">
-      {{title}}
-    </span>
-  </head>
-  <div class="detail-main">
-    <slot></slot>
+  <div class="page-bg"
+    :style="{backgroundImage: 'url('+cover+')'}"
+  >
+  </div>
+
+    <head class="detail-head">
+      <div class="head-bg"
+        :style="{backgroundImage: 'url('+cover+')',opacity: opacity}"
+      >
+      </div>
+      <v-touch
+        tag="span"
+        class="back"
+        @tap="back"
+      >
+      </v-touch>
+      <div class="title-area">
+        <p class="title" ref="title" :key="'detailtitle'+dissid" >{{realTitle}}</p>
+        <p class="sub-title" v-if="subTitle">{{subTitle}}</p>
+      </div>
+      <div class="icon-area">
+        <span class="search-icon"></span>
+      </div>
+    </head>
+
+  <div ref="scroll" class="detail-main">
+    <div class="main-content">
+      <div class="banner" :style="{opacity:hOpacity}">
+        <div
+          :class="{'banner-cover': coverBg}"
+        >
+          <div class="banner-image">
+            <img :src="cover">
+            <span class="listen-badge" v-if="listenNum">{{listenNum >= 100000 ? Math.floor(listenNum/10000)+'万':listenNum}}</span>
+          </div>
+        </div>
+        <div class="banner-text">
+          <h4 class="banner-title">{{bannerTitle}}</h4>
+          <div class="banner-person">
+            <img v-if="headimg" :src="headimg">
+            <span>{{person}}</span>
+          </div>
+          <p class="banner-time">{{bannerTime}}</p>
+        </div>
+      </div>
+      <!-- 操作按钮 -->
+      <div class="operation-icon" :style="{opacity:hOpacity}">
+        <span class="op-i1">{{commentNum}}</span>
+        <span class="op-i2">{{shareNum}}</span>
+        <span class="op-i3">下载</span>
+        <span class="op-i4">多选</span>
+      </div>
+      <!-- 歌曲列表 -->
+      <div class="song-list" ref="list">
+        <div class="list-head">
+          <div class="play-all">
+            <span class="play-icon"></span>
+            <span>播放全部<small>(共{{songNum}}首)</small></span>
+          </div>
+          <div class="favorite">
+            <span>+&ensp;收藏({{favNum}})</span>
+          </div>
+        </div>
+
+        <!-- 歌曲 -->
+        <div
+          class="song-item"
+          v-for="(song,index) in songlist"
+          :key="'sssongitem'+song.songmid"
+        >
+          <v-touch
+            class="song-detail"
+            @tap="play(index)"
+          >
+            <span class="song-index">{{index+1}}</span>
+            <div class="center">
+              <p class="song-name">{{song.songname}}</p>
+              <p class="singer-name">{{song.singername}}</p>
+            </div>
+          </v-touch>
+          <v-touch
+            class="song-operation"
+            @tap="showDetail(song.songmid)"
+          ></v-touch>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations, mapActions, mapState} from 'vuex'
 
 export default {
-  props: ['title'],
+  props: ['title', 'subTitle', 'cover', 'person', 'bannerTitle', 'coverBg', 'headimg', 'bannerTime', 'commentNum', 'shareNum', 'songNum', 'favNum', 'listenNum', 'songlist', 'dissid'],
+  data () {
+    return {
+      opacity: 0,
+      hOpacity: 1,
+      realTitle: ''
+    }
+  },
   methods: {
+    ...mapMutations('player', ['savePlaylist']),
+    ...mapActions('player', ['playOfIndex']),
     back () {
       this.$router.go(-1)
+    },
+    play (index) {
+      this.savePlaylist(this.songlist)
+      this.$nextTick(() => {
+        this.playOfIndex(index)
+      })
+    },
+    showDetail () {
+
     }
   },
   computed: {
+    ...mapState('player', ['el']),
     ...mapGetters(['myPlaylist'])
+  },
+  mounted () {
+    this.realTitle = this.title
+    this.$refs.scroll.addEventListener('scroll', (e) => {
+      let max = this.$refs.list.offsetTop
+      let opacity = e.target.scrollTop / max
+      if (opacity > 1) {
+        opacity = 1
+        this.realTitle = this.bannerTitle
+      } else {
+        this.realTitle = this.title
+      }
+      let hOpacity = 1 - opacity
+      if (hOpacity < 0.5) {
+        hOpacity = 0.5
+      }
+      this.opacity = opacity
+      this.hOpacity = hOpacity
+    })
   }
 }
 </script>
@@ -43,31 +155,255 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  padding-top: 50px;
-  .detail-head {
+  position: relative;
+  .page-bg{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: blur(30px) brightness(90%);
+  }
+  .banner {
+    display: flex;
+    justify-content: space-around;
+    padding: 5vw;
+    .banner-cover {
+      width: (229 / 192 * 35) + vw;
+      height: 35vw;
+      background: url('~@/components/common/img/cd-cover.png') no-repeat;
+      background-size: auto 100%;
+    }
+    .banner-image {
+      width: 35vw;
+      height: 35vw;
+      position: relative;
+      .listen-badge {
+        background: url('~@/components/common/img/badge-headset.png') no-repeat left/auto 100%;
+        font-size: 12px;
+        line-height: 12px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 1;
+        text-indent: 15px;
+        color: white;
+      }
+      img {
+        border-radius: 5px;
+        width: 100%;
+      }
+    }
+    .banner-text {
+      width: 45vw;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      .banner-title {
+        color: white;
+        font-weight: 600;
+      }
+      .banner-person,
+      .banner-time {
+        color: #eee;
+        font-size: 13px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .banner-person {
+        height: 25px;
+        display: flex;
+        align-items: center;
+        img {
+          height: 100%;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .detail-main {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+    .main-content {
+      margin-top: 50px;
+    }
+    .operation-icon {
+      display: flex;
+      margin: 3vw;
+      justify-content: space-around;
+      & > span {
+        text-align: center;
+        color: white;
+        font-size: 12px;
+        width: 25px;
+        height: 16px;
+        padding-top: 25px;
+        background: {
+          repeat: no-repeat;
+          size: 80%;
+          position: top;
+          origin: padding-box;
+        }
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,'微软雅黑';
+      }
+      .op-i1 {
+        background-image: url('~@/components/common/img/comment.png')
+      }
+      .op-i2 {
+        background-image: url('~@/components/common/img/share.png')
+      }
+      .op-i3 {
+        background-image: url('~@/components/common/img/download.png')
+      }
+      .op-i4 {
+        background-image: url('~@/components/common/img/mutiple-select.png')
+      }
+    }
+  }
+  .song-list {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: white;
+    overflow: hidden;
+    .list-head {
+      font-size: 16px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      border-bottom: 0.1px solid #eee;
+      .play-all{
+        height: 100%;
+        flex: 1;
+        padding-left: 10px;
+        display: flex;
+        align-items: center;
+        small {
+          color: #999;
+        }
+        .play-icon {
+          margin-right: 10px;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: url('~@/components/common/img/play-all.png') no-repeat center/ 100%;
+        }
+      }
+      .favorite {
+        color: #eee;
+        height: 100%;
+        line-height: 45px;
+        padding: 0 10px;
+        background-color: $theme-color;
+      }
+    }
+    .song-item {
+      height: 50px;
+      border-bottom: 0.1px solid #eee;
+      padding: 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .song-detail {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding-right: 5px;
+      }
+      .song-index {
+        width: 20px;
+        height: 100%;
+        line-height: 50px;
+        padding-right: 10px;
+        text-align: center;
+        color: #999;
+      }
+      .center {
+        flex: 1;
+        overflow: hidden;
+      }
+      @mixin song-text {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .song-name {
+        @include song-text();
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      .singer-name {
+        @include song-text();
+        font-size: 12px;
+        color: #aaa;
+      }
+      .song-operation {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        background: url('~@/components/common/img/gary-listicon.png') no-repeat center / 100%;
+      }
+    }
+  }
+}
+
+.detail-head {
     position: fixed;
     top: 0;
     height: 50px;
     width: 100vw;
     display: flex;
     align-items: center;
-    background-color: $theme-color;
+    display: flex;
+    z-index: 10;
+    overflow: hidden;
+    .head-bg {
+      @extend .page-bg;
+    }
     .back {
+      position: relative;
       width: 25 / $base + rem;
       height: 25 / $base + rem;
       background: url('~@/components/common/img/ow.png') no-repeat center / 100%;
       margin: 0 20px;
     }
-    .title {
-      color: white;
-      font-weight: 500;
-      font-size: 18 / $base + rem;
+    .title-area {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      .title {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        color: white;
+        font-weight: 500;
+        font-size: 18 / $base + rem;
+      }
+      .sub-title {
+        width: 100%;
+        color: #ccc;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: 12px;
+        font-size: 10px;
+      }
+    }
+    .icon-area {
+      position: relative;
+      .search-icon {
+        display: inline-block;
+        width: 25 / $base + rem;
+        height: 25 / $base + rem;
+        background: url('~@/components/common/img/icon-search.png') no-repeat center / 100%;
+        margin: 0 20px;
+      }
     }
   }
-  .detail-main {
-    flex: 1;
-    height: 100%;
-    overflow: auto;
-  }
-}
 </style>

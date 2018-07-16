@@ -7,7 +7,8 @@ export default {
     category: {
       categoryId: 10000000,
       categoryName: '全部歌单'
-    }
+    },
+    currentList: null
   },
   getters: {
     categoryHot (state) {
@@ -22,6 +23,9 @@ export default {
     },
     changeCategory (state, category) {
       state.category = category
+    },
+    saveCurrentList (state, item) {
+      state.currentList = item
     }
   },
   actions: {

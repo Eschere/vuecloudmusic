@@ -21,6 +21,7 @@ myDirective.install = function (Vue, options) {
       }
     },
     inserted (el, binding) {
+      if (el.src === binding.value) return
       let beforeLoadClass = binding.arg
       el.classList.add(beforeLoadClass)
 
@@ -32,6 +33,7 @@ myDirective.install = function (Vue, options) {
       }
     },
     componentUpdated (el, binding) {
+      if (el.src === binding.value) return
       let beforeLoadClass = binding.arg
       el.classList.add(beforeLoadClass)
 
