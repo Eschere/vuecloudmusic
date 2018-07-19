@@ -11,7 +11,7 @@
     <router-view></router-view>
     <router-view
       name="mini-player"
-      v-if="myPlaylist.length"
+      v-if="playlist.length"
     ></router-view>
     <Maside></Maside>
   </div>
@@ -21,7 +21,7 @@
 <script>
 import AudioPlayer from '#/AudioPlayer/AudioPlayer'
 import Maside from '#/aside/aside'
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'App',
@@ -30,8 +30,8 @@ export default {
     Maside
   },
   computed: {
-    // ...mapState(['asideOn']),
-    ...mapGetters(['recomPlaylist', 'myPlaylist'])
+    ...mapState('player', ['playlist']),
+    ...mapGetters(['recomPlaylist'])
   },
   created () {
     this.getHomeData('recom011050278372287448')

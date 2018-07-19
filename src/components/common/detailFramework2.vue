@@ -1,7 +1,7 @@
 <template>
 <div
   class="detail-page"
-  :style="{paddingBottom: myPlaylist.length ? '50px' : ''}"
+  :style="{paddingBottom: playlist.length ? '50px' : ''}"
 >
   <div class="page-bg"
     :style="{backgroundImage: 'url('+cover+')'}"
@@ -95,7 +95,8 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions, mapState} from 'vuex'
+
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
   props: ['title', 'subTitle', 'cover', 'person', 'bannerTitle', 'coverBg', 'headimg', 'bannerTime', 'commentNum', 'shareNum', 'songNum', 'favNum', 'listenNum', 'songlist', 'dissid'],
@@ -107,15 +108,26 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('player', ['savePlaylist']),
-    ...mapActions('player', ['playOfIndex']),
+    ...mapMutations('player', ['savePlaylist', 'saveCurrentSongInfo']),
+    ...mapActions('player', ['requestSongInfo']),
     back () {
       this.$router.go(-1)
     },
     play (index) {
+      if (this.currentSong.mid === this.songlist[index].songmid) {
+        this.$router.push('/player')
+        return
+      }
+
+      if (!this.playlist.length) {
+        this.$router.push('/player')
+      }
+      // 保存播放列表到本地
       this.savePlaylist(this.songlist)
+
+      // 在列表保存到store后进行请求数据及播放操作
       this.$nextTick(() => {
-        this.playOfIndex(index)
+        this.requestSongInfo({index})
       })
     },
     showDetail () {
@@ -123,10 +135,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['el']),
-    ...mapGetters(['myPlaylist'])
+    ...mapState('player', ['guid', 'currentSong', 'playlist']),
+    ...mapState('config', ['server'])
   },
   mounted () {
+    // 滚动相关事件
     this.realTitle = this.title
     this.$refs.scroll.addEventListener('scroll', (e) => {
       let max = this.$refs.list.offsetTop

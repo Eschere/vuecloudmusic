@@ -37,7 +37,6 @@ export default {
       commenttotal: '评论',
       favNum: 0,
       songlist: []
-      // headimg: 'http://y.gtimg.cn/music/common/upload/t_taoge_mingren/51431.jpg'
     }
   },
   computed: {
@@ -89,7 +88,6 @@ export default {
       this.$router.replace('/songSheet')
       return
     }
-    console.log('detail create')
     this.initData()
   },
   activated () {

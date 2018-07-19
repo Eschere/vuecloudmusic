@@ -1,9 +1,9 @@
 <template>
   <div class="mini-player-box">
     <v-touch
-      
+      @tap="play"
     >
-      kaishi 
+      kaishi
     </v-touch>
   </div>
 </template>
@@ -19,8 +19,8 @@ export default {
     ...mapMutations('player', ['changePlayState']),
     play () {
       console.log('play')
-      this.el.play()
-      this.changePlayState(true)
+      // this.el.play()
+      this.changePlayState('toggle')
     }
   }
 }

@@ -42,7 +42,7 @@
           <div class="item-cover">
             <span class="badgeNum">{{item.listennum >= 100000?Math.floor(item.listennum/10000)+'万':item.listennum}}</span>
             <span class="badgeCreator">{{item.creator.name}}</span>
-            <img class="item-img" v-src:before-load="item.imgurl">
+            <div class="item-img" v-src:before-load="item.imgurl"></div>
           </div>
           <p class="title">{{item.dissname}}</p>
         </v-touch>
@@ -200,12 +200,18 @@ export default {
         color: white;
       }
       .item-img {
-        width: 100%;
-        border-radius: 5px;
-      }
-      .before-load {
         width: 48vw;
         height: 48vw;
+        border-radius: 5px;
+        background: {
+          size: 100%;
+          position: center;
+          repeat: no-repeat;
+        }
+      }
+      .before-load {
+        // width: 48vw;
+        // height: 48vw;
         background: url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;
       }
       .title {

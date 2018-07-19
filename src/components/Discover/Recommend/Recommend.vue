@@ -9,7 +9,7 @@
         <router-link
           :to="'/album?albummid='+item.jump_info.url"
         >
-          <img class="album-cover" v-src:before-load="item.pic_info.url">
+          <div class="album-cover" v-src:before-load="item.pic_info.url"></div>
         </router-link>
       </slider-item>
     </slider>
@@ -125,14 +125,19 @@ export default {
       height: 142 / $base + rem;
     }
     .before-load {
-      width: 355 / $base + rem;
-      height: 142 / $base + rem;
+      // width: 355 / $base + rem;
+      // height: 142 / $base + rem;
       background: #cccccc;
     }
     .album-cover {
-      width: 100%;
+      width: 355 / $base + rem;
+      height: 142 / $base + rem;
       border-radius: 5px;
-      background-color: #ccc;
+      background: {
+        size: 100%;
+        position: center;
+        repeat: no-repeat;
+      }
     }
     .slider-placeholder {
       background: #ccc;

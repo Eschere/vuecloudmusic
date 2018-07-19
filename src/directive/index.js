@@ -17,7 +17,7 @@ myDirective.install = function (Vue, options) {
       img.src = binding.value
       img.onload = () => {
         el.classList.remove(beforeLoadClass)
-        el.src = binding.value
+        el.style.backgroundImage = 'url(' + binding.value + ')'
       }
     },
     inserted (el, binding) {
@@ -29,7 +29,7 @@ myDirective.install = function (Vue, options) {
       img.src = binding.value
       img.onload = () => {
         el.classList.remove(beforeLoadClass)
-        el.src = binding.value
+        el.style.backgroundImage = 'url(' + binding.value + ')'
       }
     },
     componentUpdated (el, binding) {
@@ -41,7 +41,7 @@ myDirective.install = function (Vue, options) {
       img.src = binding.value
       img.onload = () => {
         el.classList.remove(beforeLoadClass)
-        el.src = binding.value
+        el.style.backgroundImage = 'url(' + binding.value + ')'
       }
     }
   })

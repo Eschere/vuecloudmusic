@@ -1,7 +1,7 @@
 <template>
 <div
   class="detail-page"
-  :style="{paddingBottom: myPlaylist.length ? '50px' : ''}"
+  :style="{paddingBottom: playlist.length ? '50px' : ''}"
 >
   <head class="detail-head">
     <v-touch
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   props: ['title'],
@@ -31,7 +31,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['myPlaylist'])
+    ...mapState('player', ['playlist'])
   }
 }
 </script>

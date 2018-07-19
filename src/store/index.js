@@ -52,9 +52,9 @@ const store = new Vuex.Store({
       }
       return array
     },
-    myPlaylist (state, getters) {
-      return getters.recomPlaylist
-    },
+    // myPlaylist (state, getters) {
+    //   return getters.recomPlaylist
+    // },
     focus (state) {
       return state.homeData ? state.homeData.focus.data.content : []
     }

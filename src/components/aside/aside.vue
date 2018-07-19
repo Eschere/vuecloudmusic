@@ -45,6 +45,6 @@ export default {
 }
 .shade-enter-active .aside-content,
 .shade-leave-active .aside-content {
-  transition: all 0.4s;
+  transition: all 0.3s;
 }
 </style>

@@ -16,11 +16,16 @@ export default {
   props: {
     shade: {
       default: false
+    },
+    closeOnclickModal: {
+      default: true
     }
   },
   methods: {
     close (e) {
-      if (e.target === this.$refs.shade.$el) this.$emit('close')
+      if (this.closeOnclickModal && e.target === this.$refs.shade.$el) {
+        this.$emit('close')
+      }
     }
   }
 }
@@ -43,6 +48,6 @@ export default {
 }
 .shade-enter-active,
 .shade-leave-active {
-  transition: all 0.4s;
+  transition: all 0.3s;
 }
 </style>

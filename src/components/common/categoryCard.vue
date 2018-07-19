@@ -10,7 +10,7 @@
     <div class="card-item" v-for="item in props.items" :key="item.id">
       <router-link class="item-link" :to="item.link">
         <span class="badgeNum" v-if="item.badgeNum">{{item.badgeNum}}</span>
-        <img class="item-cover" v-src:before-load="item.img">
+        <div class="item-cover" v-src:before-load="item.img"></div>
         <p :class="{title: true, nowrap: item.subhead}">{{item.title}}</p>
         <span class="subhead" v-if="item.subhead">{{item.subhead}}</span>
       </router-link>
@@ -54,11 +54,17 @@
 
 .item-cover {
   border-radius: 5px;
-  width: 100%;
-}
-.before-load {
   width: 31vw;
   height: 31vw;
+  background: {
+    size: 100%;
+    position: center;
+    repeat: no-repeat;
+  }
+}
+.before-load {
+  // width: 31vw;
+  // height: 31vw;
   background: #ccc url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;
 }
 

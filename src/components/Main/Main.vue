@@ -1,7 +1,7 @@
 <template>
 <transition name="main">
   <div class="main"
-    :style="{paddingBottom: myPlaylist.length ? '50px' : ''}">
+    :style="{paddingBottom: playlist.length ? '50px' : ''}">
     <router-view></router-view>
     <transition :name="toggleType">
     <keep-alive>
@@ -12,7 +12,7 @@
 </transition>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default {
   data () {
     return {
@@ -20,7 +20,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['myPlaylist']),
+    ...mapState('player', ['playlist']),
     ...mapGetters('router', ['getPathIndex'])
   },
   beforeRouteUpdate (to, from, next) {
