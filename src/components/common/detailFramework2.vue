@@ -114,7 +114,7 @@ export default {
       this.$router.go(-1)
     },
     play (index) {
-      if (this.currentSong.mid === this.songlist[index].songmid) {
+      if (this.currentSong.songmid === this.songlist[index].songmid) {
         this.$router.push('/player')
         return
       }
@@ -292,14 +292,14 @@ export default {
       .play-all{
         height: 100%;
         flex: 1;
-        padding-left: 10px;
+        padding-left: 15px;
         display: flex;
         align-items: center;
         small {
           color: #999;
         }
         .play-icon {
-          margin-right: 10px;
+          margin-right: 15px;
           display: inline-block;
           width: 20px;
           height: 20px;
@@ -317,7 +317,7 @@ export default {
     .song-item {
       height: 50px;
       border-bottom: 0.1px solid #eee;
-      padding: 0 10px;
+      padding: 0 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -332,7 +332,7 @@ export default {
         width: 20px;
         height: 100%;
         line-height: 50px;
-        padding-right: 10px;
+        padding-right: 15px;
         text-align: center;
         color: #999;
       }

@@ -18,18 +18,12 @@ export default {
       fadeType: 'fade-deep'
     }
   },
-  computed: {
-    // ...mapState('songSheet', ['tags'])
-  },
   methods: {
     ...mapActions('songSheet', ['getSongSheetTags'])
   },
   created () {
     this.getSongSheetTags()
   },
-  // beforeRouteEnter (to, from, next) {
-  //   next()
-  // },
   beforeRouteUpdate (to, from, next) {
     if (to.path.length > from.path.length) {
       this.fadeType = 'fade-deep'

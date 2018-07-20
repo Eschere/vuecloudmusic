@@ -24,6 +24,7 @@
     link="/songSheet"
     title="推荐歌单"
     :items="recommends"
+    @linkTo="link"
   ></category-card>
 
   <category-card
@@ -41,7 +42,7 @@ import lazyload from '#/common/lazyload'
 
 import {Swipe, SwipeItem} from 'mint-ui'
 
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
 export default {
   components: {
     'slider': Swipe,
@@ -103,20 +104,31 @@ export default {
       }
       return items
     }
+  },
+  methods: {
+    ...mapMutations('songSheet', ['saveCurrentList']),
+    link (index) {
+      let item = this.recomPlaylist[index]
+      this.saveCurrentList({
+        imgurl: item.cover,
+        dissid: item.content_id,
+        dissname: item.rcmdcontent,
+        creator: {
+          name: item.username
+        }
+      })
+      this.$nextTick(() => {
+        this.$router.push('/songSheet/' + item.content_id)
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/style/scss.config.scss';
-// img[lazy=loading] {
-//   width: 355 / $base + rem;
-//   height: 142 / $base + rem;
-// }
 .recommend-content {
   width: 100vw;
-  // height: 100%;
-  // overflow: auto;
   .focus {
     padding: 10px;
     background-image:linear-gradient($theme-color 70%, white 70%);
@@ -125,8 +137,6 @@ export default {
       height: 142 / $base + rem;
     }
     .before-load {
-      // width: 355 / $base + rem;
-      // height: 142 / $base + rem;
       background: #cccccc;
     }
     .album-cover {

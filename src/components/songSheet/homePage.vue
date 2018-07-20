@@ -210,8 +210,6 @@ export default {
         }
       }
       .before-load {
-        // width: 48vw;
-        // height: 48vw;
         background: url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;
       }
       .title {

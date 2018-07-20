@@ -1,24 +1,35 @@
-<template functional>
+<template>
 <div class="card-box">
   <h4 class="card-title">
-    <router-link :to="props.link" class="card-link">
-      <span>{{props.title}}</span>
+    <router-link :to="link" class="card-link">
+      <span>{{title}}</span>
       <img class="right-icon" src="~#/common/img/aaw.png">
     </router-link>
   </h4>
-  <div class="card-list" v-if="props.items.length">
-    <div class="card-item" v-for="item in props.items" :key="item.id">
-      <router-link class="item-link" :to="item.link">
+  <div class="card-list" v-if="items.length">
+    <div class="card-item" v-for="(item,index) in items" :key="item.id">
+      <v-touch class="item-link" @tap="linkTo(index)">
         <span class="badgeNum" v-if="item.badgeNum">{{item.badgeNum}}</span>
         <div class="item-cover" v-src:before-load="item.img"></div>
         <p :class="{title: true, nowrap: item.subhead}">{{item.title}}</p>
         <span class="subhead" v-if="item.subhead">{{item.subhead}}</span>
-      </router-link>
+      </v-touch>
     </div>
   </div>
   <div class="card-placeholder" v-else></div>
 </div>
 </template>
+
+<script>
+export default {
+  props: ['link', 'title', 'items'],
+  methods: {
+    linkTo (index) {
+      this.$emit('linkTo', index)
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .card-box {
