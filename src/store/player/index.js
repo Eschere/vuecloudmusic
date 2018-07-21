@@ -23,8 +23,8 @@ export default {
   namespaced: true,
   state: {
     guid,
-    duration: '',
-    currentTime: '',
+    duration: 0,
+    currentTime: 0,
     running: false,
     playlist: [],
     loopType: 'random', // 'proper', 'random', 'single'
@@ -37,8 +37,8 @@ export default {
       albumcover: '',
       srcReady: '',
       src: ''
-    },
-    randomPlayedList: []// 随机播放过的歌曲
+    }
+    // randomPlayedList: []// 随机播放过的歌曲
   },
   getters: {
     playOrder (state) {
@@ -56,6 +56,12 @@ export default {
         case 'random':
           return shuffle(array)
       }
+    },
+    progress (state) {
+      if (state.duration === 0) {
+        return 0
+      }
+      return Math.round(state.currentTime / state.duration * 100) / 100
     }
   },
   mutations: {
@@ -83,12 +89,11 @@ export default {
         state.running = playState
       }
     },
-    pushSongIntoRandomPlayed (state, item) {
-      state.randomPlayedList.push(item)
+    saveDuration (state, timestamp) {
+      state.duration = timestamp
     },
-    popSongFromRandomPlayed (state) {
-      // 从随机播放过的歌曲中取出记录
-      state.randomPlayedList.pop()
+    updateCurrentTime (state, timestamp) {
+      state.currentTime = timestamp
     }
   },
   actions: {
@@ -137,7 +142,6 @@ export default {
             src: `http://dl.stream.qqmusic.qq.com/${data.data.items[0].filename}?vkey=${data.data.items[0].vkey}&guid=${guid}&uin=0&fromtag=66`
           })
 
-          commit('changePlayState', true)
           callback && callback()
         }
       })

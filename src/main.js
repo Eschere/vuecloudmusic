@@ -17,6 +17,10 @@ Vue.use(VueTouch, {name: 'v-touch'})
 // 优化滚动条效果
 import '@/assets/iscroll-lite.js'
 
+
+// 字体样式表
+import '@/assets/iconfont/iconfont.css'
+
 Vue.config.productionTip = false
 
 // 自适应

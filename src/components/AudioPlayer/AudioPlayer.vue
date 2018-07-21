@@ -1,10 +1,10 @@
 <template>
-  <div src-data="currentSong.src">
+  <div :src-data="currentSong.src">
     <Shade
-      :shade="alertBox"
+      :shade="shadeOn"
       :colseOnclickModal="false"
     >
-      <div class="modal">
+      <div class="modal" v-if="confirmBox">
         <div class="alert-box">
           <div class="alert-message">
             即将播放音乐？
@@ -19,12 +19,27 @@
           </div>
         </div>
       </div>
+
+      <div class="modal" v-if="alertBox">
+        <div class="alert-box">
+          <div class="alert-message">
+            播放失败
+          </div>
+          <div class="alert-foot">
+            <v-touch class="alert-enter" @tap="readed">
+              确定
+            </v-touch>
+          </div>
+        </div>
+      </div>
     </Shade>
   </div>
 </template>
 <script>
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 import Shade from '#/Shade/Shade'
+
+const audio = new Audio()
 
 export default {
   components: {
@@ -32,7 +47,9 @@ export default {
   },
   data () {
     return {
-      audio: null,
+      // audio: null,
+      shadeOn: false,
+      confirmBox: false,
       alertBox: false
     }
   },
@@ -40,33 +57,68 @@ export default {
     ...mapState('player', ['running', 'currentSong'])
   },
   methods: {
-    ...mapMutations('player', ['changePlayState']),
+    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime']),
+    ...mapActions('player', ['changeSong']),
     cancel (cb) {
       this.changePlayState(false)
-      this.alertBox = false
+      this.shadeOn = false
+      this.confirmBox = false
     },
     enter () {
-      this.audio.play()
+      audio.play().catch(() => {
+        this.shadeOn = true
+        this.alertBox = true
+      })
+      this.shadeOn = false
+      this.confirmBox = false
+    },
+    readed () {
+      this.changePlayState(false)
+      this.shadeOn = false
       this.alertBox = false
     }
   },
   created () {
-    this.audio = new Audio()
+    audio.addEventListener('canplay', e => {
+      this.saveDuration(e.target.duration)
+    })
+    audio.addEventListener('timeupdate', e => {
+      this.updateCurrentTime(e.target.currentTime)
+      if (e.target.duration === e.target.currentTime) {
+        this.changeSong({type: 'next'})
+      }
+    })
+    audio.addEventListener('canplay', () => {
+      this.changePlayState(true)
+      audio.play().catch((e) => {
+        console.log('src', e)
+        this.shadeOn = true
+        this.confirmBox = true
+      })
+    })
+    // 播放错误
+    audio.addEventListener('error', () => {
+      this.shadeOn = true
+      this.alertBox = true
+    })
   },
   watch: {
     'currentSong.src' (val) {
-      this.audio.src = val
-      this.audio.play().catch(() => {
-        this.alertBox = true
-      })
+      audio.src = val
     },
     'running' (val) {
       if (val) {
-        this.audio.play().catch(() => {
-          this.alertBox = true
-        })
+        if (audio.paused) {
+          audio.play().catch((e) => {
+            console.log('running', e)
+            this.shadeOn = true
+            this.confirmBox = true
+          })
+        }
       } else {
-        this.audio.pause()
+        if (!audio.paused) {
+          audio.pause()
+        }
       }
     }
   }

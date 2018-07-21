@@ -49,8 +49,11 @@ export default {
       jsonp(`${this.server}/commenttotal?topic=${this.currentList.dissid}`, {
         name: 'jsoncallback9210216379563' + Math.floor((Math.random() * 899) + 100)
       }, (err, data) => {
-        if (err) console.log('Get Commenttotal Failed')
-        else this.commentNum = data.batch_commenttotal[0].commenttotal
+        if (err) {
+          console.log('Get Commenttotal Failed')
+        } else {
+          this.commenttotal = data.batch_commenttotal[0].commenttotal
+        }
       })
 
       // 收藏量

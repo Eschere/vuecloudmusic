@@ -50,16 +50,28 @@
       </div>
       <!-- 操作按钮 -->
       <div class="operation-icon" :style="{opacity:hOpacity}">
-        <span class="op-i1">{{commentNum}}</span>
-        <span class="op-i2">{{shareNum}}</span>
-        <span class="op-i3">下载</span>
-        <span class="op-i4">多选</span>
+        <span class="op-i">
+          <i class="iconfont icon-comment"></i>
+          <span>{{commentNum}}</span>
+        </span>
+        <span class="op-i">
+          <i class="iconfont icon-share"></i>
+          <span>{{shareNum}}</span>
+        </span>
+        <span class="op-i">
+          <i class="iconfont icon-download"></i>
+          <span>下载</span>
+        </span>
+        <span class="op-i">
+          <i class="iconfont icon-mutiple-check"></i>
+          <span>多选</span>
+        </span>
       </div>
       <!-- 歌曲列表 -->
       <div class="song-list" ref="list">
         <div class="list-head">
           <div class="play-all">
-            <span class="play-icon"></span>
+            <span class="play-icon iconfont icon-play-fill"></span>
             <span>播放全部<small>(共{{songNum}}首)</small></span>
           </div>
           <div class="favorite">
@@ -77,14 +89,15 @@
             class="song-detail"
             @tap="play(index)"
           >
-            <span class="song-index">{{index+1}}</span>
+            <span class="song-playing-index iconfont icon-volume" v-if="currentSong.songmid === song.songmid"></span>
+            <span class="song-index" v-else>{{index+1}}</span>
             <div class="center">
               <p class="song-name">{{song.songname}}</p>
               <p class="singer-name">{{song.singername}}</p>
             </div>
           </v-touch>
           <v-touch
-            class="song-operation"
+            class="song-operation iconfont icon-more-item"
             @tap="showDetail(song.songmid)"
           ></v-touch>
         </div>
@@ -177,6 +190,7 @@ export default {
     top: 0;
     left: 0;
     filter: blur(30px) brightness(90%);
+    transform: scale(1.3);
   }
   .banner {
     display: flex;
@@ -249,32 +263,19 @@ export default {
       display: flex;
       margin: 3vw;
       justify-content: space-around;
-      & > span {
-        text-align: center;
+      .op-i {
         color: white;
         font-size: 12px;
         width: 25px;
-        height: 16px;
-        padding-top: 25px;
-        background: {
-          repeat: no-repeat;
-          size: 80%;
-          position: top;
-          origin: padding-box;
-        }
+        height: 43px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,'微软雅黑';
-      }
-      .op-i1 {
-        background-image: url('~@/components/common/img/comment.png')
-      }
-      .op-i2 {
-        background-image: url('~@/components/common/img/share.png')
-      }
-      .op-i3 {
-        background-image: url('~@/components/common/img/download.png')
-      }
-      .op-i4 {
-        background-image: url('~@/components/common/img/mutiple-select.png')
+        .iconfont {
+          font-size: 20px;
+        }
       }
     }
   }
@@ -300,10 +301,7 @@ export default {
         }
         .play-icon {
           margin-right: 15px;
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          background: url('~@/components/common/img/play-all.png') no-repeat center/ 100%;
+          font-size: 23px;
         }
       }
       .favorite {
@@ -336,6 +334,13 @@ export default {
         text-align: center;
         color: #999;
       }
+      .song-playing-index {
+        width: 20px;
+        padding-right: 15px;
+        font-size: 15px;
+        text-align: center;
+        color: $theme-color;
+      }
       .center {
         flex: 1;
         overflow: hidden;
@@ -347,7 +352,7 @@ export default {
       }
       .song-name {
         @include song-text();
-        font-size: 14px;
+        font-size: 15px;
         margin-bottom: 5px;
       }
       .singer-name {
@@ -356,10 +361,8 @@ export default {
         color: #aaa;
       }
       .song-operation {
-        flex-shrink: 0;
-        width: 16px;
-        height: 16px;
-        background: url('~@/components/common/img/gary-listicon.png') no-repeat center / 100%;
+        font-size: 16px;
+        color: #ccc;
       }
     }
   }
