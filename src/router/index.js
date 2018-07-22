@@ -16,6 +16,9 @@ const songSheetHomePage = () => import('#/songSheet/homePage')
 const songSheetSongList = () => import('#/songSheet/songList')
 const songSheetCategory = () => import('#/songSheet/category')
 
+// 主播放器界面
+const Player = () => import('#/Player/Player')
+
 Vue.use(Router)
 
 export default new Router({
@@ -131,6 +134,10 @@ export default new Router({
           component: songSheetSongList
         }
       ]
+    },
+    {
+      path: '/player',
+      component: Player
     },
     {
       path: '*',

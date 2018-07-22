@@ -75,12 +75,6 @@ export default {
       }
     }
   },
-  // beforeRouteEnter (to, from, next) {
-  //   let saveIndex = save.saveIndex
-  //   next(vm => {
-  //     vm.$router.replace(vm.pages[saveIndex].link)
-  //   })
-  // },
   beforeRouteUpdate (to, from, next) {
     let toIndex = this.pages.findIndex(item => {
       return new RegExp('^' + item.link).test(to.path)

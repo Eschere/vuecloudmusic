@@ -309,15 +309,12 @@ export default {
     }
     .order-box {
       width: 100%;
-      // display: flex;
       margin-left: -100%;
       white-space: nowrap;
       .order-item {
         display: inline-flex;
         box-sizing: border-box;
-        // flex-shrink: 0;
         width: 100%;
-        // display: flex;
         padding: 0 7px;
       }
     }

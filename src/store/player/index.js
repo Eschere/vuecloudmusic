@@ -30,14 +30,25 @@ export default {
     loopType: 'proper', // 'proper', 'random', 'single'
     dataLoading: false,
     currentSong: {
-      indexInPlaylist: 0,
+      /* eslint-disable */
+      /*indexInPlaylist: 0,
+      songname: '',
       singer: '',
       songmid: '',
       album: '',
       albummid: '',
       albumcover: '',
       srcReady: '',
-      src: ''
+      src: ''*/
+      songname: '这是一个测',
+      album:"ONE DAY",
+albumcover:"https://y.gtimg.cn/music/photo_new/T002R300x300M0000040Z1El30gtpD.jpg?max_age=2592000",
+albummid:"0040Z1El30gtpD",
+indexInPlaylist:0,
+singer:"원",
+songmid:"002H8PeZ0F9bfF",
+src:"http://dl.stream.qqmusic.qq.com/C400002H8PeZ0F9bfF.m4a?vkey=7B55699D8B48A17565866BB8AE06FDD1CBD98CE9A81AC25BFE9CF7BA702DAAC779A11C30B45BC346F3C119B039225B33BDC68E3F78F0C732&guid=974778006&uin=0&fromtag=66",
+srcReady:true
     }
     // randomPlayedList: []// 随机播放过的歌曲
   },
@@ -69,9 +80,10 @@ export default {
     savePlaylist (state, playlist) {
       state.playlist = playlist
     },
-    saveCurrentSongInfo (state, {indexInPlaylist, singer, songmid, album, albummid, albumcover, srcReady, src}) {
+    saveCurrentSongInfo (state, {indexInPlaylist, singer, songname, songmid, album, albummid, albumcover, srcReady, src}) {
       if (indexInPlaylist !== undefined) state.currentSong.indexInPlaylist = indexInPlaylist
       if (singer) state.currentSong.singer = singer
+      if (songname) state.currentSong.songname = songname
       if (songmid) state.currentSong.songmid = songmid
       if (album) state.currentSong.album = album
       if (albummid) state.currentSong.albummid = albummid
@@ -134,6 +146,7 @@ export default {
         if (err) console.log(err)
         else {
           commit('saveCurrentSongInfo', {
+            songname: data.data[0].title,
             singer: data.data[0].singer[0].name,
             songmid: data.data[0].mid,
             album: data.data[0].album.name,
