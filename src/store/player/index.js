@@ -27,7 +27,8 @@ export default {
     currentTime: 0,
     running: false,
     playlist: [],
-    loopType: 'random', // 'proper', 'random', 'single'
+    loopType: 'proper', // 'proper', 'random', 'single'
+    dataLoading: false,
     currentSong: {
       indexInPlaylist: 0,
       singer: '',
@@ -94,11 +95,15 @@ export default {
     },
     updateCurrentTime (state, timestamp) {
       state.currentTime = timestamp
+    },
+    changeDataLoading (state, status) {
+      state.dataLoading = status
     }
   },
   actions: {
-    changeSong ({dispatch, state, getters}, {type, callback}) {
+    changeSong ({commit, dispatch, state, getters}, {type, callback, beforeChange}) {
       // 根据循环方式播放确定上下首歌曲
+      commit('changeDataLoading', true)
       let keyIndex = getters.playOrder.indexOf(state.currentSong.indexInPlaylist)
       let result
       switch (type) {
@@ -110,10 +115,17 @@ export default {
       }
       dispatch('requestSongInfo', {
         index: getters.playOrder[result],
-        callback
+        callback,
+        beforeChange
       })
     },
-    requestSongInfo ({commit, rootState, state}, {index, callback}) {
+    requestSongInfo ({commit, rootState, state}, {index, callback, beforeChange}) {
+      // 切歌前执行的函数
+      beforeChange && beforeChange()
+      // 切歌程序首先执行歌曲索引切换，保持页面程序的运行
+      commit('saveCurrentSongInfo', {
+        indexInPlaylist: index
+      })
       let server = rootState.config.server
       let mid = state.playlist[index].songmid
       jsonp(server + '/songinfo?songmid=' + mid, {
@@ -137,7 +149,6 @@ export default {
         if (err) console.log(err)
         else {
           commit('saveCurrentSongInfo', {
-            indexInPlaylist: index,
             srcReady: true,
             src: `http://dl.stream.qqmusic.qq.com/${data.data.items[0].filename}?vkey=${data.data.items[0].vkey}&guid=${guid}&uin=0&fromtag=66`
           })

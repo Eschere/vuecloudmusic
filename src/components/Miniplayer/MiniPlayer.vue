@@ -7,30 +7,35 @@
       :swipe-options="{threshold: 20}"
       class="order-control"
     >
-    <div class="order-shadow">
-
+    <div ref='order' class="order-shadow">
     </div>
-      <div ref="order" class="order-box">
+      <transition-group
+        :name="changeBymini ? 'mini-order' : 'none'"
+        class="order-box"
+        tag="div"
+        :style="panningStyle"
+        key="order-group"
+      >
         <div
-          v-for="(item,index) in pcnlist"
-          :key="'pnnl'+playlist[item].songmid+index"
+          v-for="item in pcnlist"
+          :key="'pnnl'+item.mark"
           class="order-item"
         >
           <div
-            v-src="'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+playlist[item].albummid+'.jpg?max_age=2592000'"
+            v-src="'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+playlist[item.index].albummid+'.jpg?max_age=2592000'"
             class="mini-cover"
           >
           </div>
           <div class="mini-detail">
             <p class="mini-songname">
-              {{playlist[item].songname}}
+              {{playlist[item.index].songname}}
             </p>
             <p class="mini-singer">
-              {{playlist[item].singername}}
+              {{playlist[item.index].singername}}
             </p>
           </div>
         </div>
-      </div>
+      </transition-group>
     </v-touch>
     <div class="control-icons">
       <v-touch
@@ -38,18 +43,13 @@
         @tap="play"
       >
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-bg">
-          <!-- 已播放 -->
+          已播放
           <path :d="playedSvg" style="stroke:#e82f2f;stroke-width:1;fill:none"/>
-          <!-- 未播放 -->
-          <path :d="leftSvg" :style="{stroke: leftColor}" style="stroke-width:1;fill:none"/>
-          <!-- 控制按钮 -->
-          <path :d="buttonSvg" :style="{stroke: buttonColor}" style="stroke-width:1.5;fill:none;stroke-linejoin:round"/>
+          未播放
+          <path :d="leftSvg" :style="{stroke: leftColor, 'stroke-width': 1, fill: 'none'}"/>
+          控制按钮
+          <path :d="buttonSvg" :style="{stroke: buttonColor, 'stroke-width': 1.5, fill: 'none', 'stroke-linejoin': 'round'}"/>
         </svg>
-
-        <!-- <span class="mini-running iconfont icon-pause-nocircle" v-if="running">
-        </span>
-        <span class="mini-paused iconfont icon-play-nocircle" v-else>
-        </span> -->
       </v-touch>
       <span class="list-toggle iconfont icon-list"></span>
     </div>
@@ -69,32 +69,26 @@ export default {
     Swipe,
     SwipeItem
   },
+  data () {
+    return {
+      pcnlist: '',
+      panningStyle: '',
+      changeBymini: false,
+      protecting: false,
+      direction: 'right'
+    }
+  },
   computed: {
-    ...mapState('player', ['currentSong', 'playlist', 'running']),
+    ...mapState('player', ['currentSong', 'playlist', 'running', 'dataLoading']),
     ...mapGetters('player', ['playOrder', 'progress']),
-    pcnlist () {
-      let songIndex = this.currentSong.indexInPlaylist
-
-      let keyIndex = this.playOrder.indexOf(songIndex)
-      let prev = keyIndex - 1 < 0 ? this.playOrder.length - 1 : keyIndex - 1
-      let next = keyIndex + 1 > this.playOrder.length - 1 ? 0 : keyIndex + 1
-      if (this.$refs.order) {
-        this.$nextTick(() => {
-          // eslint-disable-next-line
-          this.protecting = false
-          // eslint-disable-next-line
-          this.$refs.order.style.transition = ''
-          // eslint-disable-next-line
-          this.$refs.order.style.transform = ''
-        })
-      }
-      return [this.playOrder[prev], songIndex, this.playOrder[next]]
-    },
     joinPoint () {
       let angle = 2 * Math.PI * this.progress
       return getCoordinateOnCircle(svgR, svgR, svgR - 1, angle)
     },
     playedSvg () {
+      if (this.dataLoading || this.protecting) {
+        return ''
+      }
       if (this.progress === 0) {
         return ''
       } else if (this.progress < 1) {
@@ -104,6 +98,9 @@ export default {
       }
     },
     leftSvg () {
+      if (this.dataLoading || this.protecting) {
+        return `M${svgR},1 A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},${svgR * 2 - 1} A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},1`
+      }
       if (this.progress === 0) {
         return `M${svgR},1 A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},${svgR * 2 - 1} A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},1`
       } else if (this.progress === 1) {
@@ -136,72 +133,150 @@ export default {
       this.changePlayState('toggle')
     },
     panHandler (e) {
+      // 保护中的动画无法操作
       if (this.protecting) {
         return false
       }
-      this.$refs.order.style.transform = 'translate3d(' + e.deltaX + 'px,0,0)'
+      // mini-play控制的切歌将执行动画
+      this.changeBymini = true
+      this.panningStyle = {transform: 'translate3d(' + e.deltaX + 'px,0,0)'}
 
       if (e.isFinal) {
         // 动画间隔
         let duration = 200
-        this.protecting = true
-        this.$refs.order.style.transition = 'all ' + duration + 'ms'
-        let totalWidth = this.$refs.order.getBoundingClientRect().width
-        if (e.deltaX / totalWidth > 0.5) {
-          // 上一首
-          this.$refs.order.style.transform = 'translate3d(100%,0,0)'
-          setTimeout(() => {
-            this.changeSong({
-              type: 'prev'
-            })
-          }, duration)
-        } else if (e.deltaX / totalWidth < -0.5) {
-          // 下一首
-          this.$refs.order.style.transform = 'translate3d(-100%,0,0)'
-          setTimeout(() => {
-            this.changeSong({
-              type: 'next',
-              callback: () => {
 
-              }
-            })
-          }, duration)
+        let totalWidth = this.$refs.order.getBoundingClientRect().width
+        if (e.deltaX / totalWidth > 0.45) {
+          this.protecting = true
+          // 上一首
+          this.direction = 'right'
+          // 表示切换方向
+          this.changeSong({
+            type: 'prev',
+            beforeChange: () => {
+              // 动画完成后取消保护，恢复动画设置
+              setTimeout(() => {
+                this.protecting = false
+                this.changeBymini = false
+              }, duration)
+              this.panningStyle = {transition: 'all .2s'}
+            }
+          })
+        } else if (e.deltaX / totalWidth < -0.45) {
+          this.protecting = true
+          // 下一首
+          this.direction = 'left'
+          this.changeSong({
+            type: 'next',
+            beforeChange: () => {
+              setTimeout(() => {
+                this.protecting = false
+                this.changeBymini = false
+              }, duration)
+              this.panningStyle = {transition: 'all .2s'}
+            }
+          })
         } else {
           // 未触发切歌
-          this.$refs.order.style.transform = ''
+          this.panningStyle = {transition: 'all .2s'}
           setTimeout(() => {
-            this.$refs.order.style.transition = ''
             this.protecting = false
+            this.changeBymini = false
           }, duration)
         }
       }
     },
     swipeHandler (e) {
+      if (this.protecting) {
+        return false
+      }
       let duration = 200
       this.protecting = true
-      this.$refs.order.style.transition = 'all ' + duration + 'ms'
+      this.changeBymini = true
       if (e.deltaX > 0) {
-        this.$refs.order.style.transform = 'translate3d(100%,0,0)'
-        setTimeout(() => {
-          this.changeSong({
-            type: 'prev'
-          })
-        }, duration)
+        this.direction = 'right'
+        this.changeSong({
+          type: 'prev',
+          beforeChange: () => {
+            setTimeout(() => {
+              this.protecting = false
+              this.changeBymini = false
+            }, duration)
+          }
+        })
       } else {
-        this.$refs.order.style.transform = 'translate3d(-100%,0,0)'
-        setTimeout(() => {
-          this.changeSong({
-            type: 'next'
-          })
-        }, duration)
+        this.direction = 'left'
+        this.changeSong({
+          type: 'next',
+          beforeChange: () => {
+            setTimeout(() => {
+              this.protecting = false
+              this.changeBymini = false
+            }, duration)
+          }
+        })
       }
     }
   },
+  created () {
+    let songIndex = this.currentSong.indexInPlaylist
+    let keyIndex = this.playOrder.indexOf(songIndex)
+    let prev = keyIndex - 1 < 0 ? this.playOrder.length - 1 : keyIndex - 1
+    let next = keyIndex + 1 > this.playOrder.length - 1 ? 0 : keyIndex + 1
+    // 初始显示列表
+    this.pcnlist = [
+      {
+        mark: Date.now() * Math.random(),
+        index: this.playOrder[prev]
+      },
+      {
+        mark: Date.now() * Math.random(),
+        index: songIndex
+      },
+      {
+        mark: Date.now() * Math.random(),
+        index: this.playOrder[next]
+      }
+    ]
+  },
   watch: {
-    'currentSong.src' () {
-      // this.protecting = false
-      //           this.$refs.order.style.transition = ''
-      //           this.$refs.order.style.transform = ''
+    'currentSong.indexInPlaylist' (val) {
+      // 当歌曲变化时，mini-player 列表发生相应变化
+      let songIndex = val
+      let keyIndex = this.playOrder.indexOf(songIndex)
+      let prev = keyIndex - 1 < 0 ? this.playOrder.length - 1 : keyIndex - 1
+      let next = keyIndex + 1 > this.playOrder.length - 1 ? 0 : keyIndex + 1
+
+      if (this.changeBymini) {
+        if (this.direction === 'right') {
+          this.pcnlist.pop()
+          this.pcnlist.unshift({
+            mark: Date.now() * Math.random(),
+            index: this.playOrder[prev]
+          })
+        } else if (this.direction === 'left') {
+          this.pcnlist.shift()
+          this.pcnlist.push({
+            mark: Date.now() * Math.random(),
+            index: this.playOrder[next]
+          })
+        }
+      } else {
+        this.pcnlist = [
+          {
+            mark: Date.now() * Math.random(),
+            index: this.playOrder[prev]
+          },
+          {
+            mark: Date.now() * Math.random(),
+            index: songIndex
+          },
+          {
+            mark: Date.now() * Math.random(),
+            index: this.playOrder[next]
+          }
+        ]
+      }
     }
   }
 }
@@ -234,13 +309,15 @@ export default {
     }
     .order-box {
       width: 100%;
-      display: flex;
+      // display: flex;
       margin-left: -100%;
+      white-space: nowrap;
       .order-item {
+        display: inline-flex;
         box-sizing: border-box;
-        flex-shrink: 0;
+        // flex-shrink: 0;
         width: 100%;
-        display: flex;
+        // display: flex;
         padding: 0 7px;
       }
     }

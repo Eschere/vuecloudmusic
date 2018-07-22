@@ -123,6 +123,19 @@ ul {
   transition: all 0.25s
 }
 
+/* 列表过渡 */
+.mini-order-move {
+  transition: transform 0.2s;
+}
+.mini-order-leave-active {
+  display: none!important;
+  transition: all 0.2s;
+}
+.mini-order-enter-active {
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
 /* loading样式 */
 .loading-placeholder {
   width: 100vw;

@@ -54,10 +54,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['running', 'currentSong'])
+    ...mapState('player', ['running', 'currentSong', 'loopType'])
   },
   methods: {
-    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime']),
+    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading']),
     ...mapActions('player', ['changeSong']),
     cancel (cb) {
       this.changePlayState(false)
@@ -80,12 +80,20 @@ export default {
   },
   created () {
     audio.addEventListener('canplay', e => {
+      this.changeDataLoading(false)
       this.saveDuration(e.target.duration)
     })
     audio.addEventListener('timeupdate', e => {
       this.updateCurrentTime(e.target.currentTime)
       if (e.target.duration === e.target.currentTime) {
-        this.changeSong({type: 'next'})
+        if (this.loopType !== 'single') {
+          this.changeSong({type: 'next'})
+        } else {
+          audio.play().catch(() => {
+            this.shadeOn = true
+            this.alertBox = true
+          })
+        }
       }
     })
     audio.addEventListener('canplay', () => {
