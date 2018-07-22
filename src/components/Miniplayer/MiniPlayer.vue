@@ -38,14 +38,18 @@
         @tap="play"
       >
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-bg">
+          <!-- 已播放 -->
           <path :d="playedSvg" style="stroke:#e82f2f;stroke-width:1;fill:none"/>
+          <!-- 未播放 -->
           <path :d="leftSvg" :style="{stroke: leftColor}" style="stroke-width:1;fill:none"/>
+          <!-- 控制按钮 -->
+          <path :d="buttonSvg" :style="{stroke: buttonColor}" style="stroke-width:1.5;fill:none;stroke-linejoin:round"/>
         </svg>
 
-        <span class="mini-running iconfont icon-pause-nocircle" v-if="running">
+        <!-- <span class="mini-running iconfont icon-pause-nocircle" v-if="running">
         </span>
         <span class="mini-paused iconfont icon-play-nocircle" v-else>
-        </span>
+        </span> -->
       </v-touch>
       <span class="list-toggle iconfont icon-list"></span>
     </div>
@@ -58,7 +62,7 @@ import {mapState, mapMutations, mapGetters, mapActions} from 'vuex'
 
 import {getCoordinateOnCircle} from '@/utils'
 
-const scgR = 15
+const svgR = 15
 export default {
   name: 'MiniPlayer',
   components: {
@@ -88,28 +92,38 @@ export default {
     },
     joinPoint () {
       let angle = 2 * Math.PI * this.progress
-      return getCoordinateOnCircle(scgR, scgR, scgR - 1, angle)
+      return getCoordinateOnCircle(svgR, svgR, svgR - 1, angle)
     },
     playedSvg () {
       if (this.progress === 0) {
         return ''
       } else if (this.progress < 1) {
-        return `M${scgR},1 A${scgR - 1},${scgR - 1} 0 ${this.progress > 0.5 ? 1 : 0},1 ${this.joinPoint.x},${this.joinPoint.y}`
+        return `M${svgR},1 A${svgR - 1},${svgR - 1} 0 ${this.progress > 0.5 ? 1 : 0},1 ${this.joinPoint.x},${this.joinPoint.y}`
       } else {
-        return `M${scgR},1 A${scgR - 1},${scgR - 1} 0 0,1 ${scgR},${scgR * 2 - 1} A${scgR - 1},${scgR - 1} 0 0,1 ${scgR},1`
+        return `M${svgR},1 A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},${svgR * 2 - 1} A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},1`
       }
     },
     leftSvg () {
       if (this.progress === 0) {
-        return `M${scgR},1 A${scgR - 1},${scgR - 1} 0 0,1 ${scgR},${scgR * 2 - 1} A${scgR - 1},${scgR - 1} 0 0,1 ${scgR},1`
+        return `M${svgR},1 A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},${svgR * 2 - 1} A${svgR - 1},${svgR - 1} 0 0,1 ${svgR},1`
       } else if (this.progress === 1) {
         return ''
       } else {
-        return `M${this.joinPoint.x},${this.joinPoint.y} A${scgR - 1},${scgR - 1} 0 ${this.progress > 0.5 ? 0 : 1},1 ${scgR},1`
+        return `M${this.joinPoint.x},${this.joinPoint.y} A${svgR - 1},${svgR - 1} 0 ${this.progress > 0.5 ? 0 : 1},1 ${svgR},1`
+      }
+    },
+    buttonSvg () {
+      if (this.running) {
+        return `M${svgR - 3},10 l0,10 Z M${svgR + 3},10 l0,10 Z`
+      } else {
+        return `M${svgR - 2.5},10 l0,10 l8,-5 Z`
       }
     },
     leftColor () {
       return this.running ? '#ccc' : '#333'
+    },
+    buttonColor () {
+      return this.running ? '#e82f2f' : '#333'
     }
   },
   methods: {
@@ -263,34 +277,11 @@ export default {
     padding: 0 10px;
   }
   .play-control {
-    position: relative;
     margin-right: 20px;
     height: 30px;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .iconfont {
-      position: relative;
-      font-size: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 600;
-      z-index: 2;
-    }
-    .mini-paused {
-      color: #333;
-    }
-    .mini-running {
-      color: $theme-color;
-    }
     .svg-bg {
       width: 30px;
       height: 30px;
-      position: absolute;
-      top: 0;
-      left: 0;
     }
   }
   .list-toggle {
