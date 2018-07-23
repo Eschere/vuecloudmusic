@@ -1,12 +1,13 @@
 <template>
+<transition :name="fadeType">
 <div class="player-page">
   <div class="player-header">
     <v-touch
-      @tap="router.go(-1)"
+      @tap="$router.go(-1)"
       class="back"
     ></v-touch>
     <div ref="firstTitle" class="header-title">
-      <div  class="first-title-box">
+      <div class="first-title-box">
         <p class="first-title-content">{{currentSong.songname}}</p>
       </div>
       <span class="sub-title">{{currentSong.singer}}</span>
@@ -15,19 +16,141 @@
     </span>
   </div>
   <div class="player-main">
-
+    <template is="mainPage">
+    </template>
   </div>
   <div class="player-footer">
-
+    <!-- 播放进度 -->
+    <div class="progress-area">
+      <span class="current-time">{{currentTimeStr}}</span>
+      <v-touch
+        tag="div"
+        class="progress-can-touch"
+        @tap="changeProgressTap"
+        @pan="changeProgressPan"
+      >
+        <div
+          ref="progress"
+          class="progress-bar"
+        >
+          <div :style="{width: loadProgress}" class="load-progress">
+          </div>
+          <div :style="{width: progressWidth}" class="progress">
+            <span class="progress-icon"></span>
+          </div>
+        </div>
+      </v-touch>
+      <span class="duration">{{durationStr}}</span>
+    </div>
+    <!-- 控制按钮 -->
+    <div class="control-area">
+      <v-touch
+        class="loop-type iconfont"
+        :class="loopTypeClass"
+        @tap="toggleLoopType"
+        v-touch-light
+      ></v-touch>
+      <v-touch
+        class="prev iconfont icon-prev"
+        @tap="changeSong({type: 'prev'})"
+        v-touch-light
+      ></v-touch>
+      <v-touch
+        class="play iconfont icon-play-fill"
+        :class="running ? 'icon-pause' : 'icon-play-fill'"
+        @tap="changePlayState('toggle')"
+        v-touch-light
+      ></v-touch>
+      <v-touch
+        class="next iconfont icon-next"
+        @tap="changeSong({type: 'next'})"
+        v-touch-light
+      ></v-touch>
+      <v-touch
+        class="show-playlist iconfont icon-list"
+        v-touch-light
+      ></v-touch>
+    </div>
   </div>
 </div>
+</transition>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import {formatTime} from '@/utils'
+
 export default {
+  data () {
+    return {
+      fadeType: 'fade-deep',
+      timeSetting: null,
+      progressBarWidth: '',
+      progressBarOffset: ''
+    }
+  },
   computed: {
-    ...mapState('player', ['currentSong'])
+    ...mapState('player', ['running', 'currentSong', 'duration', 'currentTime', 'loadedTime', 'loopType']),
+    ...mapGetters('player', ['progress']),
+    durationStr () {
+      return formatTime(this.duration)
+    },
+    currentTimeStr () {
+      if (this.timeSetting !== null) {
+        return formatTime(this.timeSetting)
+      } else {
+        return formatTime(this.currentTime)
+      }
+    },
+    progressWidth () {
+      if (this.timeSetting !== null) {
+        return this.timeSetting / this.duration * 100 + '%'
+      } else {
+        return this.progress * 100 + '%'
+      }
+    },
+    loadProgress () {
+      if (this.duration === 0) {
+        return 0
+      }
+      return this.loadedTime / this.duration * 100 + '%'
+    },
+    loopTypeClass () {
+      switch (this.loopType) {
+        case 'proper':
+          return 'icon-circle'
+        case 'single':
+          return 'icon-single'
+        case 'random':
+          return 'icon-random'
+      }
+    }
+  },
+  methods: {
+    ...mapMutations('player', ['setCurrentTime', 'toggleLoopType', 'changePlayState']),
+    ...mapActions('player', ['changeSong']),
+    // 滚动条来回滚动
+    scrollRound (scroll, end) {
+      setTimeout(() => {
+        scroll.scrollTo(end, 0, 5000, {style: 'cubic-bezier(0, 0, 1, 1)'})
+        console.log('scroll')
+      }, 1000)
+    },
+    changeProgressPan (e) {
+      let time = (e.center.x - this.progressBarOffset) / this.progressBarWidth * this.duration
+      this.timeSetting = time < 0 ? 0 : time > this.duration ? this.duration : time
+      if (e.isFinal) {
+        console.log(this.timeSetting)
+        this.setCurrentTime(this.timeSetting)
+        setTimeout(() => {
+          this.timeSetting = null
+        }, 100)
+      }
+    },
+    changeProgressTap (e) {
+      let time = (e.center.x - this.progressBarOffset) / this.progressBarWidth * this.duration
+      this.setCurrentTime(time)
+    }
   },
   mounted () {
     let scroll = new window.IScroll(this.$refs.firstTitle, {
@@ -53,15 +176,16 @@ export default {
     })
 
     this.scrollRound(scroll, scroll.maxScrollX)
+
+    let progressRect = this.$refs.progress.getBoundingClientRect()
+    this.progressBarOffset = progressRect.x || progressRect.left
+    this.progressBarWidth = progressRect.width
   },
-  methods: {
-    // 滚动条来回滚动
-    scrollRound (scroll, end) {
-      setTimeout(() => {
-        scroll.scrollTo(end, 0, 5000, {style: 'cubic-bezier(0, 0, 1, 1)'})
-        console.log('scorl')
-      }, 1000)
-    }
+  beforeRouteLeave (to, from, next) {
+    this.fadeType = 'fade-back'
+    this.$nextTick(() => {
+      next()
+    })
   }
 }
 </script>
@@ -108,6 +232,83 @@ export default {
     .share {
       font-size: 25px;
       margin: 0 20px;
+    }
+  }
+  .player-main {
+    flex: 1;
+    background: rgba($color: red, $alpha: .5);
+  }
+  .player-footer {
+    .progress-area {
+      display: flex;
+      margin: 15px;
+      justify-content: space-around;
+      align-items: center;
+      .current-time,
+      .duration {
+        font-size: 12px;
+        font-size: 10px;
+        color: #eee;
+      }
+      .progress-can-touch {
+        margin: 0 15px;
+        flex: 1;
+        height: 14px;
+        display: flex;
+        align-items: center;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 3px;
+        background-color: rgba($color: white, $alpha: 0.1);
+        position: relative;
+        border-radius: 3px;
+      }
+      .load-progress {
+        border-radius: 3px;
+        height: 100%;
+        background-color: rgba(white, 0.3);
+        position: absolute;
+      }
+      .progress {
+        border-radius: 3px;
+        height: 100%;
+        background-color: $theme-color;
+        position: absolute;
+        .progress-icon {
+          position: absolute;
+          display: inline-block;
+          width: 3px;
+          height: 3px;
+          border: 5px solid white;
+          border-radius: 50%;
+          background: $theme-color;
+          right: -6.5px;
+          top: -6.5 + 1.5px;
+        }
+      }
+    }
+    .control-area {
+      margin: 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .loop-type,
+      .show-playlist {
+        font-size: 22px;
+        color: rgba(white, 0.6);
+      }
+      .prev,
+      .next {
+        color: rgba($color: #eee, $alpha: 0.8);
+        font-size: 28px;
+      }
+      .play {
+        color: rgba(#eee, 0.9);
+        font-size: 50px;
+        margin: 0 -15px;
+        font-weight: 100;
+      }
     }
   }
 }

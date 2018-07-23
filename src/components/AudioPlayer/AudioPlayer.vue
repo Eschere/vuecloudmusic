@@ -54,10 +54,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['running', 'currentSong', 'loopType'])
+    ...mapState('player', ['running', 'currentSong', 'loopType', 'currentTimeSetter', 'currentTime'])
   },
   methods: {
-    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading']),
+    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading', 'saveLoadedTime', 'setCurrentTime']),
     ...mapActions('player', ['changeSong']),
     cancel (cb) {
       this.changePlayState(false)
@@ -79,12 +79,22 @@ export default {
     }
   },
   created () {
-    audio.addEventListener('canplay', e => {
-      this.changeDataLoading(false)
-      this.saveDuration(e.target.duration)
+    audio.addEventListener('progress', e => {
+      if (e.target.buffered.length > 0) {
+        this.saveLoadedTime(e.target.buffered.end(0))
+      }
     })
+
     audio.addEventListener('timeupdate', e => {
-      this.updateCurrentTime(e.target.currentTime)
+      // 控制时间更新频率
+      if (Math.abs(e.target.currentTime - this.currentTime) > 0.5) {
+        this.updateCurrentTime(e.target.currentTime)
+      }
+      // 重置时间设置器
+      if (this.currentTimeSetter !== null) {
+        this.setCurrentTime(null)
+      }
+      // 播放完成后的动作
       if (e.target.duration === e.target.currentTime) {
         if (this.loopType !== 'single') {
           this.changeSong({type: 'next'})
@@ -96,13 +106,17 @@ export default {
         }
       }
     })
-    audio.addEventListener('canplay', () => {
-      this.changePlayState(true)
-      audio.play().catch((e) => {
-        console.log('src', e)
-        this.shadeOn = true
-        this.confirmBox = true
-      })
+    audio.addEventListener('canplay', (e) => {
+      this.changeDataLoading(false)
+      this.saveDuration(e.target.duration)
+
+      // 播放
+      if (this.running) {
+        audio.play().catch((e) => {
+          this.shadeOn = true
+          this.confirmBox = true
+        })
+      }
     })
     // 播放错误
     audio.addEventListener('error', () => {
@@ -113,6 +127,8 @@ export default {
   watch: {
     'currentSong.src' (val) {
       audio.src = val
+      this.setCurrentTime(null)
+      this.changePlayState(true)
     },
     'running' (val) {
       if (val) {
@@ -127,6 +143,11 @@ export default {
         if (!audio.paused) {
           audio.pause()
         }
+      }
+    },
+    'currentTimeSetter' (val) {
+      if (val !== null) {
+        audio.currentTime = val
       }
     }
   }

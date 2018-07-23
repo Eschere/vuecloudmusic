@@ -1,8 +1,6 @@
 <template>
 <transition :name="fadeType">
-  <!-- <keep-alive> -->
-    <router-view class="song-sheet"></router-view>
-  <!-- </keep-alive> -->
+  <router-view class="song-sheet"></router-view>
 </transition>
 </template>
 <script>
@@ -33,7 +31,11 @@ export default {
     next()
   },
   beforeRouteLeave (to, from, next) {
-    this.fadeType = 'fade-back'
+    if (to.path === '/player') {
+      this.fadeType = 'fade-deep'
+    } else {
+      this.fadeType = 'fade-back'
+    }
     this.$nextTick(() => {
       next()
     })

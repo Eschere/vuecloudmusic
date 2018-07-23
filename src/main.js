@@ -8,8 +8,9 @@ import router from './router'
 import store from './store'
 
 // 自定义指令
-import myDirective from '@/directive'
-Vue.use(myDirective)
+import {lazyLoad, touchLight} from '@/directive'
+Vue.use(lazyLoad)
+Vue.use(touchLight)
 
 import VueTouch from 'vue-touch'
 Vue.use(VueTouch, {name: 'v-touch'})

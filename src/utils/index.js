@@ -71,3 +71,43 @@ export function getCoordinateOnCircle (rx, ry, r, angle) {
     y: Math.round((ry - r * Math.cos(angle)) * 100) / 100
   }
 }
+
+/**
+ * 根据时间值返回标准时间格式 00:00:00
+ * @param {Number} time [时间值，单位s]
+ */
+export function formatTime (time) {
+  let s = Math.floor(time % 60)
+  let m = Math.floor(time / 60)
+  s = s < 10 ? '0' + s : s
+  m = m < 10 ? '0' + m : m
+  return m + ':' + s
+}
+
+/**
+ * 根据时间字符串装换成具体时间数值
+ * @param {String} str [时间字符串， 00:00.00]
+ */
+export function strToTime (str) {
+  // 00:00.00
+  let time = str.split(':')
+  return time[0] * 60 + (time[1] - 0)
+}
+
+/**
+ * 歌词解析，将歌词字符串解析成数组
+ * @param {String} str [歌词内容字符串]
+ */
+export function lrcParser (str) {
+  let reg = /\[([0-9]+.*)\].*/g
+  let arr = str.match(reg)
+  arr = arr.map((item, index) => {
+    let rest = new RegExp(/\[([0-9]+.*)\](.*)/).exec(item)
+    return {
+      index,
+      time: strToTime(rest[1]),
+      text: rest[2]
+    }
+  })
+  return arr
+}

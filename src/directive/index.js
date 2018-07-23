@@ -1,4 +1,4 @@
-let myDirective = {}
+export let lazyLoad = {}
 
 /**
  * v-src 图片异步加载
@@ -7,7 +7,7 @@ let myDirective = {}
  * before-load 图片加载完成前的类名
  * src 图片地址
  */
-myDirective.install = function (Vue, options) {
+lazyLoad.install = function (Vue) {
   Vue.directive('src', {
     bind (el, binding) {
       let beforeLoadClass = binding.arg
@@ -51,4 +51,23 @@ myDirective.install = function (Vue, options) {
     }
   })
 }
-export default myDirective
+
+export let touchLight = {}
+/**
+ * 元素touch发光
+ * options.name 自定义指令名
+ * v-touchLight="color" color为发光颜色
+ */
+touchLight.install = function (Vue, {name = 'touch-light'} = {}) {
+  Vue.directive(name, {
+    bind (el, binding) {
+      let color = binding.value || 'white'
+      el.addEventListener('touchstart', () => {
+        el.style.textShadow = '0 0 15px ' + color
+      })
+      el.addEventListener('touchend', () => {
+        el.style.textShadow = ''
+      })
+    }
+  })
+}

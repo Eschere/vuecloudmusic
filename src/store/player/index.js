@@ -24,11 +24,16 @@ export default {
   state: {
     guid,
     duration: 0,
-    currentTime: 0,
-    running: false,
+    currentTime: 0, // 原生播放器向store更新时间 用 updateCurrentTime 提交
+
+    // store 向 原生播放器触发更新 用setCurrentTime 提交
+    // 重置该参数时将其设置为null, 不要设置成0
+    currentTimeSetter: null,
+    running: false, // 播放器播放状态
     playlist: [],
     loopType: 'proper', // 'proper', 'random', 'single'
-    dataLoading: false,
+    dataLoading: false, // 歌曲相关信息加载状态
+    loadedTime: 0, // 已加载时长
     currentSong: {
       /* eslint-disable */
       /*indexInPlaylist: 0,
@@ -102,11 +107,30 @@ srcReady:true
         state.running = playState
       }
     },
+    toggleLoopType (state) {
+      switch (state.loopType) {
+        case 'proper': 
+          state.loopType = 'single'
+          break
+        case 'single': 
+          state.loopType = 'random'
+          break
+        case 'random': 
+          state.loopType = 'proper'
+          break
+      }
+    },
+    saveLoadedTime (state, timestamp) {
+      state.loadedTime = timestamp
+    },
     saveDuration (state, timestamp) {
       state.duration = timestamp
     },
     updateCurrentTime (state, timestamp) {
       state.currentTime = timestamp
+    },
+    setCurrentTime (state, timestamp) {
+      state.currentTimeSetter = timestamp
     },
     changeDataLoading (state, status) {
       state.dataLoading = status
