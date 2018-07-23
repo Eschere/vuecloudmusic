@@ -16,8 +16,8 @@
     </span>
   </div>
   <div class="player-main">
-    <template is="mainPage">
-    </template>
+    <div :is="showing">
+    </div>
   </div>
   <div class="player-footer">
     <!-- 播放进度 -->
@@ -80,9 +80,16 @@
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 import {formatTime} from '@/utils'
 
+import cd from './cd'
+
 export default {
+  components: {
+    cd
+  },
   data () {
     return {
+      showing: 'cd',
+      title: '',
       fadeType: 'fade-deep',
       timeSetting: null,
       progressBarWidth: '',
@@ -131,16 +138,16 @@ export default {
     ...mapActions('player', ['changeSong']),
     // 滚动条来回滚动
     scrollRound (scroll, end) {
-      setTimeout(() => {
-        scroll.scrollTo(end, 0, 5000, {style: 'cubic-bezier(0, 0, 1, 1)'})
-        console.log('scroll')
-      }, 1000)
+      if (scroll.maxScrollX < -30) {
+        setTimeout(() => {
+          scroll.scrollTo(end, 0, scroll.maxScrollX / -30 * 1000, {style: 'cubic-bezier(0, 0, 1, 1)'})
+        }, 2000)
+      }
     },
     changeProgressPan (e) {
       let time = (e.center.x - this.progressBarOffset) / this.progressBarWidth * this.duration
       this.timeSetting = time < 0 ? 0 : time > this.duration ? this.duration : time
       if (e.isFinal) {
-        console.log(this.timeSetting)
         this.setCurrentTime(this.timeSetting)
         setTimeout(() => {
           this.timeSetting = null
@@ -153,7 +160,7 @@ export default {
     }
   },
   mounted () {
-    let scroll = new window.IScroll(this.$refs.firstTitle, {
+    let scroll = this.title = new window.IScroll(this.$refs.firstTitle, {
       scrollX: true,
       scrollY: false,
       bounce: false,
@@ -167,7 +174,6 @@ export default {
     })
 
     scroll.on('scrollEnd', () => {
-      console.log('end')
       if (scroll.maxScrollX === scroll.x) {
         this.scrollRound(scroll, 0)
       } else if (scroll.x === 0) {
@@ -186,6 +192,17 @@ export default {
     this.$nextTick(() => {
       next()
     })
+  },
+  watch: {
+    'currentSong.src' () {
+      this.title.scrollTo(0, 0, 0)
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.title.refresh()
+          this.scrollRound(this.title, this.title.maxScrollX)
+        }, 1000)
+      })
+    }
   }
 }
 </script>
@@ -236,7 +253,7 @@ export default {
   }
   .player-main {
     flex: 1;
-    background: rgba($color: red, $alpha: .5);
+    background:#545454;// rgba($color: red, $alpha: .5);
   }
   .player-footer {
     .progress-area {
