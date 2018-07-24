@@ -46,7 +46,7 @@ export default {
   methods: {
     initData () {
       // 获取评论数量
-      jsonp(`${this.server}/commenttotal?topic=${this.currentList.dissid}`, {
+      jsonp(`${this.server}/playlistcommentnum?topic=${this.currentList.dissid}`, {
         name: 'jsoncallback9210216379563' + Math.floor((Math.random() * 899) + 100)
       }, (err, data) => {
         if (err) {

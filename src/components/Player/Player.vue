@@ -1,5 +1,5 @@
 <template>
-<transition :name="fadeType">
+<transition name="fade">
 <div class="player-page">
   <div class="player-header">
     <v-touch
@@ -16,8 +16,13 @@
     </span>
   </div>
   <div class="player-main">
-    <div :is="showing">
-    </div>
+    <transition name='fast-fade'>
+      <div
+        :is="showing"
+        @togglepage="togglePage"
+      >
+      </div>
+    </transition>
   </div>
   <div class="player-footer">
     <!-- 播放进度 -->
@@ -52,7 +57,7 @@
       ></v-touch>
       <v-touch
         class="prev iconfont icon-prev"
-        @tap="changeSong({type: 'prev'})"
+        @tap="changeSong({type:'prev'})"
         v-touch-light
       ></v-touch>
       <v-touch
@@ -63,7 +68,7 @@
       ></v-touch>
       <v-touch
         class="next iconfont icon-next"
-        @tap="changeSong({type: 'next'})"
+        @tap="changeSong({type:'next'})"
         v-touch-light
       ></v-touch>
       <v-touch
@@ -81,16 +86,16 @@ import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 import {formatTime} from '@/utils'
 
 import cd from './cd'
-
+import lyric from './lyric'
 export default {
   components: {
-    cd
+    cd,
+    lyric
   },
   data () {
     return {
       showing: 'cd',
       title: '',
-      fadeType: 'fade-deep',
       timeSetting: null,
       progressBarWidth: '',
       progressBarOffset: ''
@@ -144,6 +149,13 @@ export default {
         }, 2000)
       }
     },
+    togglePage () {
+      if (this.showing === 'cd') {
+        this.showing = 'lyric'
+      } else if (this.showing === 'lyric') {
+        this.showing = 'cd'
+      }
+    },
     changeProgressPan (e) {
       let time = (e.center.x - this.progressBarOffset) / this.progressBarWidth * this.duration
       this.timeSetting = time < 0 ? 0 : time > this.duration ? this.duration : time
@@ -187,12 +199,6 @@ export default {
     this.progressBarOffset = progressRect.x || progressRect.left
     this.progressBarWidth = progressRect.width
   },
-  beforeRouteLeave (to, from, next) {
-    this.fadeType = 'fade-back'
-    this.$nextTick(() => {
-      next()
-    })
-  },
   watch: {
     'currentSong.src' () {
       this.title.scrollTo(0, 0, 0)
@@ -210,12 +216,19 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/scss.config.scss';
 .player-page {
+  box-sizing: border-box;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: #545454;
+  overflow: hidden;
+  padding-top: 50px;
+  flex: 1;
   .player-header {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 50px;
     width: 100vw;
     display: flex;
@@ -252,6 +265,7 @@ export default {
     }
   }
   .player-main {
+    position: relative;
     flex: 1;
     background:#545454;// rgba($color: red, $alpha: .5);
   }

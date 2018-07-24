@@ -8,7 +8,9 @@
     id="app"
   >
     <AudioPlayer></AudioPlayer>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <router-view
       name="mini-player"
       v-if="playlist.length"
@@ -88,6 +90,17 @@ ul {
 .app-active {
   transition: all 0.3s;
 }
+.fade-enter-active,
+.fade-leave-active {
+  z-index: 200;
+  position: absolute!important;
+  transition: all 0.25s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translate3d(0 , 10%, 0);
+}
 
 .fade-back-leave-to {
   opacity: 0;
@@ -114,15 +127,24 @@ ul {
 }
 .fade-deep-leave-active {
   z-index: 150;
-  position: absolute;
-  transition: all 0.2s;
+  position: absolute!important;
+  transition: all .2s;
 }
 .fade-deep-enter-active {
   z-index: 200;
-  position: absolute;
-  transition: all 0.25s
+  position: absolute!important;
+  transition: all .25s
 }
 
+.fast-fade-enter,
+.fast-fade-leave-to {
+  opacity: 0;
+}
+.fast-fade-enter-active,
+.fast-fade-leave-active {
+  position: absolute!important;
+  transition: opacity 0.15s;
+}
 /* 列表过渡 */
 .mini-order-move {
   transition: transform 0.2s;

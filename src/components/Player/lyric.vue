@@ -1,0 +1,10 @@
+<template>
+  <v-touch
+    class="lyric-page"
+    @tap="$emit('togglepage')"
+  >
+    <div>
+      歌词
+    </div>
+  </v-touch>
+</template>

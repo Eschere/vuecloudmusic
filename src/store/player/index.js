@@ -23,9 +23,9 @@ export default {
   namespaced: true,
   state: {
     guid,
+    cdMoveDirection: '', // 播放器的切歌方向，用于控制cd切换动画
     duration: 0,
     currentTime: 0, // 原生播放器向store更新时间 用 updateCurrentTime 提交
-
     // store 向 原生播放器触发更新 用setCurrentTime 提交
     // 重置该参数时将其设置为null, 不要设置成0
     currentTimeSetter: null,
@@ -40,6 +40,7 @@ export default {
       songname: '',
       singer: '',
       songmid: '',
+      songid: '',
       album: '',
       albummid: '',
       albumcover: '',
@@ -52,9 +53,20 @@ albummid:"0040Z1El30gtpD",
 indexInPlaylist:0,
 singer:"원",
 songmid:"002H8PeZ0F9bfF",
+songid: '',
 src:"http://dl.stream.qqmusic.qq.com/C400002H8PeZ0F9bfF.m4a?vkey=7B55699D8B48A17565866BB8AE06FDD1CBD98CE9A81AC25BFE9CF7BA702DAAC779A11C30B45BC346F3C119B039225B33BDC68E3F78F0C732&guid=974778006&uin=0&fromtag=66",
 srcReady:true
-    }
+    },
+    /*currentSongComment: {
+      comment: {
+        list: [],
+        total: 0
+      },
+      hotcomment: {
+        list: [],
+        total: 0
+      }
+    }*/
     // randomPlayedList: []// 随机播放过的歌曲
   },
   getters: {
@@ -85,11 +97,12 @@ srcReady:true
     savePlaylist (state, playlist) {
       state.playlist = playlist
     },
-    saveCurrentSongInfo (state, {indexInPlaylist, singer, songname, songmid, album, albummid, albumcover, srcReady, src}) {
+    saveCurrentSongInfo (state, {indexInPlaylist, singer, songname, songmid, songid, album, albummid, albumcover, srcReady, src}) {
       if (indexInPlaylist !== undefined) state.currentSong.indexInPlaylist = indexInPlaylist
       if (singer) state.currentSong.singer = singer
       if (songname) state.currentSong.songname = songname
       if (songmid) state.currentSong.songmid = songmid
+      if (songid) state.currentSong.songid = songid
       if (album) state.currentSong.album = album
       if (albummid) state.currentSong.albummid = albummid
       if (albumcover) state.currentSong.albumcover = albumcover
@@ -134,7 +147,21 @@ srcReady:true
     },
     changeDataLoading (state, status) {
       state.dataLoading = status
+    },
+    changeCdMoveDirection (state, direction) {
+      state.cdMoveDirection = direction
     }
+    /*
+    updateCurrentSongComment(state, {type = false, commnet}) {
+      // 更新当前歌曲评论
+      // type = true 完全更新
+      // type = false push更新
+      if (type === true) {
+        state.currentSongComment = commnet
+      } else {
+        state.currentSongComment.comment.list.push(comment)
+      }
+    }*/
   },
   actions: {
     changeSong ({commit, dispatch, state, getters}, {type, callback, beforeChange}) {
@@ -144,9 +171,11 @@ srcReady:true
       let result
       switch (type) {
         case 'prev':
+          commit('changeCdMoveDirection', 'right')
           result = keyIndex - 1 < 0 ? getters.playOrder.length - 1 : keyIndex - 1
           break
         case 'next':
+          commit('changeCdMoveDirection', 'left')
           result = keyIndex + 1 > getters.playOrder.length - 1 ? 0 : keyIndex + 1
       }
       dispatch('requestSongInfo', {
@@ -173,6 +202,7 @@ srcReady:true
             songname: data.data[0].title,
             singer: data.data[0].singer[0].name,
             songmid: data.data[0].mid,
+            songid: data.data[0].id,
             album: data.data[0].album.name,
             albummid: data.data[0].album.mid,
             albumcover: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${data.data[0].album.mid}.jpg?max_age=2592000`
@@ -193,6 +223,36 @@ srcReady:true
           callback && callback()
         }
       })
-    }
+    },
+    // 获取单曲评论
+    /* 
+    requestSongComment({commit, rootState, state}, {topic, pagenum, }) {
+      jsonp(`/songcomment?topic=${topic}&pagenum=${pagenum}&songmid=${songmid}`, {
+        name: 'jsoncallback851167396932' + Math.floor((Math.random() * 8999) + 1000)
+      }, (err, data) => {
+        if (err) console.log('Get Songcommet Failed')
+        else {
+          if (pagenum === 0) {
+            commit('updateCurrentSongComment', {
+              type: true,
+              comment: {
+                comment: {
+                  list: data.comment.commnetlist,
+                  total: data.comment.commenttotal
+                },
+                hotcomment: {
+                  list: data.hot_commnet.commnetlist,
+                  total: data.hot_commnet.commenttotal
+                }
+              }
+            })
+          } else {
+            commit('updataCurrentSongComment', {
+              comment: data.comment.commnetlist
+            })
+          }
+        }
+      })
+    } */
   }
 }
