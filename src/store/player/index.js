@@ -30,6 +30,7 @@ export default {
     // 重置该参数时将其设置为null, 不要设置成0
     currentTimeSetter: null,
     running: false, // 播放器播放状态
+    volume: 0.5,
     playlist: [],
     loopType: 'proper', // 'proper', 'random', 'single'
     dataLoading: false, // 歌曲相关信息加载状态
@@ -150,6 +151,9 @@ srcReady:true
     },
     changeCdMoveDirection (state, direction) {
       state.cdMoveDirection = direction
+    },
+    changeVolume (state, volume) {
+      state.volume = volume
     }
     /*
     updateCurrentSongComment(state, {type = false, commnet}) {

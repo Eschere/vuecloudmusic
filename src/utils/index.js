@@ -103,6 +103,8 @@ export function lrcParser (str) {
   let arr = str.match(reg)
   arr = arr.map((item, index) => {
     let rest = new RegExp(/\[([0-9]+.*)\](.*)/).exec(item)
+    rest[2] = rest[2].replace(/&nbsp;/g, ' ')
+    rest[2] = rest[2].replace(/^\/\/$/, '')
     return {
       index,
       time: strToTime(rest[1]),

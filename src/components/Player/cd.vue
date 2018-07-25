@@ -2,7 +2,7 @@
 <div class="cd-page">
   <v-touch
     class="cd-main"
-    @tap="$emit('togglepage')"
+    @tap="togglePage"
     @pan="panHandler"
     @swipe="swipeHandler"
   >
@@ -18,6 +18,8 @@
         name="mini-order"
         class="cd-cover-list"
         :style="panningStyle"
+        @enter="enter"
+        @leave="leave"
       >
         <div
           v-for="(item,index) in pnncd"
@@ -73,6 +75,12 @@ export default {
   methods: {
     ...mapMutations('player', ['changeCdMoveDirection']),
     ...mapActions('player', ['changeSong']),
+    togglePage (e) {
+      e.srcEvent.stopPropagation()
+      e.srcEvent.stopImmediatePropagation()
+      e.preventDefault()
+      this.$emit('togglepage')
+    },
     panHandler (e) {
       // 保护中的动画无法操作
       if (this.protecting) {
@@ -80,7 +88,7 @@ export default {
       }
       this.doingChangeSong = true
 
-      this.panningStyle = {transform: 'translate3d(' + e.deltaX + 'px,0,0)'}
+      this.panningStyle = {transform: 'translate3d(-100vw, 0, 0) translate3d(' + e.deltaX + 'px,0,0)'}
 
       if (e.isFinal) {
         // 动画间隔
@@ -98,7 +106,7 @@ export default {
                 this.protecting = false
                 this.doingChangeSong = false
               }, duration)
-              this.panningStyle = {transition: 'all .2s'}
+              this.panningStyle = {transition: 'all .2s ease-out'}
             }
           })
         } else if (e.deltaX / totalWidth < -0.45) {
@@ -111,12 +119,12 @@ export default {
                 this.protecting = false
                 this.doingChangeSong = false
               }, duration)
-              this.panningStyle = {transition: 'all .2s'}
+              this.panningStyle = {transition: 'all .2s ease-out'}
             }
           })
         } else {
           // 未触发切歌
-          this.panningStyle = {transition: 'all .2s'}
+          this.panningStyle = {transition: 'all .2s ease-out'}
           setTimeout(() => {
             this.protecting = false
             this.doingChangeSong = false
@@ -156,6 +164,20 @@ export default {
           }
         })
       }
+    },
+    enter (el, done) {
+      el.style.visibility = 'hidden'
+      setTimeout(() => {
+        done()
+        el.style.visibility = ''
+      }, 200)
+    },
+    leave (el, done) {
+      el.style.display = 'none'
+      setTimeout(() => {
+        done()
+        el.style.display = ''
+      }, 200)
     }
   },
   created () {
@@ -187,10 +209,12 @@ export default {
   },
   watch: {
     'currentSong.src' () {
-      this.stopAnimation = 'none'
+      setTimeout(() => {
+        this.stopAnimation = 'none'
+      }, 200)
       setTimeout(() => {
         this.stopAnimation = ''
-      }, 500)
+      }, 700)
     },
     'currentSong.indexInPlaylist' (val) {
       this.commentnum = ''
@@ -266,6 +290,7 @@ export default {
 .cd-main {
   flex: 1;
   position: relative;
+  height: 100%;
 }
 .cd-head {
   width: 100vw;
@@ -305,14 +330,15 @@ export default {
   position: absolute;
   display: flex;
   flex-wrap: nowrap;
-  margin-left: -100vw;
+  // margin-left: -100vw;
+  transform: translate3d(-100vw, 0, 0);
   .cd-cover-item {
     width: 80vw;
     height: 80vw;
     margin: 0 10vw;
+    flex-shrink: 0;
   }
   .cd-cover-bg {
-    flex-shrink: 0;
     width: 80vw;
     height: 80vw;
     background: url("~@/components/common/img/cover-border.png") no-repeat center / 100% 100%;
@@ -341,14 +367,20 @@ export default {
   }
 }
 .operation-group {
+  width: 100vw;
+  position: absolute;
+  box-sizing: border-box;
+  bottom: 0;
   display: flex;
   justify-content: space-around;
-  margin: 15px 40px;
-  .iconfont,{
+  padding: 15px 40px;
+  .iconfont{
     font-size: 23px;
     color: white;
   }
   .comment {
+    width: 23px;
+    height: 25px;
     position: relative;
     .comment-num {
       color: white;
@@ -361,6 +393,7 @@ export default {
     }
   }
   .icon-comment.shownum {
+    position: absolute;
     clip-path: polygon(0 0, 60% 0, 60% 30%,100% 30% ,100% 100%, 0 100%, 0 0);
   }
 }

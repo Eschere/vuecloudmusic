@@ -17,11 +17,13 @@
   </div>
   <div class="player-main">
     <transition name='fast-fade'>
-      <div
-        :is="showing"
-        @togglepage="togglePage"
-      >
-      </div>
+      <keep-alive>
+        <div
+          :is="showing"
+          @togglepage="togglePage"
+        >
+        </div>
+      </keep-alive>
     </transition>
   </div>
   <div class="player-footer">
@@ -265,6 +267,7 @@ export default {
     }
   }
   .player-main {
+    overflow: hidden;
     position: relative;
     flex: 1;
     background:#545454;// rgba($color: red, $alpha: .5);

@@ -54,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['running', 'currentSong', 'loopType', 'currentTimeSetter', 'currentTime'])
+    ...mapState('player', ['running', 'currentSong', 'loopType', 'currentTimeSetter', 'currentTime', 'volume'])
   },
   methods: {
     ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading', 'saveLoadedTime', 'setCurrentTime']),
@@ -149,6 +149,9 @@ export default {
       if (val !== null) {
         audio.currentTime = val
       }
+    },
+    'volume' (val) {
+      audio.volume = val
     }
   }
 }

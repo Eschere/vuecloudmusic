@@ -147,15 +147,16 @@ ul {
 }
 /* 列表过渡 */
 .mini-order-move {
-  transition: transform 0.2s;
+  transition: transform .2s linear;
 }
 .mini-order-leave-active {
   display: none!important;
-  transition: all 0.2s;
+  transition: all .2s linear;
 }
+
 .mini-order-enter-active {
   visibility: hidden;
-  transition: all 0.2s;
+  transition: opacity .2s linear;
 }
 
 /* loading样式 */
