@@ -127,6 +127,7 @@ export default {
   watch: {
     'currentSong.src' (val) {
       audio.src = val
+      audio.load()
       this.setCurrentTime(null)
       this.changePlayState(true)
     },

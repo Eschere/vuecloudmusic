@@ -70,10 +70,13 @@
       <!-- 歌曲列表 -->
       <div class="song-list" ref="list">
         <div class="list-head">
-          <div class="play-all">
+          <v-touch
+            class="play-all"
+            @tap="playall()"
+          >
             <span class="play-icon iconfont icon-play-fill"></span>
             <span>播放全部<small>(共{{songNum}}首)</small></span>
-          </div>
+          </v-touch>
           <div class="favorite">
             <span>+&ensp;收藏({{favNum}})</span>
           </div>
@@ -109,7 +112,7 @@
 
 <script>
 
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
 
 export default {
   props: ['title', 'subTitle', 'cover', 'person', 'bannerTitle', 'coverBg', 'headimg', 'bannerTime', 'commentNum', 'shareNum', 'songNum', 'favNum', 'listenNum', 'songlist', 'dissid'],
@@ -126,7 +129,7 @@ export default {
     back () {
       this.$router.go(-1)
     },
-    play (index) {
+    play (index, toPlayer) {
       if (this.currentSong.songmid === this.songlist[index].songmid) {
         this.$router.push('/player')
         return
@@ -143,12 +146,20 @@ export default {
         this.requestSongInfo({index})
       })
     },
+    playall () {
+      this.savePlaylist(this.songlist)
+      this.$nextTick(() => {
+        this.requestSongInfo({index: this.playOrder[0]})
+        this.$router.push('/player')
+      })
+    },
     showDetail () {
 
     }
   },
   computed: {
     ...mapState('player', ['guid', 'currentSong', 'playlist']),
+    ...mapGetters('player', ['playOrder']),
     ...mapState('config', ['server'])
   },
   mounted () {

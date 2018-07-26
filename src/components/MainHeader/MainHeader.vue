@@ -9,16 +9,19 @@
       <router-link
         class="icon-music"
         :to="music.path"
+        replace
       ></router-link>
 
       <router-link
           class="icon-discover"
           :to="discover.path"
+          replace
         ></router-link>
 
       <router-link
           class="icon-video"
           :to="video.path"
+          replace
         ></router-link>
     </div>
     <router-link

@@ -98,6 +98,35 @@ srcReady:true
     savePlaylist (state, playlist) {
       state.playlist = playlist
     },
+    addPlayListItem (state, {item, type='push'}) {
+      if (type === 'push') {
+        state.playlist.push(item)
+      } else if (type === 'follow') {
+        state.playlist.splice(state.currentSong.indexInPlaylist + 1, 0, item)
+      }
+    },
+    removePlaylistItem (state, index) {
+      state.playlist.splice(index, 1)
+    },
+    clearPlaylist (state) {
+      state.currentSong = {
+        indexInPlaylist: 0,
+        songname: '',
+        singer: '',
+        songmid: '',
+        songid: '',
+        album: '',
+        albummid: '',
+        albumcover: '',
+        srcReady: '',
+        src: ''
+      }
+      state.running = false
+      state.currentTimeSetter = 0
+      state.duration = 0
+      state.loadedTime = 0
+      state.playlist = []
+    },
     saveCurrentSongInfo (state, {indexInPlaylist, singer, songname, songmid, songid, album, albummid, albumcover, srcReady, src}) {
       if (indexInPlaylist !== undefined) state.currentSong.indexInPlaylist = indexInPlaylist
       if (singer) state.currentSong.singer = singer
@@ -188,6 +217,20 @@ srcReady:true
         beforeChange
       })
     },
+    removePlaylistItem({state, dispatch, commit}, index) {
+      if (state.currentSong.indexInPlaylist ===  index) {
+        dispatch('changeSong', {type: 'next'})
+      }
+      if ( state.currentSong.indexInPlaylist > index) {
+        commit('saveCurrentSongInfo', {
+          indexInPlaylist: state.currentSong.indexInPlaylist - 1
+        })
+      }
+      commit('removePlaylistItem', index)
+    },
+    // changeSongByIndex () {
+
+    // },
     requestSongInfo ({commit, rootState, state}, {index, callback, beforeChange}) {
       // 切歌前执行的函数
       beforeChange && beforeChange()

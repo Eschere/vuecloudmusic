@@ -10,7 +10,6 @@
     :person="currentList.creator.name"
     :comment-num="commenttotal"
     share-num="分享"
-    banner-time="发行时间：2018.7.13"
     :song-num="cdinfo.songnum"
     :fav-num="favNum"
     :songlist="songlist"

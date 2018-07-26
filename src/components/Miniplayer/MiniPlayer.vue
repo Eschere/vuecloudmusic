@@ -51,26 +51,34 @@
           <path :d="buttonSvg" :style="{stroke: buttonColor, 'stroke-width': 1.5, fill: 'none', 'stroke-linejoin': 'round'}"/>
         </svg>
       </v-touch>
-      <span class="list-toggle iconfont icon-list"></span>
+      <v-touch
+        class="list-toggle iconfont icon-list"
+        @tap="showPlaylist=true"
+      ></v-touch>
     </div>
+    <playlist
+      :showPlaylist=showPlaylist
+      @close="showPlaylist = false"
+    >
+    </playlist>
   </div>
 </template>
 <script>
-import {Swipe, SwipeItem} from 'mint-ui'
 
 import {mapState, mapMutations, mapGetters, mapActions} from 'vuex'
 
 import {getCoordinateOnCircle} from '@/utils'
 
+import playlist from '#/overlay/playlist'
 const svgR = 15
 export default {
   name: 'MiniPlayer',
   components: {
-    Swipe,
-    SwipeItem
+    playlist
   },
   data () {
     return {
+      showPlaylist: false,
       pcnlist: '',
       panningStyle: '',
       changeBymini: false,

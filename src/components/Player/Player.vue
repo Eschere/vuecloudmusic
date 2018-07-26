@@ -1,6 +1,12 @@
 <template>
 <transition name="fade">
 <div class="player-page">
+  <div
+    class="page-bg"
+    :style="{backgroundImage: 'url('+pageBg+')'}"
+  >
+
+  </div>
   <div class="player-header">
     <v-touch
       @tap="$router.go(-1)"
@@ -76,9 +82,15 @@
       <v-touch
         class="show-playlist iconfont icon-list"
         v-touch-light
+        @tap="playlistOn"
       ></v-touch>
     </div>
   </div>
+  <playlist
+    :showPlaylist="showPlaylist"
+    @close="showPlaylist=false"
+  >
+  </playlist>
 </div>
 </transition>
 </template>
@@ -89,13 +101,17 @@ import {formatTime} from '@/utils'
 
 import cd from './cd'
 import lyric from './lyric'
+import playlist from '#/overlay/playlist'
 export default {
   components: {
     cd,
-    lyric
+    lyric,
+    playlist
   },
   data () {
     return {
+      showPlaylist: false,
+      pageBg: '',
       showing: 'cd',
       title: '',
       timeSetting: null,
@@ -104,7 +120,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['running', 'currentSong', 'duration', 'currentTime', 'loadedTime', 'loopType']),
+    ...mapState('player', ['running', 'playlist', 'currentSong', 'duration', 'currentTime', 'loadedTime', 'loopType']),
     ...mapGetters('player', ['progress']),
     durationStr () {
       return formatTime(this.duration)
@@ -158,6 +174,9 @@ export default {
         this.showing = 'cd'
       }
     },
+    playlistOn () {
+      this.showPlaylist = true
+    },
     changeProgressPan (e) {
       let time = (e.center.x - this.progressBarOffset) / this.progressBarWidth * this.duration
       this.timeSetting = time < 0 ? 0 : time > this.duration ? this.duration : time
@@ -174,6 +193,15 @@ export default {
     }
   },
   mounted () {
+    setTimeout(() => {
+      let img = new Image()
+      img.src = this.currentSong.albumcover
+      img.onload = () => {
+        this.pageBg = img.src
+        img = null
+      }
+    }, 1000)
+
     let scroll = this.title = new window.IScroll(this.$refs.firstTitle, {
       scrollX: true,
       scrollY: false,
@@ -202,6 +230,11 @@ export default {
     this.progressBarWidth = progressRect.width
   },
   watch: {
+    'playlist.length' (val) {
+      if (val === 0 && this.$route.path === '/player') {
+        this.$router.go(-1)
+      }
+    },
     'currentSong.src' () {
       this.title.scrollTo(0, 0, 0)
       this.$nextTick(() => {
@@ -210,6 +243,15 @@ export default {
           this.scrollRound(this.title, this.title.maxScrollX)
         }, 1000)
       })
+
+      setTimeout(() => {
+        let img = new Image()
+        img.src = this.currentSong.albumcover
+        img.onload = () => {
+          this.pageBg = img.src
+          img = null
+        }
+      }, 1000)
     }
   }
 }
@@ -223,10 +265,22 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #545454;
   overflow: hidden;
   padding-top: 50px;
   flex: 1;
+
+  .page-bg {
+    background-color: #545454;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    filter: blur(30px) brightness(70%);
+    transform: scale(1.5);
+    transition: all 2s;
+  }
   .player-header {
     position: fixed;
     top: 0;
@@ -270,7 +324,6 @@ export default {
     overflow: hidden;
     position: relative;
     flex: 1;
-    background:#545454;// rgba($color: red, $alpha: .5);
   }
   .player-footer {
     .progress-area {

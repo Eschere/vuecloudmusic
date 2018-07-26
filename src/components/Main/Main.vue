@@ -1,5 +1,4 @@
 <template>
-<transition name="main">
   <div class="main"
     :style="{paddingBottom: playlist.length ? '50px' : ''}">
     <router-view></router-view>
@@ -8,12 +7,18 @@
       <router-view name="content"></router-view>
     </keep-alive>
     </transition>
+    <Maside></Maside>
   </div>
-</transition>
 </template>
 <script>
 import {mapGetters, mapState} from 'vuex'
+
+import Maside from '#/overlay/aside'
+
 export default {
+  components: {
+    Maside
+  },
   data () {
     return {
       toggleType: 'slide-left'
@@ -35,13 +40,6 @@ export default {
   }
 }
 </script>
-<style>
-.main-enter-active,
-.main-leave-active {
-  z-index: 100;
-  transition: all 0.2s;
-}
-</style>
 
 <style scoped>
 .main {

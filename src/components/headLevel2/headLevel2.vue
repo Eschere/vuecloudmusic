@@ -9,6 +9,7 @@
       ref="navBox"
     >
       <router-link
+        replace
         :style="{width: pages.length < 4 ? '33.3333vw' : ''}"
         v-for="(page,index) in pages"
         :key="page.link"

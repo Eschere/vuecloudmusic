@@ -15,21 +15,18 @@
       name="mini-player"
       v-if="playlist.length"
     ></router-view>
-    <Maside></Maside>
   </div>
 </transition>
 </template>
 
 <script>
 import AudioPlayer from '#/AudioPlayer/AudioPlayer'
-import Maside from '#/aside/aside'
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    AudioPlayer,
-    Maside
+    AudioPlayer
   },
   computed: {
     ...mapState('player', ['playlist']),
