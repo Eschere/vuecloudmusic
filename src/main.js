@@ -16,7 +16,7 @@ import VueTouch from 'vue-touch'
 Vue.use(VueTouch, {name: 'v-touch'})
 
 // 优化滚动条效果
-import '@/assets/iscroll-lite.js'
+import '@/assets/iscroll-probe.js'
 
 
 // 字体样式表

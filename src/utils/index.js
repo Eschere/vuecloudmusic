@@ -97,19 +97,41 @@ export function strToTime (str) {
 /**
  * 歌词解析，将歌词字符串解析成数组
  * @param {String} str [歌词内容字符串]
+ * @param {String} strTrans [歌词中文翻译]
  */
-export function lrcParser (str) {
+export function lrcParser (str, strTrans) {
   let reg = /\[([0-9]+.*)\].*/g
+  let arrTrans
+  if (strTrans) {
+    arrTrans = strTrans.match(reg).map(item => {
+      let rest = new RegExp(/\[([0-9]+.*)\](.*)/).exec(item)
+      rest[2] = rest[2].replace(/&nbsp;/g, ' ')
+      rest[2] = rest[2].replace(/^\/\/$/, '')
+      return {
+        time: rest[1],
+        text: rest[2]
+      }
+    })
+  }
+
   let arr = str.match(reg)
-  arr = arr.map((item, index) => {
+  arr = arr.map(item => {
     let rest = new RegExp(/\[([0-9]+.*)\](.*)/).exec(item)
     rest[2] = rest[2].replace(/&nbsp;/g, ' ')
     rest[2] = rest[2].replace(/^\/\/$/, '')
+    let findedTrans
+    if (arrTrans.length > 0) {
+      findedTrans = arrTrans.find(i => {
+        return i.time === rest[1]
+      })
+    }
     return {
-      index,
       time: strToTime(rest[1]),
-      text: rest[2]
+      text: rest[2],
+      trans: findedTrans ? findedTrans.text : ''
     }
   })
-  return arr
+  return arr.filter(item => {
+    return item.text !== '' || item.trans !== ''
+  })
 }
