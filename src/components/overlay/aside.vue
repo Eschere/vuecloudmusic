@@ -4,8 +4,8 @@
     @close="toggleAside(false)"
   >
     <v-touch class="aside-content">
-      <div>
-        内容以<br><br>
+      <div class="aside-banner">
+        
       </div>
       <div>
         <v-touch @tap="toggleAside(false)">10</v-touch>

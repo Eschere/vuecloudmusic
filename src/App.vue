@@ -81,7 +81,7 @@ ul {
 @include build-transition('slide');
 
 .app-appear {
-  transform: scale(1.5);
+  transform: scale3d(1.5, 1.5, 1);
   opacity: 0.5;
 }
 .app-active {

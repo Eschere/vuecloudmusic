@@ -276,10 +276,9 @@ export default {
     height: 100vh;
     top: 0;
     left: 0;
-    z-index: -1;
     filter: blur(30px) brightness(70%);
-    transform: scale(1.5);
-    transition: all 2s;
+    transform: scale3d(1.5, 1.5, 1);
+    transition: background 2s;
   }
   .player-header {
     position: fixed;
@@ -326,6 +325,7 @@ export default {
     flex: 1;
   }
   .player-footer {
+    position: relative;
     .progress-area {
       display: flex;
       margin: 15px;
