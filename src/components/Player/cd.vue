@@ -70,7 +70,7 @@ export default {
   computed: {
     ...mapState('player', ['running', 'currentSong', 'playlist', 'cdMoveDirection']),
     ...mapGetters('player', ['playOrder']),
-    ...mapState('config', ['server'])
+    ...mapGetters('config', ['currentServer'])
   },
   methods: {
     ...mapMutations('player', ['changeCdMoveDirection']),
@@ -256,7 +256,7 @@ export default {
       this.changeCdMoveDirection('')
     },
     'currentSong.songid' (val) {
-      jsonp(this.server + '/songcommentnum?topic=' + val, {
+      jsonp(this.currentServer.url + '/songcommentnum?topic=' + val, {
         name: 'jsoncallback2387000247395' + Math.floor((Math.random() * 8999) + 1000)
       }, (err, data) => {
         if (err) {

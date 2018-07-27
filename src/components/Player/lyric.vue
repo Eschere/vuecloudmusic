@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapGetters, mapMutations} from 'vuex'
 
 import jsonp from 'jsonp'
 import {decodeBase64, formatTime, lrcParser} from '@/utils'
@@ -94,7 +94,7 @@ export default {
   },
   computed: {
     ...mapState('player', ['volume', 'currentSong', 'currentTime']),
-    ...mapState('config', ['server']),
+    ...mapGetters('config', ['currentServer']),
     activeIndex () {
       if (this.lyricArray.length > 0) {
         // 最小为0
@@ -156,7 +156,7 @@ export default {
       this.scrollByUser = false
       this.readyForChange = false
       // 请求歌词
-      jsonp(this.server + '/songlyric?songmid=' + this.currentSong.songmid, {
+      jsonp(this.currentServer.url + '/songlyric?songmid=' + this.currentSong.songmid, {
         name: 'MusicJsonCallback_lrc'
       }, (err, data) => {
         if (err) {

@@ -1,6 +1,7 @@
 $base:100;
 $theme-color:#e20000;
 
+// 构建左右滑动效果
 @mixin build-transition($name) {
   .#{$name}-left-enter,
   .#{$name}-right-leave-to {
@@ -19,6 +20,35 @@ $theme-color:#e20000;
   }
 }
 
+// 细线 支持容器上下两条线
+@mixin thin-line($top: false, $bottom: true) {
+  position: relative;
+  @if $top {
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      top: 0;
+      left: 0;
+      background-color: #eee;
+      transform: scale3d(1,0.5,1);
+    }
+  }
+  @if $bottom {
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      background-color: #eee;
+      transform: scale3d(1,0.5,1);
+    }
+  }
+  
+}
 // @mixin fullpage-transition($name , $type) {
 //   @if $type == 
 //   #{$name}-enter,

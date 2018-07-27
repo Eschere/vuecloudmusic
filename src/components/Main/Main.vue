@@ -1,4 +1,5 @@
 <template>
+<transition name="main">
   <div class="main"
     :style="{paddingBottom: playlist.length ? '50px' : ''}">
     <router-view></router-view>
@@ -9,9 +10,10 @@
     </transition>
     <Maside></Maside>
   </div>
+</transition>
 </template>
 <script>
-import {mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState, mapMutations} from 'vuex'
 
 import Maside from '#/overlay/aside'
 
@@ -37,9 +39,21 @@ export default {
       this.toggleType = 'slide-right'
     }
     next()
+  },
+  beforeRouteLeave (to, from, next) {
+    mapMutations(['toggleAside']).toggleAside.call(this, false)
+    next()
   }
 }
 </script>
+<style>
+
+.main-enter-active,
+.main-leave-active {
+  position: absolute!important;
+  transition: all 0.2s;
+}
+</style>
 
 <style scoped>
 .main {

@@ -1,7 +1,7 @@
 <template>
 <div
   class="detail-page"
-  :style="{paddingBottom: playlist.length ? '50px' : ''}"
+  :style="{paddingBottom: needMiniPlayer ? playlist.length ? '50px' : '' : ''}"
 >
   <head class="detail-head">
     <v-touch
@@ -24,7 +24,12 @@
 import {mapState} from 'vuex'
 
 export default {
-  props: ['title'],
+  props: {
+    title: String,
+    needMiniPlayer: {
+      default: true
+    }
+  },
   methods: {
     back () {
       this.$router.go(-1)

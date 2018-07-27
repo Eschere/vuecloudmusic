@@ -77,13 +77,16 @@ export default {
   computed: {
     ...mapState('config', ['server']),
     ...mapState('songSheet', ['category', 'currentList']),
-    ...mapGetters('songSheet', ['categoryHot'])
+    ...mapGetters('songSheet', ['categoryHot']),
+    ...mapGetters('config', {
+      server: 'currentServer'
+    })
   },
   methods: {
     ...mapMutations('songSheet', ['changeCategory', 'saveCurrentList']),
     requestSongSheet (cb) {
       this.loading = true
-      jsonp(`${this.server}/songSheet?categoryId=${this.category.categoryId}&sin=${this.sin}&ein=${this.ein}`, {
+      jsonp(`${this.server.url}/songSheet?categoryId=${this.category.categoryId}&sin=${this.sin}&ein=${this.ein}`, {
         name: 'getPlaylist'
       }, (err, data) => {
         if (err) console.log('Get SongSheet Failed')
@@ -208,6 +211,7 @@ export default {
           position: center;
           repeat: no-repeat;
         }
+        transition: background 1s;
       }
       .before-load {
         background: url('~@/components/common/img/cover-loading.png') no-repeat center / 100%;

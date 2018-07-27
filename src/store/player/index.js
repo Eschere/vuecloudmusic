@@ -231,14 +231,14 @@ srcReady:true
     // changeSongByIndex () {
 
     // },
-    requestSongInfo ({commit, rootState, state}, {index, callback, beforeChange}) {
+    requestSongInfo ({commit, state, rootGetters}, {index, callback, beforeChange}) {
       // 切歌前执行的函数
       beforeChange && beforeChange()
       // 切歌程序首先执行歌曲索引切换，保持页面程序的运行
       commit('saveCurrentSongInfo', {
         indexInPlaylist: index
       })
-      let server = rootState.config.server
+      let server = rootGetters['config/currentServer'].url
       let mid = state.playlist[index].songmid
       jsonp(server + '/songinfo?songmid=' + mid, {
         name: 'getOneSongInfoCallback'

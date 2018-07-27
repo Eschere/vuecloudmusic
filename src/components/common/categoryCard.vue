@@ -72,6 +72,7 @@ export default {
     position: center;
     repeat: no-repeat;
   }
+  transition: background 1s;
 }
 .before-load {
   // width: 31vw;

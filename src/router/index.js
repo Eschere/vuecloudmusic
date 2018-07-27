@@ -10,6 +10,8 @@ import Music from '#/Music/Music'
 
 import Video from '#/Video/Video'
 
+import config from '#/Config'
+
 // 详情类
 const songSheet = () => import('#/songSheet/songSheet')
 const songSheetHomePage = () => import('#/songSheet/homePage')
@@ -138,6 +140,16 @@ export default new Router({
     {
       path: '/player',
       component: Player
+    },
+    {
+      path: '/config',
+      component: config
+      // children: [
+      //   {
+      //     path: 'network',
+
+      //   }
+      // ]
     },
     {
       path: '*',

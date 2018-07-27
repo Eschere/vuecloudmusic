@@ -19,7 +19,7 @@
 </template>
 <script>
 import detailPage2 from '#/common/detailFramework2'
-import {mapState} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import jsonp from 'jsonp'
 
 export default {
@@ -40,12 +40,12 @@ export default {
   },
   computed: {
     ...mapState('songSheet', ['currentList']),
-    ...mapState('config', ['server'])
+    ...mapGetters('config', ['currentServer'])
   },
   methods: {
     initData () {
       // 获取评论数量
-      jsonp(`${this.server}/playlistcommentnum?topic=${this.currentList.dissid}`, {
+      jsonp(`${this.currentServer.url}/playlistcommentnum?topic=${this.currentList.dissid}`, {
         name: 'jsoncallback9210216379563' + Math.floor((Math.random() * 899) + 100)
       }, (err, data) => {
         if (err) {
@@ -56,14 +56,14 @@ export default {
       })
 
       // 收藏量
-      jsonp(`${this.server}/favNum?dissid=${this.currentList.dissid}`, {
+      jsonp(`${this.currentServer.url}/favNum?dissid=${this.currentList.dissid}`, {
         name: 'getFavNum42076' + Math.floor((Math.random() * 89999) + 10000)
       }, (err, data) => {
         if (err) console.log('Get FavNum Failed')
         else this.favNum = data.totalnum
       })
       // cd信息、歌曲列表
-      jsonp(`${this.server}/playlist?dissid=${this.currentList.dissid}`, {
+      jsonp(`${this.currentServer.url}/playlist?dissid=${this.currentList.dissid}`, {
         name: 'playlistinfoCallback'
       }, (err, data) => {
         if (err) console.log('Get Playlistinfo Failed')

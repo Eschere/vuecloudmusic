@@ -52,9 +52,6 @@ const store = new Vuex.Store({
       }
       return array
     },
-    // myPlaylist (state, getters) {
-    //   return getters.recomPlaylist
-    // },
     focus (state) {
       return state.homeData ? state.homeData.focus.data.content : []
     }
@@ -70,8 +67,8 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getHomeData ({commit, state}, name) {
-      jsonp(state.config.server + '/homeData', {
+    getHomeData ({commit, getters}, name) {
+      jsonp(getters['config/currentServer'].url + '/homeData', {
         name
       }, (err, data) => {
         if (err) console.log('get homeData failed')

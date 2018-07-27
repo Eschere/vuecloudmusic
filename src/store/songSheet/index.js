@@ -29,8 +29,8 @@ export default {
     }
   },
   actions: {
-    getSongSheetTags ({commit, rootState}) {
-      jsonp(rootState.config.server + '/songSheetTag', {
+    getSongSheetTags ({commit, rootGetters}) {
+      jsonp(rootGetters['config/currentServer'].url + '/songSheetTag', {
         name: 'getPlaylistTags'
       }, (err, data) => {
         if (err) console.log('Get SongSheetTags Failed')

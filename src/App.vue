@@ -21,7 +21,7 @@
 
 <script>
 import AudioPlayer from '#/AudioPlayer/AudioPlayer'
-import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapState, mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'App',
@@ -30,14 +30,19 @@ export default {
   },
   computed: {
     ...mapState('player', ['playlist']),
-    ...mapGetters(['recomPlaylist'])
+    ...mapGetters(['recomPlaylist']),
+    ...mapGetters('config', ['currentServer'])
   },
   created () {
-    this.getHomeData('recom011050278372287448')
+    this.getHomeData('recom01105027837228' + Math.floor((Math.random() * 8999) + 1000))
   },
   methods: {
-    ...mapMutations('config/', ['setServer']),
     ...mapActions(['getHomeData'])
+  },
+  watch: {
+    'currentServer.url' () {
+      this.getHomeData('recom01105027837228' + Math.floor((Math.random() * 8999) + 1000))
+    }
   }
 }
 </script>
@@ -130,7 +135,7 @@ ul {
 .fade-deep-enter-active {
   z-index: 200;
   position: absolute!important;
-  transition: all .25s
+  transition: all 0.25s
 }
 
 .fast-fade-enter,

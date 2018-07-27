@@ -4,13 +4,9 @@
 </transition>
 </template>
 <script>
-import detailPage from '#/common/detailFramework'
 import {mapActions} from 'vuex'
 
 export default {
-  components: {
-    detailPage
-  },
   data () {
     return {
       fadeType: 'fade-deep'
@@ -21,6 +17,16 @@ export default {
   },
   created () {
     this.getSongSheetTags()
+  },
+  deactivated () {
+    this.$nextTick(() => {
+      // 控制过渡动画类型
+      if (this.$route.path === '/player') {
+        this.fadeType = 'fade-back'
+      } else {
+        this.fadeType = 'fade-deep'
+      }
+    })
   },
   beforeRouteUpdate (to, from, next) {
     if (to.path.length > from.path.length) {
