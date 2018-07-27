@@ -47,17 +47,16 @@ export default {
   },
   data () {
     return {
-      // audio: null,
       shadeOn: false,
       confirmBox: false,
       alertBox: false
     }
   },
   computed: {
-    ...mapState('player', ['running', 'currentSong', 'loopType', 'currentTimeSetter', 'currentTime', 'volume'])
+    ...mapState('player', ['playlist', 'running', 'currentSong', 'loopType', 'currentTimeSetter', 'currentTime', 'volume'])
   },
   methods: {
-    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading', 'saveLoadedTime', 'setCurrentTime']),
+    ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading', 'saveLoadedTime', 'setCurrentTime', 'setDisableItem']),
     ...mapActions('player', ['changeSong']),
     cancel (cb) {
       this.changePlayState(false)
@@ -120,8 +119,23 @@ export default {
     })
     // 播放错误
     audio.addEventListener('error', () => {
-      this.shadeOn = true
-      this.alertBox = true
+      if (this.currentSong.src) {
+        let allDisable = this.playlist.every(item => {
+          return item.disable === true
+        })
+        if (allDisable) {
+          this.shadeOn = true
+          this.confirmBox = true
+        } else {
+          let index = this.currentSong.indexInPlaylist
+          this.changeSong({
+            type: 'next',
+            callback: () => {
+              this.setDisableItem(index)
+            }
+          })
+        }
+      }
     })
   },
   watch: {
@@ -133,9 +147,9 @@ export default {
     },
     'running' (val) {
       if (val) {
-        if (audio.paused) {
+        if (audio.paused && audio.src) {
           audio.play().catch((e) => {
-            console.log('running', e)
+            console.log('p')
             this.shadeOn = true
             this.confirmBox = true
           })

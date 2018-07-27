@@ -33,7 +33,7 @@ export default {
     volume: 0.5,
     playlist: [],
     loopType: 'proper', // 'proper', 'random', 'single'
-    dataLoading: false, // 歌曲相关信息加载状态
+    dataLoading: true, // 歌曲相关信息加载状态
     loadedTime: 0, // 已加载时长
     currentSong: {
       /* eslint-disable */
@@ -77,7 +77,9 @@ srcReady:true
       }
       let array = []
       for (let i = 0; i < state.playlist.length; i++) {
-        array[i] = i
+        if (!state.playlist[i].disable) {
+          array.push(i)
+        }
       }
       switch (state.loopType) {
         case 'proper':
@@ -108,7 +110,14 @@ srcReady:true
     removePlaylistItem (state, index) {
       state.playlist.splice(index, 1)
     },
+    setDisableItem (state, index) {
+      state.playlist.splice(index, 1, {
+        ...state.playlist[index],
+        disable: true
+      })
+    },
     clearPlaylist (state) {
+      state.running = false
       state.currentSong = {
         indexInPlaylist: 0,
         songname: '',
@@ -121,7 +130,6 @@ srcReady:true
         srcReady: '',
         src: ''
       }
-      state.running = false
       state.currentTimeSetter = 0
       state.duration = 0
       state.loadedTime = 0
@@ -199,7 +207,6 @@ srcReady:true
   actions: {
     changeSong ({commit, dispatch, state, getters}, {type, callback, beforeChange}) {
       // 根据循环方式播放确定上下首歌曲
-      commit('changeDataLoading', true)
       let keyIndex = getters.playOrder.indexOf(state.currentSong.indexInPlaylist)
       let result
       switch (type) {
@@ -234,6 +241,7 @@ srcReady:true
     requestSongInfo ({commit, state, rootGetters}, {index, callback, beforeChange}) {
       // 切歌前执行的函数
       beforeChange && beforeChange()
+      commit('changeDataLoading', true)
       // 切歌程序首先执行歌曲索引切换，保持页面程序的运行
       commit('saveCurrentSongInfo', {
         indexInPlaylist: index

@@ -39,6 +39,8 @@
             <v-touch
               class="item-text"
               @tap="changeSong(index)"
+              :enabled="!item.disable"
+              :class="{disabled: item.disable}"
             >
               <span class="song-name">{{item.songname}}</span>
               <span class="singer-name"> - {{item.singername}}</span>
@@ -173,6 +175,9 @@ export default {
         font-size: 12px;
         color: #999;
       }
+    }
+    .item-text.disabled {
+      color: #ccc;
     }
     .icon-close {
       color: #999;

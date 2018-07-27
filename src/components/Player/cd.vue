@@ -217,7 +217,6 @@ export default {
       }, 700)
     },
     'currentSong.indexInPlaylist' (val) {
-      console.log('cahnge')
       this.commentnum = ''
       // 当歌曲变化时，pnn列表发生相应变化
       let songIndex = val

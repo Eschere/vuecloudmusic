@@ -12,6 +12,7 @@ import Video from '#/Video/Video'
 
 import config from '#/Config'
 
+import notFound from '#/common/notFound'
 // 详情类
 const songSheet = () => import('#/songSheet/songSheet')
 const songSheetHomePage = () => import('#/songSheet/homePage')
@@ -57,16 +58,20 @@ export default new Router({
             {
               path: 'friends',
               name: 'Friends',
-              component: {
-                render: h => h('div', 'friends')
-              }
+              props: {
+                info: '朋友暂时未开放...',
+                pagekey: 'friends'
+              },
+              component: notFound
             },
             {
               path: 'fm',
               name: 'fm',
-              component: {
-                render: h => h('div', 'fm')
-              }
+              props: {
+                info: '电台功能未开放...',
+                pagekey: 'fm'
+              },
+              component: notFound
             }
           ]
         },
@@ -99,16 +104,10 @@ export default new Router({
           children: [
             {
               path: '*',
-              component: {
-                render: h => h('div', {
-                  attrs: {
-                    style: `
-                      width: 100vw;
-                      height: 100%;
-                      overflow: auto`
-                  }
-                }, '暂时未开放')
-              }
+              props: {
+                info: '该功能暂时未开放...'
+              },
+              component: notFound
             }
           ]
         }
@@ -144,18 +143,14 @@ export default new Router({
     {
       path: '/config',
       component: config
-      // children: [
-      //   {
-      //     path: 'network',
-
-      //   }
-      // ]
     },
     {
       path: '*',
-      component: {
-        render: h => h('div', 'not found')
-      }
+      props: {
+        transition: 'fade',
+        backbtn: true
+      },
+      component: notFound
     }
   ]
 })

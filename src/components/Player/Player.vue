@@ -49,7 +49,7 @@
           <div :style="{width: loadProgress}" class="load-progress">
           </div>
           <div :style="{width: progressWidth}" class="progress">
-            <span class="progress-icon"></span>
+            <span class="progress-icon" :class="{loading: dataLoading}"></span>
           </div>
         </div>
       </v-touch>
@@ -120,7 +120,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['running', 'playlist', 'currentSong', 'duration', 'currentTime', 'loadedTime', 'loopType']),
+    ...mapState('player', ['running', 'playlist', 'currentSong', 'duration', 'currentTime', 'loadedTime', 'loopType', 'dataLoading']),
     ...mapGetters('player', ['progress']),
     durationStr () {
       return formatTime(this.duration)
@@ -372,6 +372,16 @@ export default {
           background: $theme-color;
           right: -6.5px;
           top: -6.5 + 1.5px;
+        }
+        .progress-icon.loading::after {
+          content: '';
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          width: 13px;
+          height: 13px;
+          background: url('~@/components/common/img/loading.png') center / 100%;
+          animation: loading 2s linear infinite;
         }
       }
     }
