@@ -10,6 +10,7 @@ yarn-error.log*
 
 /other/
 # proxy server
+
 /proxy/
 
 # Editor directories and files
