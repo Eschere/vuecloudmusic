@@ -1,6 +1,7 @@
 // 远程服务器地址
 // const server = 'http://172.86.64.157:8080'
-const defaultServer = 'http://192.168.1.6:8080'
+// const defaultServer = 'http://192.168.1.6:8080'
+const defaultServer = 'http://111.230.104.195:8080'
 
 // 从本地存储中获取网络配置数据
 let server, serverIndex
