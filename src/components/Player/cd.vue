@@ -201,12 +201,6 @@ export default {
       }
     ]
   },
-  deactivated () {
-    this.stopAnimation = 'none'
-  },
-  activated () {
-    this.stopAnimation = ''
-  },
   watch: {
     'currentSong.src' () {
       setTimeout(() => {

@@ -23,7 +23,7 @@
         class="lyric-cursor"
         v-show="readyForChange"
         @tap="lyricChanger"
-
+        v-if="lyricArray.length > 1"
       >
         <span class="cursor-icon"></span>
         <hr class="cursor-line"/>
@@ -37,11 +37,11 @@
         ref="lyricArea"
       >
         <div
-          class="lyric-box" v-show="!lyricLoading"
+          class="lyric-box" v-show="!lyricLoading && lyricArray.length > 1"
         >
           <div
             class="lyric-content"
-            :style="{padding: boxHeight / 2 + 'px 0'}"
+            :style="{padding: lyricArray.length > 1 ? boxHeight / 2 + 'px 0' : 0}"
           >
             <div
               class="lyric-line"
@@ -65,6 +65,9 @@
         <div class="lyric-loading" v-show="lyricLoading">
           <span>歌词加载中...</span>
         </div>
+        <div class="pure-music" v-if="!lyricLoading && lyricArray.length === 1">
+          <span>{{ lyricArray[0] ? lyricArray[0].text : '' }}</span>
+        </div>
       </v-touch>
     </div>
   </div>
@@ -80,6 +83,7 @@ export default {
   data () {
     return {
       tiemr: null,
+      timerRefresh: null,
       lyric: '',
       lyricTrans: '',
       lyricArray: [],
@@ -93,10 +97,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['volume', 'currentSong', 'currentTime']),
+    ...mapState('player', ['volume', 'currentSong', 'currentTime', 'dataLoading']),
     ...mapGetters('config', ['currentServer']),
     activeIndex () {
-      if (this.lyricArray.length > 0) {
+      if (this.lyricArray.length > 1) {
         // 最小为0
         if (this.currentTime <= this.lyricArray[0].time) {
           return 0
@@ -161,13 +165,19 @@ export default {
       }, (err, data) => {
         if (err) {
           this.lyricLoading = false
-          this.lyric = '无歌词'
+          this.lyricArray = [{text: '无歌词'}]
         } else {
-          this.lyric = decodeBase64(data.lyric)
+          try {
+            this.lyric = decodeBase64(data.lyric)
 
-          this.lyricTrans = data.trans && decodeBase64(data.trans)
+            this.lyricTrans = data.trans && decodeBase64(data.trans)
 
-          this.lyricArray = lrcParser(this.lyric, this.lyricTrans)
+            this.lyricArray = lrcParser(this.lyric, this.lyricTrans)
+          } catch (e) {
+            console.log(e)
+            console.log('lyric parse failed')
+            this.lyricArray = [{text: '歌词解析错误'}]
+          }
           this.$nextTick(cb)
         }
       })
@@ -275,25 +285,33 @@ export default {
         scroll.scrollTo(0, -scrollDistance, 1000)
       }
     },
-    'currentSong.songmid' (val) {
-      this.lyricLoading = true
-      this.lyricChanged = true
-      this.lineData = []
-      this.willActiveIndex = null
-      this.requestLyric(() => {
-        this.lyricLoading = false
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.updateLineData()
-
-            scroll.refresh()
-
-            if (this.readyForChange === false) {
-              scroll.scrollTo(0, -(this.lineData[this.activeIndex].center - this.boxHeight / 2), 1000)
+    'dataLoading' (val) {
+      if (!val) {
+        this.lyricLoading = true
+        this.lyricChanged = true
+        this.lineData = []
+        this.willActiveIndex = null
+        this.requestLyric(() => {
+          this.lyricLoading = false
+          this.$nextTick(() => {
+            if (this.timerRefresh) {
+              clearTimeout(this.timerRefresh)
+              this.tiemrretimerRefresh = null
             }
-          }, 1000)
+
+            this.timerRefresh = setTimeout(() => {
+              this.updateLineData()
+
+              scroll.refresh()
+
+              if (this.readyForChange === false) {
+                scroll.scrollTo(0, -(this.lineData[this.activeIndex].center - this.boxHeight / 2), 1000)
+              }
+              this.timerRefresh = null
+            }, 1000)
+          })
         })
-      })
+      }
     }
   }
 }
@@ -395,7 +413,8 @@ export default {
         margin: 20px 0;
         word-break: break-word;
       }
-      .lyric-loading {
+      .lyric-loading,
+      .pure-music {
         color: #eee;
         display: flex;
         height: 100%;

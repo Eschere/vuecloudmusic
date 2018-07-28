@@ -229,6 +229,9 @@ export default {
     this.progressBarOffset = progressRect.x || progressRect.left
     this.progressBarWidth = progressRect.width
   },
+  activated () {
+    this.showing = 'cd'
+  },
   watch: {
     'playlist.length' (val) {
       if (val === 0 && this.$route.path === '/player') {
