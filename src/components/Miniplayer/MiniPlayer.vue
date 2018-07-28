@@ -296,7 +296,7 @@ export default {
   height: 50px;
   width: 100%;
   border-top: 0.1px solid #eee;
-  position: fixed;
+  position: absolute;
   left: 0;
   bottom: 0;
   background: white;

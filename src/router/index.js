@@ -10,7 +10,9 @@ import Music from '#/Music/Music'
 
 import Video from '#/Video/Video'
 
-import config from '#/Config'
+import Config from '#/Config'
+
+import Search from '#/Search'
 
 import notFound from '#/common/notFound'
 // 详情类
@@ -142,7 +144,14 @@ export default new Router({
     },
     {
       path: '/config',
-      component: config
+      component: Config
+    },
+    {
+      path: '/search',
+      components: {
+        default: Search,
+        'mini-player': MiniPlayer
+      }
     },
     {
       path: '*',

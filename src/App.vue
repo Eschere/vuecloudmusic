@@ -78,10 +78,10 @@ ul {
   list-style: none;
 }
 #app {
-  box-sizing: border-box;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 @include build-transition('slide');
 

@@ -106,7 +106,6 @@ export default {
       }
     })
     audio.addEventListener('canplay', (e) => {
-      console.log('canplay')
       this.changeDataLoading(false)
       this.saveDuration(e.target.duration)
 
@@ -120,7 +119,6 @@ export default {
     })
     // 播放错误
     audio.addEventListener('error', () => {
-      console.log('error')
       if (this.currentSong.src) {
         let allDisable = this.playlist.every(item => {
           return item.disable === true
@@ -151,7 +149,6 @@ export default {
       if (val) {
         if (audio.paused && audio.src) {
           audio.play().catch((e) => {
-            console.log('p')
             this.shadeOn = true
             this.confirmBox = true
           })
