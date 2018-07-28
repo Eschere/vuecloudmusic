@@ -8,6 +8,7 @@ yarn-error.log*
 # unuse static
 /static/
 
+/other/
 # proxy server
 /proxy/
 
