@@ -101,7 +101,7 @@ export function strToTime (str) {
  */
 export function lrcParser (str, strTrans) {
   let reg = /\[([0-9]+.*)\].*/g
-  let arrTrans
+  let arrTrans = []
   if (strTrans) {
     arrTrans = strTrans.match(reg).map(item => {
       let rest = new RegExp(/\[([0-9]+.*)\](.*)/).exec(item)
