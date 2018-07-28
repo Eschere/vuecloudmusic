@@ -276,7 +276,7 @@ export default {
     height: 100vh;
     top: 0;
     left: 0;
-    filter: blur(30px) brightness(70%);
+    filter: blur(30px) brightness(50%);
     transform: scale3d(1.5, 1.5, 1);
     transition: background 2s;
   }
