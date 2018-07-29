@@ -16,7 +16,7 @@
       <div class="first-title-box">
         <p class="first-title-content">{{currentSong.songname}}</p>
       </div>
-      <span class="sub-title">{{currentSong.singer}}</span>
+      <div class="sub-title">{{currentSong.singer}}</div>
     </div>
     <span class="share iconfont icon-share">
     </span>
@@ -284,7 +284,7 @@ export default {
     transition: background 2s;
   }
   .player-header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     height: 50px;

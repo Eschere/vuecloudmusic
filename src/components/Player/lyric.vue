@@ -105,8 +105,8 @@ export default {
         if (this.currentTime <= this.lyricArray[0].time) {
           return 0
         }
-
-        let active = this.lyricArray.findIndex((item, index, arr) => {
+        let active = 0
+        active = this.lyricArray.findIndex((item, index, arr) => {
           if (index < arr.length - 1) {
             return this.currentTime >= item.time && this.currentTime < arr[index + 1].time
           } else {
@@ -176,7 +176,7 @@ export default {
           } catch (e) {
             console.log(e)
             console.log('lyric parse failed')
-            this.lyricArray = [{text: '歌词解析错误'}]
+            this.lyricArray = [{text: '无歌词'}]
           }
           this.$nextTick(cb)
         }
