@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import headLevel2 from '#/headLevel2/headLevel2'
+import headLevel2 from '#/common/headLevel2'
 import {mapMutations} from 'vuex'
 const save = {
   saveIndex: 0 // 保证activePageIndex不为-1，避免bug

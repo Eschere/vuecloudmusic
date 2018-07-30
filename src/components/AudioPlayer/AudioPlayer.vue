@@ -37,7 +37,7 @@
 </template>
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex'
-import Shade from '#/Shade/Shade'
+import Shade from '#/common/shade'
 
 const audio = new Audio()
 

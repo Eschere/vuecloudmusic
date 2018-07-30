@@ -52,3 +52,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+console.log('%cVMusic demo 1.2.3/By yemao', 'background:#41b883;font-size:16px')

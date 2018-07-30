@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import shade from '#/Shade/Shade'
+import shade from '#/common/shade'
 
 import {mapState, mapMutations, mapActions} from 'vuex'
 export default {

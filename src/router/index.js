@@ -16,10 +16,10 @@ import Search from '#/Search'
 
 import notFound from '#/common/notFound'
 // 详情类
-const songSheet = () => import('#/songSheet/songSheet')
-const songSheetHomePage = () => import('#/songSheet/homePage')
-const songSheetSongList = () => import('#/songSheet/songList')
-const songSheetCategory = () => import('#/songSheet/category')
+const songSheet = () => import('#/SongSheet/songSheet')
+const songSheetHomePage = () => import('#/SongSheet/homePage')
+const songSheetSongList = () => import('#/SongSheet/songList')
+const songSheetCategory = () => import('#/SongSheet/category')
 
 // 主播放器界面
 const Player = () => import('#/Player/Player')

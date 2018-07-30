@@ -78,7 +78,7 @@
 
 <script>
 import mainPage from '#/common/detailFramework'
-import Shade from '#/Shade/Shade'
+import Shade from '#/common/shade'
 import {mapState, mapGetters, mapMutations} from 'vuex'
 export default {
   components: {

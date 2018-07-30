@@ -29,7 +29,7 @@
   </Shade>
 </template>
 <script>
-import Shade from '#/Shade/Shade'
+import Shade from '#/common/shade'
 import {mapState, mapMutations} from 'vuex'
 
 export default {
