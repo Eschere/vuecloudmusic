@@ -65,7 +65,7 @@
         class="result-box"
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10"
+        infinite-scroll-distance="150"
       >
         <div class="result-list">
           <div
@@ -75,14 +75,16 @@
           >
             <v-touch
               class="result-info"
+              :enabled="!item.pay.pay_play"
+              @tap="play(item)"
             >
-              <div class="result-songname">{{item.name}}</div>
+              <div class="result-songname" :class="{disabled: item.pay.pay_play}">{{item.name}}</div>
               <div class="result-singername">{{item.singer[0].name}} - {{item.album.name}}</div>
             </v-touch>
             <span class="iconfont icon-more-item"></span>
           </div>
-          <div class="loading" v-if="loading">
-            <span>加载中</span>
+          <div class="loading-placeholder" v-if="loading">
+            <span class="icon"></span>
           </div>
         </div>
       </div>
@@ -92,7 +94,7 @@
 </template>
 
 <script>
-import {mapState, mapGetters} from 'vuex'
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 import jsonp from 'jsonp'
 
 export default {
@@ -115,14 +117,17 @@ export default {
       },
       keyword: '',
       searchid: 0,
-      searchingWord: ''
+      searchingWord: '',
+      p: 1 // 请求页数
     }
   },
   computed: {
-    ...mapState('player', ['playlist']),
+    ...mapState('player', ['playlist', 'currentSong']),
     ...mapGetters('config', ['currentServer'])
   },
   methods: {
+    ...mapMutations('player', ['addPlaylistItem']),
+    ...mapActions('player', ['requestSongInfo']),
     preSearch (e) {
       this.keyword = e.target.value.trim()
       if (this.keyword) {
@@ -148,6 +153,7 @@ export default {
       this.loading = true
       this.keyword = keyword = keyword.trim()
       if (keyword !== '' && keyword !== this.searchingWord) {
+        this.p = 1
         this.searched = true
         this.searchingWord = keyword
         let searchid = this.searchid = Math.floor(Math.random() * 89999999999999999 + 10000000000000000)
@@ -162,8 +168,49 @@ export default {
       }
     },
     loadMore () {
-      this.loading = true
-      console.log('loadMore')
+      if (this.p * 20 < this.songResult.totalnum) {
+        this.loading = true
+        this.p++
+        this.requestResult({
+          searchid: this.searchid,
+          keyword: this.searchingWord,
+          p: this.p,
+          cb: (data) => {
+            this.loading = false
+            this.songResult.list.push(...data.data.song.list)
+          }
+        })
+      }
+    },
+    play (item) {
+      if (this.currentSong.songmid === item.mid) {
+        this.$router.push('/player')
+        return
+      }
+      let index = this.currentSong.indexInPlaylist + 1
+
+      if (!this.playlist.length) {
+        index = 0
+        this.$nextTick(() => {
+          this.$router.push('/player')
+        })
+      }
+
+      this.addPlaylistItem({
+        item: {
+          albummid: item.album.mid,
+          albumname: item.album.name,
+          singermid: item.singer[0].mid,
+          singername: item.singer[0].name,
+          songmid: item.mid,
+          songname: item.name
+        },
+        type: 'follow'
+      })
+
+      this.$nextTick(() => {
+        this.requestSongInfo({index})
+      })
     },
     requestResult ({searchid, keyword, p = 1, n = 20, cb}) {
       jsonp(`${this.currentServer.url}/search?searchid=${searchid}&w=${keyword}&p=${p}&n=${n}`, {
@@ -329,6 +376,9 @@ export default {
               text-overflow: ellipsis;
               overflow: hidden;
               font-size: 16px;
+            }
+            .result-songname.disabled {
+              color: #999;
             }
             .result-singername {
               white-space: nowrap;

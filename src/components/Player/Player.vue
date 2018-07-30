@@ -235,7 +235,7 @@ export default {
   watch: {
     'playlist.length' (val) {
       if (val === 0 && this.$route.path === '/player') {
-        this.$router.go(-1)
+        this.$router.replace('/')
       }
     },
     'currentSong.src' () {

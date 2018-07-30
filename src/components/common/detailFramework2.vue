@@ -136,7 +136,9 @@ export default {
       }
 
       if (!this.playlist.length) {
-        this.$router.push('/player')
+        this.$nextTick(() => {
+          this.$router.push('/player')
+        })
       }
       // 保存播放列表到本地
       this.savePlaylist(this.songlist)

@@ -37,7 +37,7 @@ export default {
     loadedTime: 0, // 已加载时长
     currentSong: {
       /* eslint-disable */
-      /*indexInPlaylist: 0,
+      indexInPlaylist: 0,
       songname: '',
       singer: '',
       songmid: '',
@@ -46,8 +46,8 @@ export default {
       albummid: '',
       albumcover: '',
       srcReady: '',
-      src: ''*/
-      songname: '这是一个测',
+      src: ''
+      /* songname: '这是一个测',
       album:"ONE DAY",
 albumcover:"https://y.gtimg.cn/music/photo_new/T002R300x300M0000040Z1El30gtpD.jpg?max_age=2592000",
 albummid:"0040Z1El30gtpD",
@@ -56,7 +56,7 @@ singer:"원",
 songmid:"002H8PeZ0F9bfF",
 songid: '',
 src:"http://dl.stream.qqmusic.qq.com/C400002H8PeZ0F9bfF.m4a?vkey=7B55699D8B48A17565866BB8AE06FDD1CBD98CE9A81AC25BFE9CF7BA702DAAC779A11C30B45BC346F3C119B039225B33BDC68E3F78F0C732&guid=974778006&uin=0&fromtag=66",
-srcReady:true
+srcReady:true */
     },
     /*currentSongComment: {
       comment: {
@@ -100,7 +100,7 @@ srcReady:true
     savePlaylist (state, playlist) {
       state.playlist = playlist
     },
-    addPlayListItem (state, {item, type='push'}) {
+    addPlaylistItem (state, {item, type='push'}) {
       if (type === 'push') {
         state.playlist.push(item)
       } else if (type === 'follow') {
