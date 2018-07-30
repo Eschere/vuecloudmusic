@@ -229,7 +229,7 @@ export default {
     this.progressBarOffset = progressRect.x || progressRect.left
     this.progressBarWidth = progressRect.width
   },
-  activated () {
+  deactivated () {
     this.showing = 'cd'
   },
   watch: {

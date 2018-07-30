@@ -285,8 +285,8 @@ export default {
         scroll.scrollTo(0, -scrollDistance, 1000)
       }
     },
-    'dataLoading' (val) {
-      if (!val) {
+    'currentSong.songmid' (val) {
+      if (val) {
         this.lyricLoading = true
         this.lyricChanged = true
         this.lineData = []
