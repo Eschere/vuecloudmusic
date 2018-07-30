@@ -92,8 +92,7 @@ export default {
       lineData: [],
       readyForChange: false, // 预切换歌曲播放歌词位置
       scrollByUser: false,
-      willActiveIndex: null,
-      lyricChanged: false // 在组件失活期间歌曲改变
+      willActiveIndex: null
     }
   },
   computed: {
@@ -256,27 +255,21 @@ export default {
 
     // 获取歌词容器高度
     this.boxHeight = this.$refs.lyricArea.$el.getBoundingClientRect().height
-    window.onresize = () => {
-      this.boxHeight = this.$refs.lyricArea.$el.getBoundingClientRect().height
-    }
   },
   activated () {
-    if (this.lyricChanged) {
-      this.lyricLoading = false
-      scroll.scrollTo(0, 0, 0)
-      this.$nextTick(() => {
-        setTimeout(() => {
-          this.updateLineData()
+    this.boxHeight = this.$refs.lyricArea.$el.getBoundingClientRect().height
 
-          scroll.refresh()
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.updateLineData()
 
-          if (this.readyForChange === false) {
-            scroll.scrollTo(0, -(this.lineData[this.activeIndex].center - this.boxHeight / 2), 1000)
-          }
-        }, 1000)
-      })
-      this.lyricChanged = false
-    }
+        scroll.refresh()
+
+        if (this.readyForChange === false) {
+          scroll.scrollTo(0, -(this.lineData[this.activeIndex].center - this.boxHeight / 2), 1000)
+        }
+      }, 1000)
+    })
   },
   watch: {
     'activeIndex' (val) {
@@ -288,7 +281,6 @@ export default {
     'currentSong.songmid' (val) {
       if (val) {
         this.lyricLoading = true
-        this.lyricChanged = true
         this.lineData = []
         this.willActiveIndex = null
         this.requestLyric(() => {
