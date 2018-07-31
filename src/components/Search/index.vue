@@ -348,6 +348,8 @@ export default {
       .smart-word {
         @include search-word();
         color: #999;
+        white-space: nowrap;
+        overflow: hidden;
         .icon-search {
           font-size: 20px;
           margin-right: 10px;

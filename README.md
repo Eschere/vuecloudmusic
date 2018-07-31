@@ -1,6 +1,7 @@
 # vuecloudmusic
 
-> A music player like netease cloud music was built by Vue.js
+> A music player like netease cloud music was built by Vue.js  
+
 > 使用Vue.js构建的一款音乐WebApp(仿网易云手机App)
 ## Build Setup
 
@@ -56,3 +57,5 @@ src
  |-App.vue                                        根组件
  |-main.js                                        入口文件
 ```
+## 效果展示
+[VMusic](http://111.230.104.195)
