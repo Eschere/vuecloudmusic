@@ -36,7 +36,6 @@ export default {
     dataLoading: true, // 歌曲相关信息加载状态
     loadedTime: 0, // 已加载时长
     currentSong: {
-      /* eslint-disable */
       indexInPlaylist: 0,
       songname: '',
       singer: '',
@@ -47,18 +46,9 @@ export default {
       albumcover: '',
       srcReady: '',
       src: ''
-      /* songname: '这是一个测',
-      album:"ONE DAY",
-albumcover:"https://y.gtimg.cn/music/photo_new/T002R300x300M0000040Z1El30gtpD.jpg?max_age=2592000",
-albummid:"0040Z1El30gtpD",
-indexInPlaylist:0,
-singer:"원",
-songmid:"002H8PeZ0F9bfF",
-songid: '',
-src:"http://dl.stream.qqmusic.qq.com/C400002H8PeZ0F9bfF.m4a?vkey=7B55699D8B48A17565866BB8AE06FDD1CBD98CE9A81AC25BFE9CF7BA702DAAC779A11C30B45BC346F3C119B039225B33BDC68E3F78F0C732&guid=974778006&uin=0&fromtag=66",
-srcReady:true */
-    },
-    /*currentSongComment: {
+    }
+    /*
+    currentSongComment: {
       comment: {
         list: [],
         total: 0
@@ -67,7 +57,8 @@ srcReady:true */
         list: [],
         total: 0
       }
-    }*/
+    }
+    */
     // randomPlayedList: []// 随机播放过的歌曲
   },
   getters: {
@@ -100,7 +91,7 @@ srcReady:true */
     savePlaylist (state, playlist) {
       state.playlist = playlist
     },
-    addPlaylistItem (state, {item, type='push'}) {
+    addPlaylistItem (state, {item, type = 'push'}) {
       if (type === 'push') {
         state.playlist.push(item)
       } else if (type === 'follow') {
@@ -160,13 +151,13 @@ srcReady:true */
     },
     toggleLoopType (state) {
       switch (state.loopType) {
-        case 'proper': 
+        case 'proper':
           state.loopType = 'single'
           break
-        case 'single': 
+        case 'single':
           state.loopType = 'random'
           break
-        case 'random': 
+        case 'random':
           state.loopType = 'proper'
           break
       }
@@ -202,7 +193,8 @@ srcReady:true */
       } else {
         state.currentSongComment.comment.list.push(comment)
       }
-    }*/
+    }
+    */
   },
   actions: {
     changeSong ({commit, dispatch, state, getters}, {type, callback, beforeChange}) {
@@ -224,11 +216,11 @@ srcReady:true */
         beforeChange
       })
     },
-    removePlaylistItem({state, dispatch, commit}, index) {
-      if (state.currentSong.indexInPlaylist ===  index) {
+    removePlaylistItem ({state, dispatch, commit}, index) {
+      if (state.currentSong.indexInPlaylist === index) {
         dispatch('changeSong', {type: 'next'})
       }
-      if ( state.currentSong.indexInPlaylist > index) {
+      if (state.currentSong.indexInPlaylist > index) {
         commit('saveCurrentSongInfo', {
           indexInPlaylist: state.currentSong.indexInPlaylist - 1
         })
@@ -278,9 +270,9 @@ srcReady:true */
           callback && callback()
         }
       })
-    },
+    }
     // 获取单曲评论
-    /* 
+    /*
     requestSongComment({commit, rootState, state}, {topic, pagenum, }) {
       jsonp(`/songcomment?topic=${topic}&pagenum=${pagenum}&songmid=${songmid}`, {
         name: 'jsoncallback851167396932' + Math.floor((Math.random() * 8999) + 1000)
