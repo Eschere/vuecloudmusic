@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import AudioPlayer from '#/AudioPlayer/AudioPlayer'
+import AudioPlayer from '#/audioPlayer/audioPlayer'
 import {mapState, mapGetters, mapActions} from 'vuex'
 
 export default {

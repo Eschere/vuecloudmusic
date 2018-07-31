@@ -1,28 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '#/Main/Main'
-import MiniPlayer from '#/MiniPlayer/MiniPlayer'
-import MainHeader from '#/MainHeader/MainHeader'
-import Discover from '#/Discover'
-import DiscoverRecom from '#/Discover/Recommend/Recommend'
+import Main from '#/main/main'
+import MiniPlayer from '#/miniPlayer/miniPlayer'
+import MainHeader from '#/mainHeader/mainHeader'
+import Discover from '#/discover'
+import DiscoverRecom from '#/discover/recommend/recommend'
 
-import Music from '#/Music/Music'
+import Music from '#/music/music'
 
-import Video from '#/Video/Video'
+import Video from '#/video/video'
 
-import Config from '#/Config'
+import Config from '#/config'
 
-import Search from '#/Search'
+import Search from '#/search'
 
 import notFound from '#/common/notFound'
 // 详情类
-const songSheet = () => import('#/SongSheet/songSheet')
-const songSheetHomePage = () => import('#/SongSheet/homePage')
-const songSheetSongList = () => import('#/SongSheet/songList')
-const songSheetCategory = () => import('#/SongSheet/category')
+const songSheet = () => import('#/songSheet/songSheet')
+const songSheetHomePage = () => import('#/songSheet/homePage')
+const songSheetSongList = () => import('#/songSheet/songList')
+const songSheetCategory = () => import('#/songSheet/category')
 
 // 主播放器界面
-const Player = () => import('#/Player/Player')
+const Player = () => import('#/player/player')
 
 Vue.use(Router)
 

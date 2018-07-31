@@ -129,9 +129,9 @@ export default {
     ...mapMutations('player', ['addPlaylistItem']),
     ...mapActions('player', ['requestSongInfo']),
     preSearch (e) {
-      this.keyword = e.target.value.trim()
+      this.keyword = e.target.value
       if (this.keyword) {
-        jsonp(this.currentServer.url + '/presearch?key=' + this.keyword, {
+        jsonp(this.currentServer.url + '/presearch?key=' + this.keyword.trim(), {
           name: 'SmartboxKeysCallbackmod_search' + Math.floor(Math.random() * 8999 + 1000)
         }, (err, data) => {
           if (err) {

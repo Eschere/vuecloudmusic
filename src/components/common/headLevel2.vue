@@ -110,7 +110,7 @@ $base:100;
       color:rgb(240, 240, 240);
       min-width: 1.12/5*100vw;
       text-align: center;
-      font-size: 15 / $base + rem;
+      font-size: 15px;
     }
     a.router-link-active {
       color:white;

@@ -28,19 +28,19 @@ src
  |    |
  |    |-overlay                                   模态(悬浮)类界面
  |    |
- |    |-AudioPlayer                               封装原生audio
- |    |-Config                                    设置页面
- |    |-Discover                                  发现页面
- |    |     |-Recommend                           首页推荐
+ |    |-audioPlayer                               封装原生audio
+ |    |-config                                    设置页面
+ |    |-discover                                  发现页面
+ |    |     |-recommend                           首页推荐
  |    |
- |    |-Main                                      主界面
- |    |-MainHeader                                主界面头部
- |    |-MiniPlayer                                底部mini播放控制器
- |    |-Music                                     本地音乐界面
- |    |-Player                                    主播放器界面
- |    |-Search                                    搜索界面
- |    |-SongSheet                                 歌单界面
- |    |-Video                                     视频界面
+ |    |-main                                      主界面
+ |    |-mainHeader                                主界面头部
+ |    |-miniPlayer                                底部mini播放控制器
+ |    |-music                                     本地音乐界面
+ |    |-player                                    主播放器界面
+ |    |-search                                    搜索界面
+ |    |-songSheet                                 歌单界面
+ |    |-video                                     视频界面
  |
  |-directive                                      自定义指令
  |-router                                         路由
