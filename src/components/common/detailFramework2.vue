@@ -382,7 +382,7 @@ export default {
 }
 
 .detail-head {
-    position: fixed;
+    position: absolute;
     top: 0;
     height: 50px;
     width: 100vw;

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 export default {
   props: {
     shade: {
@@ -22,9 +23,27 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['changeOverlayState']),
     close (e) {
       if (this.closeOnclickModal && e.target === this.$refs.shade.$el) {
         this.$emit('close')
+      }
+    },
+    closeShade (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+      this.$emit('close')
+    }
+  },
+  watch: {
+    shade (val) {
+      if (val) {
+        this.changeOverlayState(true)
+        document.addEventListener('backbutton', this.closeShade, false)
+      } else {
+        this.changeOverlayState(false)
+        document.removeEventListener('backbutton', this.closeShade, false)
       }
     }
   }

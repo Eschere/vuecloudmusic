@@ -3,6 +3,7 @@
     <Shade
       :shade="shadeOn"
       :colseOnclickModal="false"
+      @close="close"
     >
       <div class="modal" v-if="confirmBox">
         <div class="alert-box">
@@ -58,6 +59,12 @@ export default {
   methods: {
     ...mapMutations('player', ['changePlayState', 'saveDuration', 'updateCurrentTime', 'changeDataLoading', 'saveLoadedTime', 'setCurrentTime', 'setDisableItem']),
     ...mapActions('player', ['changeSong']),
+    close () {
+      this.changePlayState(false)
+      this.shadeOn = false
+      this.confirmBox = false
+      this.alertBox = false
+    },
     cancel (cb) {
       this.changePlayState(false)
       this.shadeOn = false

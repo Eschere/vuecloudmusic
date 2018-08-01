@@ -17,18 +17,29 @@ import {mapGetters, mapState, mapMutations} from 'vuex'
 
 import Maside from '#/overlay/aside'
 
+function goHome () {
+  navigator.Backbutton.goHome()
+}
+
 export default {
   components: {
     Maside
   },
   data () {
     return {
-      toggleType: 'slide-left'
+      toggleType: 'slide-left',
+      componentActived: true // 组件激活状态
     }
   },
   computed: {
+    ...mapState(['overlayOn']),
     ...mapState('player', ['playlist']),
     ...mapGetters('router', ['getPathIndex'])
+  },
+  beforeRouteEnter (to, from, next) {
+    next(() => {
+      document.addEventListener('backbutton', goHome, false)
+    })
   },
   beforeRouteUpdate (to, from, next) {
     let toIndex = this.getPathIndex(to.path)
@@ -42,7 +53,25 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     mapMutations(['toggleAside']).toggleAside.call(this, false)
+    document.removeEventListener('backbutton', goHome, false)
     next()
+  },
+  activated () {
+    this.componentActived = true
+  },
+  deactivated () {
+    this.componentActived = false
+  },
+  watch: {
+    overlayOn (val) {
+      if (this.componentActived) {
+        if (val) {
+          document.removeEventListener('backbutton', goHome, false)
+        } else {
+          document.addEventListener('backbutton', goHome, false)
+        }
+      }
+    }
   }
 }
 </script>

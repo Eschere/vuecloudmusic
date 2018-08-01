@@ -14,6 +14,9 @@ npm run dev
 
 # 构建生产版本
 npm run build
+
+# 构建cordova打包版
+npm run app
 ```
 ## 项目结构
 ```

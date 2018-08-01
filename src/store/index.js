@@ -19,6 +19,7 @@ const store = new Vuex.Store({
   },
   state: {
     asideOn: false, // 边栏菜单状态
+    overlayOn: false, // 是或否有悬浮类页面开启
     homeData: null
   },
   getters: {
@@ -64,6 +65,9 @@ const store = new Vuex.Store({
     // 边栏菜单 显示/隐藏
     [Type.TOGGLE_ASIDE] (state, status) {
       state.asideOn = status
+    },
+    changeOverlayState (state, status) {
+      state.overlayOn = status
     }
   },
   actions: {

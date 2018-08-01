@@ -6,11 +6,8 @@
     <div class="aside-content">
       <div class="aside-banner">
         <p class="banner-info">
-          仿网易云手机App<br>
-          建议使用chrome以获得最佳的浏览体验
-          或者下载App预览版
+          VMusic 1.0.0
         </p>
-        <span class="download-btn">下载App</span>
       </div>
       <div class="aside-main">
         <div class="aside-list">
@@ -23,7 +20,7 @@
           to="/config"
           class="config-btn"
         >设置</router-link>
-        <a href="javascript:window.opener=null;window.open(location,'_self');window.close()" class="close-btn">退出</a>
+        <v-touch @tap="exit" class="close-btn">退出</v-touch>
       </div>
     </div>
   </Shade>
@@ -40,7 +37,10 @@ export default {
     ...mapState(['asideOn'])
   },
   methods: {
-    ...mapMutations(['toggleAside'])
+    ...mapMutations(['toggleAside']),
+    exit () {
+      navigator.app.exitApp()
+    }
   }
 }
 </script>
