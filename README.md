@@ -2,7 +2,10 @@
 
 > A music player like netease cloud music was built by Vue.js  
 
-> 使用Vue.js构建的一款音乐WebApp(仿网易云手机App)
+> 使用Vue.js构建的一款音乐WebApp(仿网易云手机App)  
+
+> 使用Cordova构建HybridApp
+
 ## Build Setup
 
 ``` bash
@@ -14,6 +17,9 @@ npm run dev
 
 # 构建生产版本
 npm run build
+
+# 构建cordova打包版(使用cordova-app-x.x分支)
+npm run app
 ```
 ## 项目结构
 ```
