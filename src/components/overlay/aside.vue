@@ -10,7 +10,7 @@
           建议使用chrome以获得最佳的浏览体验
           或者下载App预览版
         </p>
-        <span class="download-btn">下载App</span>
+        <a href="/VMusic.apk" class="download-btn">下载App</a>
       </div>
       <div class="aside-main">
         <div class="aside-list">
