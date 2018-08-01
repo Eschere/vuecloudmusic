@@ -62,6 +62,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
+      script: '<script src=cordova.js></script><script src=cordova_plugins.js></script>',
       filename: config.app.index,
       template: 'index.html',
       inject: true,

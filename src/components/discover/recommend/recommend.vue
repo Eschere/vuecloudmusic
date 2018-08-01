@@ -130,7 +130,7 @@ export default {
 .recommend-content {
   width: 100vw;
   .focus {
-    padding: 10px;
+    padding: 10 / $base + rem;
     background-image:linear-gradient($theme-color 70%, white 70%);
     .slide-box {
       width: 355 / $base + rem;

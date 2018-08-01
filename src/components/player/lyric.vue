@@ -23,7 +23,8 @@
         class="lyric-cursor"
         v-show="readyForChange"
         @tap="lyricChanger"
-        v-if="lyricArray.length > 1"
+        v-if="lyricArray.length > 1 && boxHeight > 0"
+        :style="{marginTop: boxHeight / 2 - 12.5 + 'px'}"
       >
         <span class="cursor-icon"></span>
         <hr class="cursor-line"/>
@@ -358,10 +359,6 @@ export default {
       width: 100vw;
       height: 25px;
       display: flex;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
       box-sizing: border-box;
       padding: 0 5px;
       justify-content: space-around;
