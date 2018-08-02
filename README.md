@@ -1,7 +1,5 @@
 # vuecloudmusic
 
-> A music player like netease cloud music was built by Vue.js  
-
 > 使用Vue.js构建的一款音乐WebApp(仿网易云手机App)  
 
 > 使用Cordova构建HybridApp
